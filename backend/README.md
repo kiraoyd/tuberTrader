@@ -11,3 +11,9 @@ From root (not /backend)
 > docker-compose up
 
 
+Adding migration process:
+> Create new model in src/db/models
+> pnpm migration:generate ./src/db/migrations/<NAMEHERE>
+> pnpm typeorm:updateDatasource //This will auto add to dev_datasource.ts
+> pnpm migration:run
+
