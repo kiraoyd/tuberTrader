@@ -1,14 +1,12 @@
-// @ts-nocheck
-// We disable typescript checking for this file because it's a config file
-
 // We need dotenv here because our datasources are processed from CLI in addition to vite
 import dotenv from "dotenv";
-dotenv.config();
 import {DataSource} from 'typeorm';
 // Similar reasoning as above, we need to add the file extensions to this file's imports for CLI usage
-import {User} from "../models/user.ts";
-import {IPHistory} from "../models/ip_history.ts";
-import {Initialize1676281754950} from "../migrations/1676281754950-Initialize.ts";
+import {User} from "../models/user";
+import {IPHistory} from "../models/ip_history";
+import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
+
+dotenv.config();
 
 // @ts-ignore
 const env = process.env;

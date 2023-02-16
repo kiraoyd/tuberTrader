@@ -1,12 +1,8 @@
 import dotenv from "dotenv";
 import {DataSource} from 'typeorm';
-// https://github.com/microsoft/TypeScript/pull/52230 bug why we have to ts-ignore these
-// @ts-ignore
-import {User} from "../models/user.ts";
-// @ts-ignore
-import {IPHistory} from "../models/ip_history.ts";
-// @ts-ignore
-import {Initialize1676281754950} from "../migrations/1676281754950-Initialize.ts";
+import {User} from "../models/user";
+import {IPHistory} from "../models/ip_history";
+import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
 
 dotenv.config();
 

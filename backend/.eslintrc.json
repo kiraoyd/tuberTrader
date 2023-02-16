@@ -36,7 +36,7 @@
         "SwitchCase": 1
       }
     ],
-    "no-mixed-spaces-and-tabs": "error",
+    "no-mixed-spaces-and-tabs": "off",
     "semi": "error",
     "arrow-parens": "off",
     "arrow-body-style": "off",

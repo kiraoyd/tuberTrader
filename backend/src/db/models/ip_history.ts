@@ -1,7 +1,6 @@
 /** @module Models/IPHistory */
 import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Relation} from "typeorm";
-// @ts-ignore
-import {User} from "./user.ts";
+import {User} from "./user";
 
 /**
  * IPHistory model - holds all IPs a user has logged in with

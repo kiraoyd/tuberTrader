@@ -3,8 +3,6 @@ import {User} from "../models/user";
 import {Seeder} from "../../lib/seed_manager";
 import {FastifyInstance} from "fastify";
 
-
-
 /**
  * UserSeeder class - Model class for interacting with "users" table
  */
