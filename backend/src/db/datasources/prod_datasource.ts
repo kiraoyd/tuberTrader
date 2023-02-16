@@ -6,7 +6,7 @@ import {User} from "../models/user.ts";
 // @ts-ignore
 import {IPHistory} from "../models/ip_history.ts";
 // @ts-ignore
-import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
+import {Initialize1676281754950} from "../migrations/1676281754950-Initialize.ts";
 
 dotenv.config();
 

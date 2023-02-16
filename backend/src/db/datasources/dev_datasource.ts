@@ -8,7 +8,7 @@ import {DataSource} from 'typeorm';
 // Similar reasoning as above, we need to add the file extensions to this file's imports for CLI usage
 import {User} from "../models/user.ts";
 import {IPHistory} from "../models/ip_history.ts";
-import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
+import {Initialize1676281754950} from "../migrations/1676281754950-Initialize.ts";
 
 // @ts-ignore
 const env = process.env;
