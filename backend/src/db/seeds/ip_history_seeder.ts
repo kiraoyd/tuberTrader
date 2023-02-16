@@ -16,11 +16,11 @@ faker.seed(100);
 export class IPHistorySeeder extends Seeder {
 
 	/**
-	 * Runs the IPHistory table's seed
-	 * @function
-	 * @param {FastifyInstance} app
-	 * @returns {Promise<void>}
-	 */
+   * Runs the IPHistory table's seed
+   * @function
+   * @param {FastifyInstance} app
+   * @returns {Promise<void>}
+   */
 	override async run(app: FastifyInstance) {
 		app.log.info("Seeding IP Histories...");
 		// Remove everything in there currently
@@ -29,18 +29,20 @@ export class IPHistorySeeder extends Seeder {
 		const users = await User.find();
 
 		for (let i = 0; i < users.length; i++) {
-			let ip = new IPHistory();
-			ip.user = users[i];
+	  let ip = new IPHistory();
+	  ip.user = users[i];
+	  ip.ip = faker.internet.ip();
+	  await ip.save();
 
-			ip.ip = faker.internet.ip();
-			const eachResult = await ip.save();
-			ip.ip = faker.internet.ip();
-			const secondResult = await ip.save();
-			app.log.info("Finished seeding IP history pair for user: " + i);
+	  ip = new IPHistory();
+	  ip.user = users[i];
+	  ip.ip = faker.internet.ip();
+	  const secondResult = await ip.save();
+	  app.log.info("Finished seeding IP history pair for user: " + i);
 		}
 	}
 }
 
 export const IPHistorySeed = new IPHistorySeeder();
 
-
+ 

@@ -1,17 +1,7 @@
 /** @module Models/User */
-import {
-	BaseEntity,
-	Column,
-	CreateDateColumn,
-	Entity,
-	OneToMany,
-	PrimaryGeneratedColumn,
-	Relation,
-	UpdateDateColumn
-} from "typeorm";
+import {BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn} from "typeorm";
 
-// @ts-ignore
-import {IPHistory} from "./ip_history.ts";
+import {IPHistory} from "./ip_history";
 
 /**
  *  Class representing user table

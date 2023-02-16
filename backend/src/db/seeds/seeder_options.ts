@@ -3,7 +3,6 @@ import {UserSeed} from "./user_seeder";
 import {IPHistorySeed} from "./ip_history_seeder";
 import {Seeder} from "../../lib/seed_manager";
 
-
 export type SeederOptionsType = {
 	seeds: Array<Seeder>;
 }
