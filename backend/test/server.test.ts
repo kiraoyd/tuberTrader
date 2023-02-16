@@ -3,6 +3,8 @@ import {afterAll, beforeAll, describe, expect, it} from "vitest";
 import {buildApp} from "../src/server";
 import SeedManager from "../src/lib/seed_manager";
 import SeederOptions from "../src/db/seeds/seeder_options";
+import {User} from "../src/db/models/user";
+import {IPHistory} from "../src/db/models/ip_history";
 
 // This is the app we'll use for testing, created at file-level scope
 let app;
@@ -65,7 +67,7 @@ describe("Route testing", () => {
 			.toBeUndefined();
 	});
 
-	it("Creates a new user successfully", async () => {
+	it("Responds to user post creation properly", async () => {
 		const res = await app.inject({
 			method: "POST",
 			url: "/users",
@@ -86,6 +88,7 @@ describe("Route testing", () => {
 		// 0.0.0.0 => 7 min size
 		expect(ip_address.length)
 			.toBeGreaterThanOrEqual(7);
-	})
+
+	});
 });
 

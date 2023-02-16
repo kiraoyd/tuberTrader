@@ -1,7 +1,19 @@
 /** @module Models/User */
-import {BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Relation, UpdateDateColumn} from "typeorm";
+import {
+	BaseEntity,
+	Column,
+	CreateDateColumn,
+	Entity, JoinTable,
+	ManyToMany,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	Relation,
+	UpdateDateColumn
+} from "typeorm";
 
 import {IPHistory} from "./ip_history";
+import {Profile} from "./profile";
+import {Match} from "./match";
 
 /**
  *  Class representing user table
@@ -20,8 +32,16 @@ export class User extends BaseEntity {
 	@Column('text')
 	email: string;
 
+	// IPHistory
 	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
 	ips: Relation<IPHistory[]>;
+
+	// Profile
+	@OneToMany((type) => Profile, (p: Profile) => p.user)
+	profiles: Relation<Profile[]>;
+
+
+
 
 	@CreateDateColumn()
 	created_at: string;

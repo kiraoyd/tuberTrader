@@ -13,7 +13,16 @@ From root (not /backend)
 
 Adding migration process:
 > Create new model in src/db/models
+> pnpm typeorm:updateDatasource
 > pnpm migration:generate ./src/db/migrations/<NAMEHERE>
 > pnpm typeorm:updateDatasource //This will auto add to dev_datasource.ts
 > pnpm migration:run
+> Add new model table to database plugin (database.ts)
 
+Adding seed process:
+> After running migration, create new seeder file in src/db/seeds
+> Add seed class to seeder options
+> execute `pnpm seed`
+
+Adding route based on new migration/seed
+> 
