@@ -21,7 +21,7 @@
     "declarationMap": false,                              /* Create sourcemaps for d.ts files. */
     "sourceMap": true,
     "outDir": "./buildTypeorm/",
-    "allowImportingTsExtensions": false,
+    //"allowImportingTsExtensions": false,
 
 
     // "noEmit": true,                                   /* Disable emitting files from a compilation. */
