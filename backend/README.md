@@ -36,5 +36,5 @@ Adding seed process:
 > execute `pnpm seed`
 
 Updating your local version of Doggr after Pulling changes from the Github repo:
-> 
+> pnpm gitSync
   
