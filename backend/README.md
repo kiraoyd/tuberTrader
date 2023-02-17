@@ -34,3 +34,7 @@ Adding seed process:
 > Add seed class to seeder options
 
 > execute `pnpm seed`
+
+Updating your local version of Doggr after Pulling changes from the Github repo:
+> 
+  
