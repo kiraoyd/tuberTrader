@@ -3,6 +3,7 @@ import cors from "cors";
 import {FastifyInstance, FastifyReply, FastifyRequest, RouteShorthandOptions} from "fastify";
 import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
+import {Profile} from "./db/models/profile";
 
 /**
  * App plugin where we construct our routes
@@ -58,8 +59,6 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		}
 	};
 
-
-
 	/**
 	 * Route allowing creation of a new user.
 	 * @name post/users
@@ -89,6 +88,60 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		// https://github.com/fastify/fastify/issues/4017
 		await reply.send(JSON.stringify({user, ip_address: ip.ip}));
 	});
+
+
+	// PROFILE Route
+	/**
+	 * Route listing all current profiles
+	 * @name get/profiles
+	 * @function
+	 */
+	app.get("/profiles", async (req, reply) => {
+		let profiles = await app.db.profile.find();
+		reply.send(profiles);
+	});
+
+
+	app.post("/profiles", async (req: any, reply: FastifyReply) => {
+
+		const {name} = req.body;
+
+		const myUser = await app.db.user.findOneByOrFail({});
+
+	  const newProfile = new Profile();
+	  newProfile.name = name;
+		newProfile.picture = "ph.jpg";
+		newProfile.user = myUser;
+
+		await newProfile.save();
+
+		//manually JSON stringify due to fastify bug with validation
+		// https://github.com/fastify/fastify/issues/4017
+		await reply.send(JSON.stringify(newProfile));
+	});
+
+	app.delete("/profiles", async (req: any, reply: FastifyReply) => {
+
+		const myProfile = await app.db.profile.findOneByOrFail({});
+		let res = await myProfile.remove();
+
+		//manually JSON stringify due to fastify bug with validation
+		// https://github.com/fastify/fastify/issues/4017
+		await reply.send(JSON.stringify(res));
+	});
+
+	app.put("/profiles", async(request, reply) => {
+		const myProfile = await app.db.profile.findOneByOrFail({});
+
+
+		myProfile.name = "APP.PUT NAME CHANGED";
+		let res = await myProfile.save();
+
+		//manually JSON stringify due to fastify bug with validation
+		// https://github.com/fastify/fastify/issues/4017
+		await reply.send(JSON.stringify(res));
+	});
+
 }
 
 // Appease typescript request gods
