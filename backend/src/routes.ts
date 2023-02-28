@@ -5,7 +5,8 @@ import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
-
+import * as types from "./types"
+import * as opts from "./opts"
 /**
  * App plugin where we construct our routes
  * @param {FastifyInstance} app our main Fastify app instance
@@ -25,6 +26,9 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		reply.send("GET Test");
 	});
 
+
+	// -----------CRUD impl for users----------------
+
 	/**
 	 * Route serving login form.
 	 * @name get/users
@@ -35,31 +39,6 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		reply.send(users);
 	});
 
-	// CRUD impl for users
-	// Create new user
-
-	// Appease fastify gods
-	const post_users_opts: RouteShorthandOptions = {
-		schema: {
-			body: {
-				type: 'object',
-				properties: {
-					name: {type: 'string'},
-					email: {type: 'string'}
-				}
-			},
-			response: {
-				200: {
-					type: 'object',
-					properties: {
-						user: {type: 'object'},
-						ip_address: {type: 'string'}
-					}
-				}
-			}
-		}
-	};
-
 	/**
 	 * Route allowing creation of a new user.
 	 * @name post/users
@@ -69,16 +48,19 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
 	app.post<{
-		Body: IPostUsersBody,
-		Reply: IPostUsersResponse
-	}>("/users", post_users_opts, async (req, reply: FastifyReply) => {
+		Body: types.IPostUsersBody,
+		Reply: types.IPostUsersResponse
+	}>("/users", opts.post_users_opts, async (req, reply: FastifyReply) => {
 
+		//grab incoming data from the body
 		const {name, email} = req.body;
 
+		//set new User params to data
 		const user = new User();
 		user.name = name;
 		user.email = email;
 
+		//create and attach a new IPHistory row along with this user
 		const ip = new IPHistory();
 		ip.ip = req.ip;
 		ip.user = user;
@@ -92,22 +74,3 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 }
 
-// Appease typescript request gods
-interface IPostUsersBody {
-	name: string,
-	email: string,
-}
-
-/**
- * Response type for post/users
- */
-export type IPostUsersResponse = {
-	/**
-	 * User created by request
-	 */
-	user: User,
-	/**
-	 * IP Address user used to create account
-	 */
-	ip_address: string
-}
