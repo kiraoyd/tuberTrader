@@ -5,11 +5,13 @@ import {
 	CreateDateColumn,
 	Entity, JoinTable,
 	ManyToMany,
+	OneToMany,
 	ManyToOne,
 	PrimaryGeneratedColumn,
 	Relation
 } from "typeorm";
 import {User} from "./user";
+import {Transactions} from "./transactions";
 
 
 /**
@@ -35,12 +37,18 @@ export class Profile extends BaseEntity {
 	pricePaid: number;
 
 	//Each user can own many profiles
+	//Each profile references one owner(user)
 	@ManyToOne((type) => User, (user: User) => user.profiles, {
 		cascade: true,
 		// if we delete a User, also delete their profiles
 		onDelete: "CASCADE"
 	})
-	user: Relation<User>;  //keys back to the owner user
+	owner: Relation<User>;  //keys back to the owner user
+
+	//Each island profile can host many sales (Transactions)
+	@OneToMany((type) => Transactions, (t: Transactions) => t.host)
+	sale: Relation<Transactions[]>
+
 
 
 	@CreateDateColumn()

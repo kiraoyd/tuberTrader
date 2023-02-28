@@ -13,6 +13,7 @@ import {
 
 import {IPHistory} from "./ip_history";
 import {Profile} from "./profile";
+import {Transactions} from "./transactions"
 
 
 /**
@@ -37,9 +38,13 @@ export class User extends BaseEntity {
 	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
 	ips: Relation<IPHistory[]>;
 
-	// Each user can have many island profiles
-	@OneToMany((type) => Profile, (p: Profile) => p.user)
+	// Each user can own many island profiles
+	@OneToMany((type) => Profile, (p: Profile) => p.owner)
 	profiles: Relation<Profile[]>;
+
+	//Each user (seller) can have many sales (Transaction)
+	@OneToMany((type) => Transactions, (t: Transactions) => t.seller)
+	sale: Relation<Transactions[]>
 
 
 	@CreateDateColumn()
