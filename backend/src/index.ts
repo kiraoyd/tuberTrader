@@ -37,5 +37,5 @@ try {
 	app.log.error(err);
 }
 
-// boilerplate - doggr here matches with vite.config.js::exportName
-export const doggr = app;
+// boilerplate - tuber here matches with vite.config.js::exportName
+export const tuber = app;

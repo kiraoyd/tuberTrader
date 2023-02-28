@@ -9,7 +9,7 @@ import {Profile} from "./db/models/profile";
  * App plugin where we construct our routes
  * @param {FastifyInstance} app our main Fastify app instance
  */
-export async function doggr_routes(app: FastifyInstance): Promise<void> {
+export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 	// Middleware
 	// TODO: Refactor this in favor of fastify-cors

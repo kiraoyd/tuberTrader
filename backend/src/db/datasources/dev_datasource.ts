@@ -7,8 +7,10 @@ import { IPHistory } from "../models/ip_history";
 import { Initialize1676281754950 } from "../migrations/1676281754950-Initialize";
 import { Profile } from "../models/profile.js";
 import { ProfilesMigration1676586883555 } from "../migrations/1676586883555-ProfilesMigration.js";
-import { Match } from "../models/match.js";
 import { ProfileMatchesMigration1676589770005 } from "../migrations/1676589770005-ProfileMatchesMigration.js";
+import { updatedToTuber1677359118754 } from "../migrations/1677359118754-updatedToTuber.js";
+import { updatedToTuber1677359187582 } from "../migrations/1677359187582-updatedToTuber.js";
+import { updatedToTuber1677359851487 } from "../migrations/1677359851487-updatedToTuber.js";
 
 dotenv.config();
 
@@ -26,13 +28,13 @@ export const AppDataSource = new DataSource({
     entities: [
         User,
         IPHistory,
-        Profile,
-        Match
+        Profile
     ],
     migrations: [
         Initialize1676281754950,
         ProfilesMigration1676586883555,
-        ProfileMatchesMigration1676589770005
+        ProfileMatchesMigration1676589770005,
+        updatedToTuber1677359851487
     ],
     // DANGER DANGER our convenience will nuke production data!
     synchronize: false
