@@ -31,11 +31,13 @@ export class ProfileSeeder extends Seeder {
 		for (let i = 0; i < users.length; i++) {
 			let newProfile = new Profile();
 			newProfile.user = users[i];
-			newProfile.name = "Spot";
+			newProfile.islandName = "myIsland";
 			// Todo: Get rid of placeholder hard coded image link
 			newProfile.picture = "http://placeholder.com/mypic.jpeg";
+			newProfile.turnipsHeld = i + 1000;
+			newProfile.pricePaid = i + 93;
 			await newProfile.save();
-			app.log.info("Finished seeding user: " + i);
+			app.log.info("Finished seeding profile: " + i);
 		}
 	}
 }

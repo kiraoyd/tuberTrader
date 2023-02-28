@@ -10,12 +10,12 @@ import {
 	Relation
 } from "typeorm";
 import {User} from "./user";
-import {Match} from "./match";
+
 
 /**
  * Profile model - This is for interacting with the profile table
- * Each profile corresponds to exactly 1 pet owned by a User.
- * This allows each user to have many pet profiles without needing to create more accounts
+ * Each profile corresponds to exactly 1 island owned by a user
+ * This allows each user to have many island profiles as they want without needing to create more accounts
  */
 @Entity()
 export class Profile extends BaseEntity {
@@ -23,41 +23,28 @@ export class Profile extends BaseEntity {
 	id: number;
 
 	@Column()
-	name: string;
+	islandName: string;
 
 	@Column()
 	picture: string;
 
+	@Column()
+	turnipsHeld: number;
+
+	@Column()
+	pricePaid: number;
+
+	//Each user can own many profiles
 	@ManyToOne((type) => User, (user: User) => user.profiles, {
-		//adding an IPHistory will also add associated User if it is new, somewhat useless in this example
 		cascade: true,
-		// if we delete a User, also delete their IP History
+		// if we delete a User, also delete their profiles
 		onDelete: "CASCADE"
 	})
-	user: Relation<User>;
+	user: Relation<User>;  //keys back to the owner user
 
-	@ManyToMany(() => Match, (category) => category.matching_profile, {
-		cascade: true,
-	})
-	@JoinTable()
-	matches: Relation<Match[]>;
-
-	@ManyToMany(() => Match, (category) => category.matched_profile, {
-		cascade: true,
-	})
-	@JoinTable()
-	matched: Relation<Match[]>;
 
 	@CreateDateColumn()
 	created_at: string;
 }
 
-/*
-TINDER: you are profile1
-when you swipe-right on another profile, say profile2
-> Create a new Match row in the Match table and set its matching_profile to our user
 
-if someone else swipes right on YOUR profile, again, profile1
-> Create a new match row in the match table and set its matched_Profile to our user
-
- */

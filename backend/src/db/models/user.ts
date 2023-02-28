@@ -13,7 +13,7 @@ import {
 
 import {IPHistory} from "./ip_history";
 import {Profile} from "./profile";
-import {Match} from "./match";
+
 
 /**
  *  Class representing user table
@@ -32,15 +32,14 @@ export class User extends BaseEntity {
 	@Column('text')
 	email: string;
 
-	// IPHistory
+
+	// Each user have have many IPHistory entries
 	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
 	ips: Relation<IPHistory[]>;
 
-	// Profile
+	// Each user can have many island profiles
 	@OneToMany((type) => Profile, (p: Profile) => p.user)
 	profiles: Relation<Profile[]>;
-
-
 
 
 	@CreateDateColumn()
