@@ -36,7 +36,7 @@ export class ProfileSeeder extends Seeder {
 			newProfile.picture = "http://placeholder.com/mypic.jpeg";
 			newProfile.turnipsHeld = i + 1000;
 			newProfile.pricePaid = i + 93;
-			newProfile.owner = users[i]; //manyToOne
+			newProfile.owner = users[2]; //manyToOne
 
 			await newProfile.save();
 			app.log.info("Finished seeding profile: " + i);

@@ -27,3 +27,31 @@ export type IPostUsersResponse = {
      */
     ip_address: string
 }
+
+/**
+ * Params type for get/user/:username
+ */
+export type IGetUserParams ={
+    username: string;
+
+}
+
+
+/**
+ * Interfacing for post/profiles
+ */
+
+export interface IPostProfilesBody {
+    islandName: string,
+    picture: string,
+    turnipsHeld: number,
+    pricePaid: number,
+    ownerId: number
+}
+
+/**
+ * Response type for post/profiles
+ */
+export type IPostProfilesResponse = {
+    profile: Profile
+}
