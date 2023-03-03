@@ -28,3 +28,28 @@ export const post_users_opts: RouteShorthandOptions = {
         }
     }
 };
+
+
+//Appease fastify gods for POSTing a new island Profile
+export const post_profiles_opts: RouteShorthandOptions = {
+    schema: {
+        body: {
+            type: 'object',
+            properties: {
+                islandName: {type: 'string'},
+                picture: {type: 'string'},
+                turnipsHeld: {type: 'number'},
+                pricePaid: {type: 'number'},
+                ownerId: {type: 'number'}
+            }
+        },
+        response: {
+            200: {
+                type: 'object',
+                properties: {
+                    profile: {type: 'object'},
+                }
+            }
+        }
+    }
+};
