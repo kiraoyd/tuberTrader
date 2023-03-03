@@ -124,6 +124,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 	// -----------CRUD impl for profiles----------------
 
+
 	/**
 	 * Route allowing creation of a new island profile.
 	 * @name post/profiles
@@ -135,14 +136,16 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @param {number} ownerId - user who owns this island profile
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
-	//Postman test on: {"islandName": "orjeene", "picture": "orange.com", "turnipsHeld": 500, "pricePaid": 103, "ownderId": 22}
+	//Postman test on: {"islandName": "orjeene", "picture": "orange.com", "turnipsHeld": 500, "pricePaid": 103, "ownerId": 22}
 	app.post<{
 		Body: types.IPostProfilesBody,
 		Reply: types.IPostProfilesResponse
 	}>("/profiles", opts.post_profiles_opts, async (req, reply: FastifyReply) => {
 
+
 		//grab incoming data from the body
 		const {islandName, picture, turnipsHeld, pricePaid, ownerId } = req.body;
+
 
 		//set new profile params to data
 		const profile = new Profile();
@@ -151,25 +154,99 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		profile.turnipsHeld = turnipsHeld;
 		profile.pricePaid = pricePaid;
 
+
 		//find and match ownerId to existing userID
 		//TODO add in a try and except here
-			const user = await app.db.user.findOneOrFail({
-				where: {
-					id: ownerId
-				}
-			});
+		const user = await app.db.user.findOneOrFail({
+			where: {
+				id: ownerId
+			}
+		});
+
+
 
 
 		//set profile param to found user
 		profile.owner = user;
 
+
 		await profile.save();
+
 
 		//manually JSON stringify due to fastify bug with validation
 		// https://github.com/fastify/fastify/issues/4017
 		await reply.send(JSON.stringify({
-		profile}));
+			profile}));
+
 
 	});
-}
 
+
+	/**
+	 * Route that retrieves all current islands.
+	 * @name get/profiles
+	 * @function
+	 */
+	app.get("/profiles", async (request :FastifyRequest, reply: FastifyReply) => {
+		let islands = await app.db.profile.find();
+		reply.send(islands);
+	});
+
+
+
+
+	/** Route retrieves a specific profile based on islandName, and shows which user owns it
+	 * @name get/profile/:islandName
+	 * @function
+	 */
+	app.get<{
+		Params: types.IGetProfileParams
+	}>("/profile/:islandName", async(req, reply: FastifyReply)=>{
+		//roll through profiles, if islandName = islandName, include profile in result
+		const island = req.params['islandName'];
+		let profile = await app.db.profile.find({
+			select:{
+				id: true,
+				islandName: true,
+				picture: true,
+				turnipsHeld: true,
+				pricePaid: true,
+			},
+			relations:{
+				owner: true
+			},
+			where: {
+				islandName: Equal(island)
+			}
+		})
+
+
+		reply.send(profile)
+	});
+
+
+	/** Route retrieves the profile with the most turnips held
+	 * @name get/profile_most_turnips
+	 * @function
+	 */
+
+
+	app.get("/profile_most_turnips", async(request: FastifyRequest, reply: FastifyReply)=>{
+		//TODO query builder not working!
+		//let max = await app.db.profile.createQueryBuilder("profile").select("MAX(profile.turnipsHeld").getRawOne();
+		let max = 1000 //everything past here works, just need to debug getting max
+		let profile = await app.db.profile.find({
+			select:{
+				id: true,
+				islandName: true,
+				picture: true,
+				turnipsHeld: true,
+				pricePaid: true,
+			},
+			where:{
+				turnipsHeld: max
+			}
+		});
+		reply.send(profile)
+	});
+}
