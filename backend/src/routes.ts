@@ -42,6 +42,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
 	app.post<{
+		//inside here is an object with a body and reply fields
 		Body: types.IPostUsersBody,
 		Reply: types.IPostUsersResponse
 	}>("/users", opts.post_users_opts, async (req, reply: FastifyReply) => {
@@ -71,7 +72,8 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @name get/users
 	 * @function
 	 */
-	app.get("/users", async (req, reply) => {
+	//We are being lazy and typing the req and reply objects as "any" here, just to save making a new type, but we really should
+	app.get("/users", async (req:any , reply:any) => {
 		let users = await app.db.user.find();
 		reply.send(users);
 	});
@@ -85,25 +87,31 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	}>("/user/:username", async(req, reply: FastifyReply)=>{
 		//roll through users, if username = name, include user in result
 		const username = req.params['username'];
-		let user = await app.db.user.find({
-			select:{
-				id: true,
-				name: true,
-				email: true,
-			},
-			where: {
+		try {
+			let user = await app.db.user.findOneOrFail({
+				select: {
+					id: true,
+					name: true,
+					email: true,
+				},
+				where: {
 					name: Equal(username)
-			}
-		})
-		reply.send(user)
+				}
+			})
+			reply.send(user)
+		}
+		catch(err){
+			reply.status(204).send("No content");
+		}
 	});
 
 	/**
-	 * Route retrieves all users and the island profiles they own
+	 * Route retrieves all users and the island profiles they , will not return users with no profiles
 	 * @name get/users_with_profiles
 	 *@function
 	 */
-	app.get("/users_with_profiles", async(req, reply: FastifyReply)=>{
+	//We are being lazy and typing the req object as "any" here, just to save making a new type, but we really should
+	app.get("/users_with_profiles", async(req: any, reply: FastifyReply)=>{
 		//roll through users, if user has at least one profile, include user and profiles in result
 		let users_with_profiles = await app.db.user.find({
 			select:{
@@ -122,7 +130,9 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		reply.send(users_with_profiles)
 	});
 
-	// -----------CRUD impl for profiles----------------
+	//TODO implement soft delete for users
+
+	// -----------CRUD implementation for profiles----------------
 
 
 	/**
@@ -136,16 +146,14 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @param {number} ownerId - user who owns this island profile
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
-	//Postman test on: {"islandName": "orjeene", "picture": "orange.com", "turnipsHeld": 500, "pricePaid": 103, "ownerId": 22}
+	//Postman body to test on: {"islandName": "orjeene", "picture": "orange.com", "turnipsHeld": 500, "pricePaid": 103, "ownerId": 22}
 	app.post<{
 		Body: types.IPostProfilesBody,
 		Reply: types.IPostProfilesResponse
-	}>("/profiles", opts.post_profiles_opts, async (req, reply: FastifyReply) => {
-
+	}>("/profiles", opts.post_profiles_opts, async (req, reply) => {
 
 		//grab incoming data from the body
 		const {islandName, picture, turnipsHeld, pricePaid, ownerId } = req.body;
-
 
 		//set new profile params to data
 		const profile = new Profile();
@@ -154,36 +162,26 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		profile.turnipsHeld = turnipsHeld;
 		profile.pricePaid = pricePaid;
 
-
-		//find and match ownerId to existing userID
-		//TODO add in a try and except here
-		const user = await app.db.user.findOneOrFail({
-			where: {
-				id: ownerId
+		//find and match ownerId to existing userID, if userID is found
+		try {
+			const user = await app.db.user.findOneOrFail({
+				where: {
+					id: ownerId
+				}
+			});
+			//set profile param to found user
+			profile.owner = user;
+			await profile.save(); //save to profile table
+			await reply.send(JSON.stringify({profile}))//send with the reply
+		}
+		catch(err) {
+				reply.status(204).send("No content"); //TODO is this the right error
 			}
 		});
 
 
-
-
-		//set profile param to found user
-		profile.owner = user;
-
-
-		await profile.save();
-
-
-		//manually JSON stringify due to fastify bug with validation
-		// https://github.com/fastify/fastify/issues/4017
-		await reply.send(JSON.stringify({
-			profile}));
-
-
-	});
-
-
 	/**
-	 * Route that retrieves all current islands.
+	 * Route that retrieves all current island profiles.
 	 * @name get/profiles
 	 * @function
 	 */
@@ -193,9 +191,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	});
 
 
-
-
-	/** Route retrieves a specific profile based on islandName, and shows which user owns it
+	/** Route retrieves a specific island profile based on islandName, and shows which user owns it
 	 * @name get/profile/:islandName
 	 * @function
 	 */
@@ -219,8 +215,6 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				islandName: Equal(island)
 			}
 		})
-
-
 		reply.send(profile)
 	});
 
@@ -229,12 +223,20 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @name get/profile_most_turnips
 	 * @function
 	 */
-
-
 	app.get("/profile_most_turnips", async(request: FastifyRequest, reply: FastifyReply)=>{
-		//TODO query builder not working!
-		//let max = await app.db.profile.createQueryBuilder("profile").select("MAX(profile.turnipsHeld").getRawOne();
-		let max = 1000 //everything past here works, just need to debug getting max
+		//get the max turnipsHeld in the database
+		//builds: 		SELECT MAX(turnipsHeld) FROM profile;
+		//sending the name of the table "profile" to createQueryBuilder is an alias for convinience
+		let query = app.db.profile.createQueryBuilder("profile")
+			//select performs the query itself and takes two params: the query itself (MAX(profile.turnipsHeld))
+			// and the name of the JSON field to store the query result in (max)
+			.select("MAX(profile.turnipsHeld)", "max");
+		//convert to a raw value because max() is a calculated value and not actually stored in the DB
+		const result: any = await query.getRawOne();
+		//result.max now holds the max turnipsHeld in database
+
+
+		//find the profile that has the max turnipsHeld
 		let profile = await app.db.profile.find({
 			select:{
 				id: true,
@@ -244,9 +246,56 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				pricePaid: true,
 			},
 			where:{
-				turnipsHeld: max
+				turnipsHeld: result.max //result comes from getRawOne(), and max ties to the second param of select
 			}
 		});
+		//reply with that profile
 		reply.send(profile)
+	});
+
+	// -----------CRUD implementation for transactions----------------
+	/**
+	 * Route creates a new transaction between a seller and a host island profile
+	 */
+	app.post<{
+		Body: types.IPostTransactionsBody,
+		Reply: types.IPostTransactionsResponse
+	}>("/transactions", opts.post_transactions_opts, async (req, reply) => {
+
+		//grab incoming data from the body
+		const {numberSold, priceSold, profits, seller, host } = req.body;
+
+		//set new profile params to data
+		const transaction = new Transactions();
+		transaction.numberSold = numberSold;
+		transaction.priceSold = priceSold;
+		transaction.profits = profits;
+
+		//find and match seller to existing userID, if userID is found
+		try {
+			//find and match seller to existing userID, if userID is found
+			const user = await app.db.user.findOneOrFail({
+				where: {
+					id: seller
+				}
+			});
+			//set transaction param to found user
+			transaction.seller = user;
+
+			//find and match shost to existing profileID, if profileID is found
+			const island = await app.db.profile.findOneOrFail({
+				where: {
+					id: host
+				}
+			});
+			//set transaction param to found profile
+			transaction.host = island;
+
+			await transaction.save(); //save to transaction table
+			await reply.send(JSON.stringify({transaction}))//send with the reply
+		}
+		catch(err) {
+			reply.status(204).send("No content"); //TODO is this the right error
+		}
 	});
 }
