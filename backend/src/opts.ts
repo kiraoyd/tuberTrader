@@ -53,3 +53,27 @@ export const post_profiles_opts: RouteShorthandOptions = {
         }
     }
 };
+
+//Appease fastify gods for POSTing a new Transaction
+export const post_transactions_opts: RouteShorthandOptions = {
+    schema: {
+        body: {
+            type: 'object',
+            properties: {
+                numberSold: {type: 'number'},
+                priceSold: {type: 'number'},
+                profits: {type: 'number'},
+                seller: {type: 'number'},
+                host: {type: 'number'}
+            }
+        },
+        response: {
+            200: {
+                type: 'object',
+                properties: {
+                    transaction: {type: 'object'},
+                }
+            }
+        }
+    }
+};

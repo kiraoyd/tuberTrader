@@ -55,3 +55,26 @@ export interface IPostProfilesBody {
 export type IPostProfilesResponse = {
     profile: Profile
 }
+
+
+/**
+ * Params type for get/profile/:islandName
+ */
+export type IGetProfileParams = {
+    islandName: string;
+}
+
+/**
+ * interface for post/transactions
+ */
+export interface IPostTransactionsBody {
+    numberSold: number,
+    priceSold: number,
+    profits: number,
+    seller: User,
+    host: Profile
+}
+
+export type IPostTransactionsResponse = {
+    transaction: Transactions
+}
