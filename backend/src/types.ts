@@ -78,3 +78,11 @@ export interface IPostTransactionsBody {
 export type IPostTransactionsResponse = {
     transaction: Transactions
 }
+
+/**
+ * querystring type for get/transaction
+ */
+export type IQuerystring = {
+    sellerID: number;
+    islandID: number;
+}

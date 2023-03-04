@@ -298,4 +298,63 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			reply.status(204).send("No content"); //TODO is this the right error
 		}
 	});
+
+	/**
+	 * Route that retrieves all transactions.
+	 * @name get/transactions
+	 * @function
+	 */
+	//We are being lazy and typing the req and reply objects as "any" here, just to save making a new type, but we really should
+	app.get("/transactions", async (req:any , reply:any) => {
+		let users = await app.db.transactions.find();
+		reply.send(transactions);
+	});
+
+	/**
+	 * Route that gets a transaction between a specific seller and specific island, using the query string
+	 * @name get/transaction
+	 * @function
+	 */
+	//TODO we are cheating by using any here, make some query params
+	app.get<{
+		Querystring: types.IQuerystring
+	}>("/transaction", async (req, reply: FastifyReply)=> {
+		let {sellerID, islandID} = req.query;
+		try {
+			const host = await app.db.profile.findOneOrFail({
+				where: {
+					id: islandID
+				}
+			})
+
+			const seller = await app.db.user.findOneOrFail({
+				where: {
+					id: sellerID
+				}
+			})
+			//roll through transactions, if islandID = host.id and sellerID = seller.id, grab it
+			let transaction = await app.db.transactions.find({
+				select: {
+					id: true,
+					numberSold: true,
+					priceSold: true,
+					profits: true,
+				},
+				relations: {
+					seller: true,
+					host: true
+				},
+				where: {
+					seller: Equal(seller.id),
+					host: Equal(host.id)
+				}
+			})
+			console.log(transaction)
+			reply.send(transaction)
+		}
+		catch(err){
+			reply.status(204).send("No content")
+		}
+
+	})
 }
