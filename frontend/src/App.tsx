@@ -33,11 +33,11 @@ function App() {
             <nav>
                 <div className="menu">
                     <Link to="/">Home</Link>
-                    <Link to="/match">Match</Link>
+                    {/*add other "page" components here*/}
                 </div>
             </nav>
             <Routes>
-                <Route path="/match" element={<Match/>}/>
+                {/*<Route path="/match" element={<Match/>}/>*/}
                 <Route path="/" element={<Home/>}/>
             </Routes>
         </div>

@@ -1,4 +1,7 @@
-//doggr version
+//doggr version: example of how to make a component that represents a
+//seperate "page" that has its own initial state and functionality
+//the way we export it is no different from other components, JS allows both
+//Importing: import Match from ./components/Match
 
 import {useEffect, useState} from 'react';
 import initialState, {getRandomProfile} from "../initialState";

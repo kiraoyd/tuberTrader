@@ -24,3 +24,5 @@ export const Button = () => {
         </button>
     )
 }
+
+//importing: import {Button} from ./components/Button
