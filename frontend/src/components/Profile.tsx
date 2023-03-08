@@ -1,32 +1,33 @@
-//doggr version
+//island profile component
 
 import {useEffect} from "react";
 
+//profile typing
 export type ProfileProps = {
+    //feilds of a profile we want to be able to display
     id: number,
-    imgUri: string,
-    name: string,
-    onLikeButtonClick: () => void,
-    onPassButtonClick: () => void,
+    islandName: string,
+    picture: string,
+    turnipsHeld: number,
+    pricePaid: number,
+
 }
 
 export function Profile(props: ProfileProps) {
-    let {imgUri, name, onLikeButtonClick, onPassButtonClick} = props;
+    let{id, islandName, picture, turnipsHeld, pricePaid} = props;
 
+    //TODO do I need this?
     useEffect(() => {
         console.log("Profile rerendered");
     });
 
     return (
         <div>
-            <img src={imgUri} alt="Profile of pet"/>
-            <h2>{name}</h2>
-            <div>
-                <button onClick={onPassButtonClick}>Pass</button>
-                <button onClick={onLikeButtonClick}>Like</button>
-            </div>
+            <img src={picture} alt="Island Profile Image"/>
+            <h2>{islandName}</h2>
+            <p>Turnips holding: {turnipsHeld}</p>
+            <p>Buying Price: {pricePaid}</p>
         </div>
     );
 }
 
-//the button divs are going to call onClick, the Match.tsx's function
