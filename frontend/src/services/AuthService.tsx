@@ -73,6 +73,7 @@ export const AuthProvider = ({children}) => {
 //TODO need to build the actual login route in the backend!
 export async function getLoginTokenFromServer(email: string, password: string) {
     console.log("In get login token from server", email, password);
+
     //anytime we need to use axios, or make a request to our backend
     //we will directly use httpClient, it works JUST like a call to axios
     //except it already has all our nice things added into it
