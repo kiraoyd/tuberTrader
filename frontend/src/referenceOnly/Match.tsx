@@ -5,8 +5,8 @@
 
 import {useEffect, useState} from 'react';
 import initialState, {getRandomProfile} from "../initialState";
-import {Profile} from "./Profile";
-import {Title} from "./Home";
+import {Profile} from "../components/Profile";
+import {Title} from "../components/Home";
 
 function Match() {
     //First set up the overall state

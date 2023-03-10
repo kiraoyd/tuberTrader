@@ -1,4 +1,4 @@
-//Example component that makes a button
+//TODO This is just an Example component that makes a button, not related to tuber
 import {useEffect, useState} from "react";
 //import axios
 import axios from "axios";
