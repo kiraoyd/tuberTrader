@@ -5,6 +5,7 @@ import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
+import {SellingPriceHistory} from "./db/models/sellingPriceHistory";
 
 /**
  * Interfacing for post/users body
@@ -85,4 +86,27 @@ export type IPostTransactionsResponse = {
 export type IQuerystring = {
     sellerID: number;
     islandID: number;
+}
+
+export enum amPM {
+    am = "am",
+    pm ="pm",
+    AM ="AM",
+    PM ="PM"
+}
+
+/**
+ * Interface for posting a new selling price
+ */
+export interface IPostPriceBody{
+    island: number,
+    price: number,
+    //timeOfDay: amPM
+    timeOfDay: string,
+    date: string
+}
+
+
+export type IPostPriceResponse = {
+    price: SellingPriceHistory
 }

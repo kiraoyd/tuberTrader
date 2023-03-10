@@ -18,7 +18,7 @@ import {Profile} from "./profile"
 /**
  * class representing SellingPriceHistory table
  * keeps track of all entered selling prices, by date and island
- * if no price was entered, default to null
+ * if no price was entered, default to 0
  */
 @Entity({name: "sellingPriceHistory"})
 export class SellingPriceHistory extends BaseEntity {
@@ -32,10 +32,10 @@ export class SellingPriceHistory extends BaseEntity {
     })
     island: Relation<Profile>;
 
-    @Column()
+    @Column({default: 0})
     priceAM: number;
 
-    @Column()
+    @Column({default: 0})
     pricePM: number;
 
     //will be used to grab prices for specific date ranges

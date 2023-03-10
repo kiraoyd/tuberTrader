@@ -6,6 +6,7 @@ import {IPHistory} from "./db/models/ip_history";
 import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
 import * as types from "./types"
+import {amPM} from "./types";
 
 // Appease fastify gods for POSTing a new User, make sure typing matches the interface below
 export const post_users_opts: RouteShorthandOptions = {
@@ -77,3 +78,29 @@ export const post_transactions_opts: RouteShorthandOptions = {
         }
     }
 };
+
+//Appease fastify gods for POSTing a new Price
+export const post_price_opts: RouteShorthandOptions = {
+    schema: {
+        body: {
+            type: 'object',
+            properties: {
+                island: {type: 'number'},
+                price: {type: 'number'},
+                // timeOfDay: {type: {"enum":["AM", "am", "PM", "pm"]}}
+                timeOfDay: {type: 'string'},
+                date:{type: 'string'} //TODO this would be nice as an enum here
+            }
+        },
+        response: {
+            200: {
+                type: 'object',
+                properties: {
+                    price: {type: 'object'}
+                }
+            }
+        }
+    }
+};
+
+
