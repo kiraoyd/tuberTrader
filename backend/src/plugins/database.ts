@@ -8,7 +8,7 @@ import {FastifyInstance, FastifyPluginOptions} from "fastify";
 import {AppDataSource} from "../db/datasources/dev_datasource";
 import {Profile} from "../db/models/profile";
 import {Transactions} from "../db/models/transactions";
-
+import {SellingPriceHistory} from "../db/models/sellingPriceHistory";
 
 
 /** This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support */
@@ -30,8 +30,10 @@ interface DBConfigOpts {
 	user: Repository<User>,
 	ip: Repository<IPHistory>,
 	profile: Repository<Profile>,
-	transactions: Repository<Transactions>
+	transactions: Repository<Transactions>,
+	sellingPriceHistory: Repository<SellingPriceHistory>,
 	connection: DataSource,
+
 }
 
 /**
@@ -54,6 +56,7 @@ const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, 
 		ip: dataSourceConnection.getRepository(IPHistory),
 		profile: dataSourceConnection.getRepository(Profile),
 		transactions: dataSourceConnection.getRepository(Transactions),
+		sellingPriceHistory: dataSourceConnection.getRepository(SellingPriceHistory)
 	});
 
 	done();

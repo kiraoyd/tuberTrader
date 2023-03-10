@@ -8,13 +8,14 @@ import {Transactions} from "./db/models/transactions";
 import * as types from "./types"
 import * as opts from "./opts"
 import {ILike, LessThan, Not, Equal, IsNull, ArrayContains} from "typeorm";
+import {readFileSync} from "node:fs";
+import {compare, hashSync} from "bcrypt";
 
 /**
  * App plugin where we construct our routes
  * @param {FastifyInstance} app our main Fastify app instance
  */
 
-//TODO tested and running, just need to start writing some relevant routes based off the most recent homework!
 export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 	// Middleware

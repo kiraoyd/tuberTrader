@@ -12,6 +12,7 @@ import {
 } from "typeorm";
 import {User} from "./user";
 import {Transactions} from "./transactions";
+import {SellingPriceHistory} from "./sellingPriceHistory"
 
 
 /**
@@ -48,6 +49,10 @@ export class Profile extends BaseEntity {
 	//Each island profile can host many sales (Transactions)
 	@OneToMany((type) => Transactions, (t: Transactions) => t.host)
 	sale: Relation<Transactions[]>
+
+	//Each island can have many different selling prices
+	@OneToMany((type) => SellingPriceHistory, (price: SellingPriceHistory) => price.island)
+	sellingPrice: Relation<SellingPriceHistory>
 
 
 

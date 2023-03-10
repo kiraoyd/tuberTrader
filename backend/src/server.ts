@@ -29,7 +29,6 @@ export async function buildApp(useLogging: boolean) {
 	try {
 		// add express-like 'app.use' middleware support
 		await app.register(fastifyMiddie);
-
 		// add static file handling
 		await app.register(staticFiles, {
 			root: path.join(getDirName(import.meta), "../public"),
