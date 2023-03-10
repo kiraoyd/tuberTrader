@@ -20,7 +20,7 @@ import {Profile} from "./profile"
  * keeps track of all entered selling prices, by date and island
  * if no price was entered, default to null
  */
-@Entity({name: "weeklySales"})
+@Entity({name: "sellingPriceHistory"})
 export class SellingPriceHistory extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
