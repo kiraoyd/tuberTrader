@@ -366,18 +366,20 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	}>("/sellingPrice", opts.post_price_opts, async (req, reply) => {
 
 		//grab incoming data from the body
-		const {island, price, timeOfDay, date} = req.body;
+		const {island, price, timeOfDay, currentDate} = req.body;
 
 		//check for if we already have an entry for this island and this date
-		const sellingPrice = await app.db.sellingPriceHistory.findOneOrFail({
+		const sellingPrice = await app.db.sellingPriceHistory.find({
 			where:{
-				id: island,
-				updated_at: ike('%2023-03-10%')L
+				island: island,
+				date: currentDate
 			}
 		})
 
-		if(sellingPrice){
+		console.log(sellingPrice)
+		if(sellingPrice.length != 0){
 			//update the existing record
+			console.log("made it")
 			if(timeOfDay === "AM" || timeOfDay === "am"){
 				console.log(timeOfDay)
 				sellingPrice.priceAM = price;
@@ -387,6 +389,8 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			else if(timeOfDay == "PM" || timeOfDay === "pm"){
 				sellingPrice.pricePM = price;
 			}
+			//TODO I need to UPDATE the table, not just save to sellingPrice!
+			await reply.send(JSON.stringify({newPrice}))//send with the reply
 		}
 		else {
 			//set body data to a new entry
@@ -405,7 +409,6 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 			//find and match island to existing profileID, if profileID is found
 			try {
-
 				const islandProfile = await app.db.profile.findOneOrFail({
 					where: {
 						id: island

@@ -89,7 +89,7 @@ export const post_price_opts: RouteShorthandOptions = {
                 price: {type: 'number'},
                 // timeOfDay: {type: {"enum":["AM", "am", "PM", "pm"]}}
                 timeOfDay: {type: 'string'},
-                date:{type: 'string'} //TODO this would be nice as an enum here
+                currentDate:{type: 'string'} //TODO this would be nice as an enum here
             }
         },
         response: {

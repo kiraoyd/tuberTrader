@@ -103,7 +103,7 @@ export interface IPostPriceBody{
     price: number,
     //timeOfDay: amPM
     timeOfDay: string,
-    date: string
+    currentDate: string
 }
 
 

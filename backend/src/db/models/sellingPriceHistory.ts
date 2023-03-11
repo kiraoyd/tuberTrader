@@ -32,6 +32,9 @@ export class SellingPriceHistory extends BaseEntity {
     })
     island: Relation<Profile>;
 
+    @Column()
+    date: string;
+
     @Column({default: 0})
     priceAM: number;
 

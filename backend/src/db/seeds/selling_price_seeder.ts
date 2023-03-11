@@ -22,6 +22,7 @@ export class SellingPriceSeeder extends Seeder {
         for (let i = 0; i < islands.length; i++) {
             let newPrice = new SellingPriceHistory();
             newPrice.island = islands[i];
+            newPrice.date = `2023-03-${i}`
             newPrice.priceAM = i + 80
             newPrice.pricePM = i + 100
             //no need to seed date created on, thats automatic
