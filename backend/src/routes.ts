@@ -375,40 +375,37 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				date: currentDate
 			}
 		})
-
-		console.log(sellingPrice)
-		if(sellingPrice.length != 0){
+		//if entry is found
+		if(sellingPrice.length != 0) {
 			//update the existing record
-			console.log("made it")
-			if(timeOfDay === "AM" || timeOfDay === "am"){
-				console.log(timeOfDay)
-				sellingPrice.priceAM = price;
-				sellingPrice.pricePM = 0;
+			if (timeOfDay === "AM" || timeOfDay === "am") {
+				sellingPrice[0].priceAM = price;
+				await app.db.sellingPriceHistory.save(sellingPrice)
 			}
 			//if entering PM price,
-			else if(timeOfDay == "PM" || timeOfDay === "pm"){
-				sellingPrice.pricePM = price;
+			else if (timeOfDay == "PM" || timeOfDay === "pm") {
+				sellingPrice[0].pricePM = price;
+				await app.db.sellingPriceHistory.save(sellingPrice)
 			}
-			//TODO I need to UPDATE the table, not just save to sellingPrice!
-			await reply.send(JSON.stringify({newPrice}))//send with the reply
+			await reply.send(JSON.stringify({sellingPrice}))//send with the reply
 		}
 		else {
-			//set body data to a new entry
+			//set body data to a new sellingPrice entry
 			const newPrice = new SellingPriceHistory();
-			//if entering AM price, make new entry to
-
+			//if entering AM price
 			if (timeOfDay === "AM" || timeOfDay === "am") {
-				console.log(timeOfDay)
+				//set newPrice fields like so
 				newPrice.priceAM = price;
-				newPrice.pricePM = 0;
 			}
-			//if entering PM price,
+			//if entering PM price
 			else if (timeOfDay === "PM" || timeOfDay === "pm") {
 				newPrice.pricePM = price;
 			}
 
+			newPrice.date = currentDate;
+
 			//find and match island to existing profileID, if profileID is found
-			try {
+			try{
 				const islandProfile = await app.db.profile.findOneOrFail({
 					where: {
 						id: island
@@ -418,6 +415,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				newPrice.island = islandProfile;
 
 				await newPrice.save(); //save to sellingPriceHistory table
+				console.log("saved")
 				await reply.send(JSON.stringify({newPrice}))//send with the reply
 			} catch (err) {
 				reply.status(204).send("No content"); //TODO is this the right error
@@ -428,81 +426,5 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 
 
-	/* Come back to this, it's not working at all if I try to auto figure out the date
-	//might as well try to just have the user give me the date for each new price entry
-
-
-
-	app.post<{
-		Body: types.IPostPriceBody,
-		Reply: types.IPostPriceResponse
-	}>("/sellingPrice", opts.post_price_opts, async (req, reply) => {
-
-		//grab incoming data from the body
-		const {island, price, timeOfDay} = req.body;
-
-		const date = new Date();
-		let year = date.getFullYear()
-		let month = date.getMonth()
-		let day = date.getDate()
-
-		let currentDate = `${year}-${month}-${day}`
-		console.log(currentDate)
-		//TODO error on date comparrison
-		//check for if we already have an entry for this island and this date
-		const sellingPrice = await app.db.sellingPriceHistory.findOneOrFail({
-			where:{
-				id: island,
-				updated_at: Like('%2023-03-10%')
-			}
-		})
-
-		if(sellingPrice){
-			//update the existing record
-			if(timeOfDay === "AM" || timeOfDay === "am"){
-				console.log(timeOfDay)
-				sellingPrice.priceAM = price;
-				sellingPrice.pricePM = 0;
-			}
-			//if entering PM price,
-			else if(timeOfDay == "PM" || timeOfDay === "pm"){
-				sellingPrice.pricePM = price;
-			}
-		}
-		else {
-			//set body data to a new entry
-			const newPrice = new SellingPriceHistory();
-			//if entering AM price, make new entry to
-
-			if (timeOfDay === "AM" || timeOfDay === "am") {
-				console.log(timeOfDay)
-				newPrice.priceAM = price;
-				newPrice.pricePM = 0;
-			}
-			//if entering PM price,
-			else if (timeOfDay === "PM" || timeOfDay === "pm") {
-				newPrice.pricePM = price;
-			}
-
-			//find and match island to existing profileID, if profileID is found
-			try {
-
-				const islandProfile = await app.db.profile.findOneOrFail({
-					where: {
-						id: island
-					}
-				});
-				//set transaction param to found user
-				newPrice.island = islandProfile;
-
-				await newPrice.save(); //save to sellingPriceHistory table
-				await reply.send(JSON.stringify({newPrice}))//send with the reply
-			} catch (err) {
-				reply.status(204).send("No content"); //TODO is this the right error
-			}
-		}
-
-	});
-	*/
 
 }
