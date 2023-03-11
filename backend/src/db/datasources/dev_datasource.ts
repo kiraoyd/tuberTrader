@@ -10,6 +10,10 @@ import { ProfilesMigration1676586883555 } from "../migrations/1676586883555-Prof
 import { updatedToTuber1677359851487 } from "../migrations/1677359851487-updatedToTuber.js";
 import { Transactions } from "../models/transactions.js";
 import { AddedTransactions1677614312887 } from "../migrations/1677614312887-AddedTransactions.js";
+import { SellingPriceHistory } from "../models/sellingPriceHistory.js";
+import { sellingPriceHistory1678485063600 } from "../migrations/1678485063600-sellingPriceHistory.js";
+import { changedSellingPriceTableName1678485876107 } from "../migrations/1678485876107-changedSellingPriceTableName.js";
+import { AddedDateColumnToPrices1678493167184 } from "../migrations/1678493167184-AddedDateColumnToPrices.js";
 
 dotenv.config();
 
@@ -28,13 +32,17 @@ export const AppDataSource = new DataSource({
         User,
         IPHistory,
         Profile,
-        Transactions
+        Transactions,
+        SellingPriceHistory
     ],
     migrations: [
         Initialize1676281754950,
         ProfilesMigration1676586883555,
         updatedToTuber1677359851487,
         AddedTransactions1677614312887,
+        sellingPriceHistory1678485063600,
+        changedSellingPriceTableName1678485876107,
+        AddedDateColumnToPrices1678493167184
     ],
     // DANGER DANGER our convenience will nuke production data!
     synchronize: false

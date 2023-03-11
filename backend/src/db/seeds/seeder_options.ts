@@ -4,6 +4,7 @@ import {IPHistorySeed} from "./ip_history_seeder";
 import {Seeder} from "../../lib/seed_manager";
 import {ProfileSeed} from "./profile_seeder";
 import {TransactionsSeed} from "./transactions_seeder";
+import {SellingPriceSeed} from "./selling_price_seeder";
 
 export type SeederOptionsType = {
 	seeds: Array<Seeder>;
@@ -18,6 +19,7 @@ const SeederOptions: any = {
 		IPHistorySeed,
 		ProfileSeed,
 		TransactionsSeed,
+		SellingPriceSeed
 	]
 };
 

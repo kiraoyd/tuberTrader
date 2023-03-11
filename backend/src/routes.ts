@@ -7,14 +7,17 @@ import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
 import * as types from "./types"
 import * as opts from "./opts"
-import {ILike, LessThan, Not, Equal, IsNull, ArrayContains} from "typeorm";
+import {ILike, LessThan, Not, Equal, IsNull, ArrayContains, Like} from "typeorm";
+import {readFileSync} from "node:fs";
+import {compare, hashSync} from "bcrypt";
+import {SellingPriceHistory} from "./db/models/sellingPriceHistory";
+import {amPM} from "./types";
 
 /**
  * App plugin where we construct our routes
  * @param {FastifyInstance} app our main Fastify app instance
  */
 
-//TODO tested and running, just need to start writing some relevant routes based off the most recent homework!
 export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 	// Middleware
@@ -73,7 +76,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @function
 	 */
 	//We are being lazy and typing the req and reply objects as "any" here, just to save making a new type, but we really should
-	app.get("/users", async (req:any , reply:any) => {
+	app.get("/users", async (req: any, reply: any) => {
 		let users = await app.db.user.find();
 		reply.send(users);
 	});
@@ -84,7 +87,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 */
 	app.get<{
 		Params: types.IGetUserParams
-	}>("/user/:username", async(req, reply: FastifyReply)=>{
+	}>("/user/:username", async (req, reply: FastifyReply) => {
 		//roll through users, if username = name, include user in result
 		const username = req.params['username'];
 		try {
@@ -99,8 +102,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				}
 			})
 			reply.send(user)
-		}
-		catch(err){
+		} catch (err) {
 			reply.status(204).send("No content");
 		}
 	});
@@ -111,10 +113,10 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 *@function
 	 */
 	//We are being lazy and typing the req object as "any" here, just to save making a new type, but we really should
-	app.get("/users_with_profiles", async(req: any, reply: FastifyReply)=>{
+	app.get("/users_with_profiles", async (req: any, reply: FastifyReply) => {
 		//roll through users, if user has at least one profile, include user and profiles in result
 		let users_with_profiles = await app.db.user.find({
-			select:{
+			select: {
 				id: true,
 				name: true,
 			},
@@ -153,7 +155,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	}>("/profiles", opts.post_profiles_opts, async (req, reply) => {
 
 		//grab incoming data from the body
-		const {islandName, picture, turnipsHeld, pricePaid, ownerId } = req.body;
+		const {islandName, picture, turnipsHeld, pricePaid, ownerId} = req.body;
 
 		//set new profile params to data
 		const profile = new Profile();
@@ -173,11 +175,10 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			profile.owner = user;
 			await profile.save(); //save to profile table
 			await reply.send(JSON.stringify({profile}))//send with the reply
+		} catch (err) {
+			reply.status(204).send("No content"); //TODO is this the right error
 		}
-		catch(err) {
-				reply.status(204).send("No content"); //TODO is this the right error
-			}
-		});
+	});
 
 
 	/**
@@ -185,7 +186,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @name get/profiles
 	 * @function
 	 */
-	app.get("/profiles", async (request :FastifyRequest, reply: FastifyReply) => {
+	app.get("/profiles", async (request: FastifyRequest, reply: FastifyReply) => {
 		let islands = await app.db.profile.find();
 		reply.send(islands);
 	});
@@ -197,18 +198,18 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 */
 	app.get<{
 		Params: types.IGetProfileParams
-	}>("/profile/:islandName", async(req, reply: FastifyReply)=>{
+	}>("/profile/:islandName", async (req, reply: FastifyReply) => {
 		//roll through profiles, if islandName = islandName, include profile in result
 		const island = req.params['islandName'];
 		let profile = await app.db.profile.find({
-			select:{
+			select: {
 				id: true,
 				islandName: true,
 				picture: true,
 				turnipsHeld: true,
 				pricePaid: true,
 			},
-			relations:{
+			relations: {
 				owner: true
 			},
 			where: {
@@ -223,7 +224,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @name get/profile_most_turnips
 	 * @function
 	 */
-	app.get("/profile_most_turnips", async(request: FastifyRequest, reply: FastifyReply)=>{
+	app.get("/profile_most_turnips", async (request: FastifyRequest, reply: FastifyReply) => {
 		//get the max turnipsHeld in the database
 		//builds: 		SELECT MAX(turnipsHeld) FROM profile;
 		//sending the name of the table "profile" to createQueryBuilder is an alias for convinience
@@ -238,14 +239,14 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 		//find the profile that has the max turnipsHeld
 		let profile = await app.db.profile.find({
-			select:{
+			select: {
 				id: true,
 				islandName: true,
 				picture: true,
 				turnipsHeld: true,
 				pricePaid: true,
 			},
-			where:{
+			where: {
 				turnipsHeld: result.max //result comes from getRawOne(), and max ties to the second param of select
 			}
 		});
@@ -263,7 +264,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	}>("/transactions", opts.post_transactions_opts, async (req, reply) => {
 
 		//grab incoming data from the body
-		const {numberSold, priceSold, profits, seller, host } = req.body;
+		const {numberSold, priceSold, profits, seller, host} = req.body;
 
 		//set new profile params to data
 		const transaction = new Transactions();
@@ -293,8 +294,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 			await transaction.save(); //save to transaction table
 			await reply.send(JSON.stringify({transaction}))//send with the reply
-		}
-		catch(err) {
+		} catch (err) {
 			reply.status(204).send("No content"); //TODO is this the right error
 		}
 	});
@@ -305,7 +305,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 * @function
 	 */
 	//We are being lazy and typing the req and reply objects as "any" here, just to save making a new type, but we really should
-	app.get("/transactions", async (req:any , reply:any) => {
+	app.get("/transactions", async (req: any, reply: any) => {
 		let users = await app.db.transactions.find();
 		reply.send(transactions);
 	});
@@ -318,7 +318,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	//TODO we are cheating by using any here, make some query params
 	app.get<{
 		Querystring: types.IQuerystring
-	}>("/transaction", async (req, reply: FastifyReply)=> {
+	}>("/transaction", async (req, reply: FastifyReply) => {
 		let {sellerID, islandID} = req.query;
 		try {
 			const host = await app.db.profile.findOneOrFail({
@@ -351,10 +351,80 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			})
 			console.log(transaction)
 			reply.send(transaction)
-		}
-		catch(err){
+		} catch (err) {
 			reply.status(204).send("No content")
 		}
 
 	})
+
+
+// -----------CRUD implementation for Selling Prices -------------
+
+	app.post<{
+		Body: types.IPostPriceBody,
+		Reply: types.IPostPriceResponse
+	}>("/sellingPrice", opts.post_price_opts, async (req, reply) => {
+
+		//grab incoming data from the body
+		const {island, price, timeOfDay, currentDate} = req.body;
+
+		//check for if we already have an entry for this island and this date
+		const sellingPrice = await app.db.sellingPriceHistory.find({
+			where:{
+				island: island,
+				date: currentDate
+			}
+		})
+		//if entry is found
+		if(sellingPrice.length != 0) {
+			//update the existing record
+			if (timeOfDay === "AM" || timeOfDay === "am") {
+				sellingPrice[0].priceAM = price;
+				await app.db.sellingPriceHistory.save(sellingPrice)
+			}
+			//if entering PM price,
+			else if (timeOfDay == "PM" || timeOfDay === "pm") {
+				sellingPrice[0].pricePM = price;
+				await app.db.sellingPriceHistory.save(sellingPrice)
+			}
+			await reply.send(JSON.stringify({sellingPrice}))//send with the reply
+		}
+		else {
+			//set body data to a new sellingPrice entry
+			const newPrice = new SellingPriceHistory();
+			//if entering AM price
+			if (timeOfDay === "AM" || timeOfDay === "am") {
+				//set newPrice fields like so
+				newPrice.priceAM = price;
+			}
+			//if entering PM price
+			else if (timeOfDay === "PM" || timeOfDay === "pm") {
+				newPrice.pricePM = price;
+			}
+
+			newPrice.date = currentDate;
+
+			//find and match island to existing profileID, if profileID is found
+			try{
+				const islandProfile = await app.db.profile.findOneOrFail({
+					where: {
+						id: island
+					}
+				});
+				//set transaction param to found user
+				newPrice.island = islandProfile;
+
+				await newPrice.save(); //save to sellingPriceHistory table
+				console.log("saved")
+				await reply.send(JSON.stringify({newPrice}))//send with the reply
+			} catch (err) {
+				reply.status(204).send("No content"); //TODO is this the right error
+			}
+		}
+
+	});
+
+
+
+
 }

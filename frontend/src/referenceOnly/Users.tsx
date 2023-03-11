@@ -1,4 +1,5 @@
-//Example component that gets back and displays users from our back end
+//TODO this needs to be refactored to doggr new
+// Example component that gets back and displays users from our back end
 import {useEffect, useState} from "react";
 //import axios
 import axios from "axios";
@@ -16,7 +17,7 @@ export const Users = () => {
             setUsers(users.data); //useEffect calls this after the fetch, to set users state with data
         };
         getUsers(); //calls the function above we declared
-    }, []); //all this code in useEffect only runs if the states we list in this array changes
+    }, []); //after the fist run, all this code in useEffect only runs if the states we list in this array changes
 
     return(
         //time to return the html that will display the users we just got

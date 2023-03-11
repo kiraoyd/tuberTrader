@@ -1,47 +1,22 @@
 
 import './App.css'
 //import all our components
-import {Button} from "./components/Button"
-import {Users} from "./components/Users"
-import {Link, Route, Routes} from 'react-router-dom';
-import Home from './components/Home';
-import Match from './components/Match';
-import {useEffect, useState} from "react";
-import initialState from "./initialState";
+import {NavMain} from "./components/NavMain"
+//import the token functionality we wrote in AuthProvider
+import {AuthProvider} from "./services/AuthService";
+
 
 //Here is where we create our App, that we mount in main.tsx
-/*
-//silly simple static app
-function App(){
-    return(
-        <div className = "App">
-            <Home />
-            <Button />
-            <Users />
-        </div>
-    );
- */
+export default function App() {
 
-//doggr version
-function App() {
-    useEffect(() => {
-        console.log("-- App rerenders --");
-    });
-
+    //token={token} in the tags will push {token} through the tree
+    //AuthProvider makes everything we write into the AuthProvider React Component available to the entire app
+    //NavMain is our parent component we used to abstract out the links and routes
     return (
+        <AuthProvider>
         <div className="App">
-            <nav>
-                <div className="menu">
-                    <Link to="/">Home</Link>
-                    {/*add other "page" components here*/}
-                </div>
-            </nav>
-            <Routes>
-                {/*<Route path="/match" element={<Match/>}/>*/}
-                <Route path="/" element={<Home/>}/>
-            </Routes>
+            <NavMain/>
         </div>
-    )
+        </AuthProvider>
+    );
 }
-
-export default App

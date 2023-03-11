@@ -19,3 +19,12 @@ export type ProfileType = {
     turnipsHeld: number,
     pricePaid: number
 }
+
+//In this case, what we want to be able to access inside AuthContext are:
+//The token itself (will be a string, or null)
+//The handleLogin and handleLogout functions
+export type AuthContextProps = {
+    token: string | null,
+    handleLogin: (email: string, password: string) => Promise<void>,
+    handleLogout: () => void,
+}

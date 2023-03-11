@@ -16,6 +16,7 @@ import {Profile} from "./profile";
 import {Transactions} from "./transactions"
 
 
+
 /**
  *  Class representing user table
  */
