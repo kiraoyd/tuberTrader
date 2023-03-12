@@ -7,11 +7,11 @@ import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
 import * as types from "./types"
 import * as opts from "./opts"
-import {ILike, LessThan, Not, Equal, IsNull, ArrayContains, Like} from "typeorm";
+import {ILike, LessThan, Not, Equal, IsNull, ArrayContains, Like, Between} from "typeorm";
 import {readFileSync} from "node:fs";
-import {compare, hashSync} from "bcrypt";
 import {SellingPriceHistory} from "./db/models/sellingPriceHistory";
 import {amPM} from "./types";
+import {sellingPriceHistory1678485063600} from "./db/migrations/1678485063600-sellingPriceHistory";
 
 /**
  * App plugin where we construct our routes
@@ -306,7 +306,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	 */
 	//We are being lazy and typing the req and reply objects as "any" here, just to save making a new type, but we really should
 	app.get("/transactions", async (req: any, reply: any) => {
-		let users = await app.db.transactions.find();
+		let transactions = await app.db.transactions.find();
 		reply.send(transactions);
 	});
 
@@ -360,6 +360,10 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 // -----------CRUD implementation for Selling Prices -------------
 
+	/**
+	 * Route to post a new selling price to the SellingPriceHistory table
+	 * @name post/sellingPrice
+	 */
 	app.post<{
 		Body: types.IPostPriceBody,
 		Reply: types.IPostPriceResponse
@@ -368,44 +372,58 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		//grab incoming data from the body
 		const {island, price, timeOfDay, currentDate} = req.body;
 
+		const timeOfDayLower = timeOfDay.toLowerCase();
+
+		//get the island profile associated with island
+		const myIsland = await app.db.profile.findOneOrFail({
+			where:{
+				id: island
+			}
+		})
+
 		//check for if we already have an entry for this island and this date
 		const sellingPrice = await app.db.sellingPriceHistory.find({
 			where:{
-				island: island,
+				island: myIsland,
 				date: currentDate
 			}
 		})
+		console.log(sellingPrice)
 		//if entry is found
 		if(sellingPrice.length != 0) {
+			console.log("updating existing")
 			//update the existing record
-			if (timeOfDay === "AM" || timeOfDay === "am") {
+
+			if (timeOfDayLower === "am") {
 				sellingPrice[0].priceAM = price;
 				await app.db.sellingPriceHistory.save(sellingPrice)
 			}
 			//if entering PM price,
-			else if (timeOfDay == "PM" || timeOfDay === "pm") {
+			else if (timeOfDayLower === "pm") {
 				sellingPrice[0].pricePM = price;
 				await app.db.sellingPriceHistory.save(sellingPrice)
 			}
 			await reply.send(JSON.stringify({sellingPrice}))//send with the reply
 		}
 		else {
+			console.log("making new entry...")
 			//set body data to a new sellingPrice entry
 			const newPrice = new SellingPriceHistory();
 			//if entering AM price
-			if (timeOfDay === "AM" || timeOfDay === "am") {
+			if (timeOfDayLower === "am") {
 				//set newPrice fields like so
 				newPrice.priceAM = price;
 			}
 			//if entering PM price
-			else if (timeOfDay === "PM" || timeOfDay === "pm") {
+			else if (timeOfDayLower === "pm") {
 				newPrice.pricePM = price;
 			}
-
 			newPrice.date = currentDate;
-
+			//TODO nit: there is a better way to to this section
+			//https://stackoverflow.com/questions/69802845/typeorm-how-to-insert-into-table-with-foreign-key-without-fetching-relation-fi
+			//It's possible to create the new price record and link to profile all in one query
 			//find and match island to existing profileID, if profileID is found
-			try{
+			try {
 				const islandProfile = await app.db.profile.findOneOrFail({
 					where: {
 						id: island
@@ -415,16 +433,81 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				newPrice.island = islandProfile;
 
 				await newPrice.save(); //save to sellingPriceHistory table
+				//TODO
 				console.log("saved")
 				await reply.send(JSON.stringify({newPrice}))//send with the reply
 			} catch (err) {
-				reply.status(204).send("No content"); //TODO is this the right error
+				reply.status(204).send("No content");
 			}
 		}
-
 	});
 
+	/**
+	 * Route to retrieve profiles with the top selling prices
+	 */
+	app.get("/topTurnips", async (req: any, reply: any) => {
+		// get current date and time
+		const current = new Date()
+		let year = current.getFullYear()
+		let month = (current.getMonth() + 1).toString() //January = month 0
+		let day = (current.getDate() + 1).toString() //0 -364 days
 
+		//convert date to: yyyy-mm-dd format
+		if(day.length === 1){
+			day = '0' + day;
+		}
+		if(month.length === 1){
+			month = '0' + month;
+		}
+		let today = `${year}-${month}-${day}`
 
+		console.log("Today is: ", today, current)
+
+		//get time of day: am or pm
+		let hours = current.getHours();
+		let ampm = hours >= 12 ? 'pm' : 'am';  //if hours >= 12, set to pm, else set to am
+
+		//get price and island profile
+		if (ampm === 'pm') {
+			let todaysTopTen = await app.db.sellingPriceHistory.find({
+				select:{
+					id:true, //for some reason this has to be set for the relation to work
+					pricePM: true
+				},
+				relations: {
+					island: true
+				},
+				where:{
+					date: today
+				},
+
+				order: {
+					pricePM: "DESC"
+				},
+				take: 10,
+			})
+			reply.send(todaysTopTen)
+		}
+		else {
+			let todaysTopTen = await app.db.sellingPriceHistory.find({
+				select:{
+					id:true, //for some reason this has to be set for the relation to work
+					priceAM: true
+				},
+				relations: {
+					island: true
+				},
+				where:{
+					date: today
+				},
+
+				order: {
+					priceAM: "DESC"
+				},
+				take: 10,
+			})
+			reply.send(todaysTopTen)
+		}
+	})
 
 }
