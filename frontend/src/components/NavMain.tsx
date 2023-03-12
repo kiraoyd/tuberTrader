@@ -67,7 +67,7 @@ function NavRoutes(){
             {/*<Route path="/match" element={<ProtectedRoute><Match/></ProtectedRoute>}*/}
             <Route path="/login" element={<Login/>}/>
             <Route path="/" element={<Home/>}/>
-            <Route path = "/logout" element={<Logout/>}></Route>
+            <Route path = "/logout" element={<Logout/>}/>
         </Routes>
     )
 }
