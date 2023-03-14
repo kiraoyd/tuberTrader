@@ -594,7 +594,8 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		 })
 
 		//get back JSON format:
-		//[{"priceAM": num. "pricePM": num, "updated_at": "2023-03-11T08:07:25.213Z", "island":{...}}]
+		//[{"priceAM": num. "pricePM": num, "updated_at": "2023-03-11T08:07:25.213Z", "island":{...}}
+		//TODO filter out just the current weeks worth of these results
 		//microservice will hit this endpoint, and get the JSON back to do stuff with
 		reply.send(islandPrices)
 
