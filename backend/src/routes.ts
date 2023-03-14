@@ -12,17 +12,47 @@ import {readFileSync} from "node:fs";
 import {SellingPriceHistory} from "./db/models/sellingPriceHistory";
 import {amPM} from "./types";
 import {sellingPriceHistory1678485063600} from "./db/migrations/1678485063600-sellingPriceHistory";
+import dotenv from "dotenv";
 
 /**
  * App plugin where we construct our routes
  * @param {FastifyInstance} app our main Fastify app instance
  */
 
+dotenv.config();
+const env = process.env;
 export async function tuber_routes(app: FastifyInstance): Promise<void> {
+	//TODO  right thing?
+
+	const {auth} = require('express-openid-connect');
+
+	const config = {
+		authRequired: false,
+		auth0Logout: true,
+		secret: env.VITE_SECRET,
+		baseURL: 'http://localhost:5173/login',
+		clientID: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE',
+		issuerBaseURL: 'https://dev-mqy8ug3j6mzegsua.us.auth0.com'
+	};
+
+	//auth0 router attaches /login, /logout, and /callback routes to the baseURL
+	app.use(auth(config));
+
+
+	//TODO right thing?
 
 	// Middleware
 	// TODO: Refactor this in favor of fastify-cors
 	app.use(cors());
+
+
+	//req.isAuthenticated is provided from the auth router
+	// app.get('/', (req, res) => {
+	// 	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+	// });
+
+
+
 
 	/**
 	 * Route replying to /test path for test-testing
@@ -445,12 +475,13 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	/**
 	 * Route to retrieve profiles with the top selling prices
 	 */
+	//TODO retrieves 0 value from a date
 	app.get("/topTurnips", async (req: any, reply: any) => {
 		// get current date and time
 		const current = new Date()
 		let year = current.getFullYear()
 		let month = (current.getMonth() + 1).toString() //January = month 0
-		let day = (current.getDate() + 1).toString() //0 -364 days
+		let day = (current.getDate()).toString() //0 -364 days
 
 		//convert date to: yyyy-mm-dd format
 		if(day.length === 1){
@@ -508,6 +539,65 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			})
 			reply.send(todaysTopTen)
 		}
+	})
+
+	/**
+	 * route to support microservice graph of a specific islands current weeks price history
+	 */
+	app.get("/weeksPrices/:island", async (req: any, reply: any) => {
+		const name = req.params['island']
+
+		// get current date and time
+		const current = new Date()
+		let year = current.getFullYear()
+		let month = (current.getMonth() + 1).toString() //January = month 0
+		let day = (current.getDate()).toString() //0 -364 days
+
+		//convert date to: yyyy-mm-dd format
+		if(day.length === 1){
+			day = '0' + day;
+		}
+		if(month.length === 1){
+			month = '0' + month;
+		}
+		let today = `${year}-${month}-${day}`
+
+		//get island ID
+		let islandID = await app.db.profile.findOneOrFail({
+			select: {
+				id: true
+			},
+			where: {
+				islandName: name,
+				id: 8 //TODO eventually delete
+			}
+		})
+
+		console.log(islandID)
+
+
+		//get all the entries in sellingPriceHistory for :island
+		 let islandPrices = await app.db.sellingPriceHistory.find({
+			 select: {
+				 priceAM: true,
+				 pricePM: true,
+				 updated_at: true
+			 },
+			 relations: {
+				 island: true
+			 },
+			 where: {
+				 island: {
+					 id: islandID["id"]
+				 }
+			 }
+		 })
+
+		//get back JSON format:
+		//[{"priceAM": num. "pricePM": num, "updated_at": "2023-03-11T08:07:25.213Z", "island":{...}}]
+		//microservice will hit this endpoint, and get the JSON back to do stuff with
+		reply.send(islandPrices)
+
 	})
 
 }

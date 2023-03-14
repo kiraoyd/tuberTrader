@@ -27,7 +27,14 @@ export async function buildApp(useLogging: boolean) {
 		: Fastify({logger: false});
 
 	try {
-		// add express-like 'app.use' middleware support
+
+		// //register the auth0 plugin
+		// await app.register(require('fastify-auth0-verify'),{
+		// 	domain: config.authprovider.domain,
+		// 	secret: config.authprovider.secret
+		// });
+
+		//add express-like 'app.use' middleware support
 		await app.register(fastifyMiddie);
 		// add static file handling
 		await app.register(staticFiles, {
