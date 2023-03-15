@@ -28,11 +28,8 @@ export async function buildApp(useLogging: boolean) {
 
 	try {
 
-		// //register the auth0 plugin
-		// await app.register(require('fastify-auth0-verify'),{
-		// 	domain: config.authprovider.domain,
-		// 	secret: config.authprovider.secret
-		// });
+		// register the auth0 plugin HERE
+
 
 		//add express-like 'app.use' middleware support
 		await app.register(fastifyMiddie);
@@ -49,6 +46,16 @@ export async function buildApp(useLogging: boolean) {
 		// Connects to postgres
 		app.log.info("Connecting to Database...");
 		await app.register(DbPlugin);
+
+		//https://www.npmjs.com/package/fastify-auth0-verify
+		//this replaces the authPlugin we built in class: await app.register(authPlugin)
+		//we can now use the preValidation hook on the front end to protect routes
+		await app.register(require('fastify-auth0-verify'), {
+			//these right here are where we grab the secret auth0 makes for us
+			domain: 'dev-mqy8ug3j6mzegsua.us.auth0.com',
+			audience: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE'
+		})
+
 
 		app.log.info("App built successfully.");
 	} catch (err) {
