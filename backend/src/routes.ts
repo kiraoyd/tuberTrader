@@ -22,37 +22,16 @@ import dotenv from "dotenv";
 dotenv.config();
 const env = process.env;
 export async function tuber_routes(app: FastifyInstance): Promise<void> {
-	//TODO  right thing?
 
-	const {auth} = require('express-openid-connect');
-
-	const config = {
-		authRequired: false,
-		auth0Logout: true,
-		secret: env.VITE_SECRET,
-		baseURL: 'http://localhost:5173/login',
-		clientID: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE',
-		issuerBaseURL: 'https://dev-mqy8ug3j6mzegsua.us.auth0.com'
-	};
-
-	//auth0 router attaches /login, /logout, and /callback routes to the baseURL
-	app.use(auth(config));
-
-
-	//TODO right thing?
 
 	// Middleware
 	// TODO: Refactor this in favor of fastify-cors
 	app.use(cors());
 
-
-	//req.isAuthenticated is provided from the auth router
-	// app.get('/', (req, res) => {
-	// 	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-	// });
-
-
-
+	//gets the token from auth0
+	app.get("/verify", async (request:any, reply:any) =>{
+		reply.send(request.user)
+	})
 
 	/**
 	 * Route replying to /test path for test-testing

@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@digitak/tsc-esm': ^3.1.4
   '@faker-js/faker': ^7.6.0
+  '@fastify/jwt': ^6.7.0
   '@fastify/middie': ^8.1.0
   '@fastify/oauth2': ^7.0.0
   '@fastify/static': ^6.8.0
@@ -53,6 +54,7 @@ specifiers:
   vitest: ^0.28.3
 
 dependencies:
+  '@fastify/jwt': 6.7.0
   '@fastify/middie': 8.1.0
   '@fastify/oauth2': 7.0.0
   '@fastify/static': 6.8.0
