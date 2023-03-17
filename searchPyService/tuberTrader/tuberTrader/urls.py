@@ -1,4 +1,4 @@
-"""searchService URL Configuration
+"""tuberTrader URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -14,8 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+#include() is used by Django, when it is encoutnered Django chops off whatever part of
+#the URL matches up to that point and sends the remaining string to the included URL (url) for processing
 
+#root of the URL conf, here we point it at all the app's models
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('search/', include('search.urls')), #connects root to search apps urls
+
 ]
