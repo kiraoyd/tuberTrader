@@ -81,7 +81,7 @@ DATABASES = {
         'USER': 'tuber',
         'PASSWORD': 'tuber',
         'HOST': '127.0.0.1',
-        'PORT': '8080',
+        'PORT': '5433',
     }
 }
 
