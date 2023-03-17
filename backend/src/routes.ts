@@ -578,6 +578,8 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		//microservice will hit this endpoint, and get the JSON back to do stuff with
 		reply.send(islandPrices)
 
+
+		
 	})
 
 }
