@@ -44,7 +44,8 @@ function PublicLinksView() {
 //Links shown if token present (logged in)
 function AuthLinksView(){
     return(<>
-        <Link to="/logout">Logout</Link></>)
+        <Link to="/logout">Logout</Link>
+     </>)
 }
 
 
@@ -52,7 +53,7 @@ function AuthLinksView(){
 function NoAuthLinksView() {
     return(
         <>
-            <Link to="/login"> Login </Link>
+        <Link to="/login">Login</Link>
         </>
     )
 }

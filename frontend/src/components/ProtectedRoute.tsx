@@ -13,9 +13,9 @@ import { useAuth } from "../services/AuthService";
 export const ProtectedRoute = ({children}) => {
     const{token} = useAuth();
 
-    //if token is null, user is not logged in, so we redirect to the login page
+    //if token is null, user is not logged in, so we redirect to the home page
     if(!token){
-        return <Navigate to="/login" replace/>
+        return <Navigate to="/" replace/>
     }
     //otherwise they are logged in
     return children //render the protected routes (the children)

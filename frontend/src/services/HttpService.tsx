@@ -23,7 +23,7 @@ export const httpClient = axios.create({
 	}
 });
 
-// This is called by AuthService.handleLogin/handleLogout
+
 //Lets us update axios with our token, to support axios's automatic backend auth requests
 export const updateAxios = async (token: string) => {
 	console.log("In update axios");

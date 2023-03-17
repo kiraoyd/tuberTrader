@@ -11,7 +11,7 @@ const initialToken = getTokenFromStorage();
 
 //A Provider is a component React provides to us, that does some sort of Context utility
 //{children} arg is simply a placeholder for ALL child components, and refers to every other component that our AuthProvider wraps
-//We want to move all our token stuff into this Provider, because we want EVERY child of thisc omponent to access Auth
+//We want to move all our token stuff into this Provider, because we want EVERY child of this component to access Auth
 export const AuthProvider = ({children}) => {
     // useNavigate() is react-router-dom's utility for being able to programmatically send a user to a different page
     const navigate = useNavigate();
@@ -21,7 +21,9 @@ export const AuthProvider = ({children}) => {
     //It will be returned in the useAuthContextPackage (below)
     const [token, setToken] = useState<string>(initialToken);
 
-    //All child components will be able to retrieve and call from useAuth(), this function
+    //All child components will be able to retrieve and call from useAuth()
+
+
     // which enables them to log a user in based on email/ given to this function
     //It gets the token from the server, and sets the token State once we have it
     //It will be returned in the useAuthContextPackage (below)
@@ -43,6 +45,8 @@ export const AuthProvider = ({children}) => {
         navigate("/")
     };
 
+
+
     //After a new token is received, this will perform all necessary state updates
     const saveToken = async (token:string) => {
         //update the Auth's owned state for token
@@ -58,8 +62,8 @@ export const AuthProvider = ({children}) => {
     //here is the value that we will return below
     const useAuthContextPackage = {
         token,
-        handleLogin,
-        handleLogout,
+        // handleLogin,
+        // handleLogout,
     };
 
     //Here is how we make everything available to the children via useAuth()
@@ -78,6 +82,7 @@ export const AuthProvider = ({children}) => {
 //This is going to take in an email and password, and clones the functionality we use to make a request in postman, into the website
 
 //TODO need to build the actual login route in the backend!
+//the server is auth0's
 export async function getLoginTokenFromServer(email: string, password: string) {
     console.log("In get login token from server", email, password);
 
@@ -86,6 +91,12 @@ export async function getLoginTokenFromServer(email: string, password: string) {
     //except it already has all our nice things added into it
 
     //here we make a post request, as we are making a post request to login route with our email and password
+    //TODO change to auth0, the only thing that needs to change!
+    //TODO his needs to hit auth0's API...but I need to find the route
+
+    //we are using our httpClient to make the axios request to the backend 'login' route
+    //As of now it is sending the email and password with the pose, and getting back the token associated
+    //TODO we don't need a backend login route anymore here.... auth0 should do it for us
     let res = await httpClient.post("/login", {
         //data we want to send in the post
         email,
@@ -94,6 +105,8 @@ export async function getLoginTokenFromServer(email: string, password: string) {
     //return the token coming back from the login route's reply
     //data.token tokenizes just the token from the body of the response
     return res.data.token;
+
+
 }
 
 //Checks to see if we've previously logged in and stored a token inside Local Storage (dev tools --> storage tab)
