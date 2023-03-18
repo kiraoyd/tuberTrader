@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 #from django_handlers import Handler
 from django.db import connection
+from django.http import JsonResponse
 
 # Create your views here. Views either return an HttpResponse object containing content for requested page, or
 #raise an exception.
@@ -18,10 +19,13 @@ def findIsland(request, islandRequested):
     if request.method == 'GET':
         with connection.cursor() as cursor: #gets cursor object
             # #%s exists as a placeholder for the values given in the [paramsList]
-            query = '''SELECT * FROM profile p WHERE p.islandName = %s'''
+            query = '''SELECT * FROM profile WHERE "islandName" = %s'''
+            #query = '''SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;'''
             cursor.execute(query, [islandRequested]) #executes SQL
             island = cursor.fetchone() #to return row
-        return HttpResponse(island)
+
+        #send response as JSON
+        return JsonResponse(island, safe=False)
 
 
 
