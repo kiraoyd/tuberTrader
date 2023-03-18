@@ -6,6 +6,7 @@ from django.http import HttpResponse
 #from django_handlers import Handler
 from django.db import connection
 from django.http import JsonResponse
+import json
 
 # Create your views here. Views either return an HttpResponse object containing content for requested page, or
 #raise an exception.
@@ -25,7 +26,9 @@ def findIsland(request, islandRequested):
             island = cursor.fetchone() #to return row
 
         #send response as JSON
+        #jsonIsland = json.dumps(island, default=str)
         return JsonResponse(island, safe=False)
+        #return HttpResponse(jsonIsland, content_type = 'application/json')
 
 
 

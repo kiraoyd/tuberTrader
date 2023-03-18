@@ -15,12 +15,13 @@ export function getRandomProfile(): ProfileType {
     const idNum = Math.random() * 10000;
 
     return {
-        id: idNum,
-        islandName: `Island${idNum}`,
-
-        picture: `https://loremflickr.com/300/300/animal?lock=${idNum}`,
-        thumbnail: `https://loremflickr.com/75/75/animal?lock=${idNum}`,
-        turnipsHeld: 10,
-        pricePaid: 20,
+        // id: idNum,
+        // islandName: `Island${idNum}`,
+        // created_at: "created placeholder",
+        // ownerId: "owner placeholder",
+        // picture: `https://loremflickr.com/300/300/animal?lock=${idNum}`,
+        // thumbnail: `https://loremflickr.com/75/75/animal?lock=${idNum}`,
+        // turnipsHeld: 10,
+        // pricePaid: 20,
     };
 }

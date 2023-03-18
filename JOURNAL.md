@@ -107,3 +107,10 @@ the search results component once the bar did it's thing. Sorted that out, and n
 my Django development server isn't accepting requests from outside domains.
 So looks like I need to configure Django's dev server to include the Access-Control-Allow-Origin header in it's
 response. Working on that now.
+
+Ok getting somewhere. One issue is needing to only show the Search Results if someone searches,
+need to update the initial state somehow, or adjust how the components are viewed. Also been working on
+updating the search Results to show "sorry not found" to the page if the user chooses an
+island that doesn't exist in our DB. Issue now is the page only rerenders on the second click
+of the submit button. Also we don't want the user to see the search results until they 
+click "search" button for the first time. Done, pretty easy fix.

@@ -14,6 +14,7 @@ export type State = {
 export type ProfileType = {
     id: number,
     picture: string,
+    thumbnail: string,
     created_at: string,
     ownerId: number,
     islandName: string,

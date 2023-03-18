@@ -14,6 +14,8 @@ Check Django version: python3 -m django --version
 
 Helpful Django/postgres tutorial: https://blog.nextideatech.com/how-to-create-a-django-app-and-connect-it-to-a-database/#:~:text=Django%2C%20being%20a%20modern%20framework,%2C%20Oracle%2C%20MongoDB%2C%20etc.
 
+To install pip:
+
 To install postgres:  sudo apt-get install postgresql-client-common
 
 To install psycopg:  pip install psycopg2-binary
@@ -21,6 +23,8 @@ This library can now be imported with: import psycopg2
 https://www.psycopg.org/docs/install.html
 
 Change settings.py in searchPyService/tuberTrader/tuberTrader/settings.py file to work with existing Tuber database: https://hevodata.com/learn/django-postgresql/
+
+To install django-cors-headers: pip install django-cors-headers
 
 NOTE: searchServiceDEP project is a DEPRICATED project. fallout from tutorials on django. Eventually remove. Only pay attention to tuberTrader
 
