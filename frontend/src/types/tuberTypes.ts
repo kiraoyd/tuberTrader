@@ -13,9 +13,10 @@ export type State = {
 //this is what an island profile will have in it
 export type ProfileType = {
     id: number,
-    islandName: string,
     picture: string,
-    thumbnail: string,
+    created_at: string,
+    ownerId: number,
+    islandName: string,
     turnipsHeld: number,
     pricePaid: number
 }

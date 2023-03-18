@@ -93,3 +93,17 @@ setting up the virtual environment correctly, getting django's dependecies estab
 to our tuber DB (getting django off of SQLite and onto postgres). I still don't think I'm 
 handling dependencies for docker correctly yet, but I will get to that part eventually.
 
+Alright Django maybe wasn't the best choice, as it seems to be better suited for from-scratch
+projects. I figured out how to change settings.py to link to my existing postgres DB tuber. 
+And got the django server up and running, listening for HTTP Requests. The big hangup: it looks like
+I still need Models to exist for the tuber DB, in my Django project, to be able to run the queries. 
+I'll be using Djangos inspect-db next to see if I can generate the python code for the models,
+then access data via those models. This should generate models that are NOT managed by Django
+so I can continue to control the DB and its schema and migrations from the Fastify server. 
+
+Working on making the call to my microservice search view from our React front end search bar.
+Ran into some trouble with updating state for the search bar, and passing props to
+the search results component once the bar did it's thing. Sorted that out, and now discovering that
+my Django development server isn't accepting requests from outside domains.
+So looks like I need to configure Django's dev server to include the Access-Control-Allow-Origin header in it's
+response. Working on that now.

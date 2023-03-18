@@ -50,7 +50,8 @@ searchPyService/tuberTrader/search/migrations <--directory for migrations
 
 RUN PROJECT
 
-Activate the virtual enviornment with the command:
+You have to be in the virtual environment to run.
+Activate the virtual enviornment with the command (from /searchPyService):
 
 source env/bin/activate
 
@@ -58,7 +59,7 @@ OR source venv/Scripts/activate
 
 Command line prompt will change to (env) at the start, when virtual environment is active
 
-naviagate to: ~/workspace/FSProject/tuberTrader/searchPyService/searchService
+naviagate to: ~/workspace/FSProject/tuberTrader/searchPyService/tuberTrader
 
 To run dev-server (searchService) : python3 manage.py runserver
 
