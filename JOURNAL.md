@@ -79,3 +79,17 @@ list, was correct. However I kept thinking it was wrong because no islands were 
 it was a total oversight. My fetch is all based on dates: I query to pull the top ten island selling prices for TODAY's
 date...and we crossed over midnight an hour ago. And I hadn't seeded or posted any records to my table, with todays
 date. And  sohere we are. I added some new records with todays date, and voila, the site is working!
+
+Back at it now. I decided to swap my microservice idea and build a microservice that simply handles the routes
+needed for searching the site for islands based on parameters. I'll start with just a route to search an
+island by name, and if I have time will add more to support extra specifications (name and turnips held for example).
+Most important: make sure I can execute the microservice.
+
+Decided to work with python's django server. Setup took WAY longer than I expected. I documented the
+journey in the readme for the new python microservice project called "searchService".
+The naming convention for my microservices files isn't the best, as I was learning as I
+built. I will go back and refactor that later to clean it up. Some issues I ran into:
+setting up the virtual environment correctly, getting django's dependecies established, and connecting
+to our tuber DB (getting django off of SQLite and onto postgres). I still don't think I'm 
+handling dependencies for docker correctly yet, but I will get to that part eventually.
+
