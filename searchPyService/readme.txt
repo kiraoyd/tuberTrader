@@ -64,7 +64,7 @@ To run dev-server (searchService) : python3 manage.py runserver
 
 Go to http://127.0.0.1:8000/ on browser to see the congrats page
 
-To change the django server port: python manage.py runserver 8080
+To change the django server port: python manage.py runserver 8080, but not needed
 
 MIGRATIONS - probably won't be needed, but just FYI
 
