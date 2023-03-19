@@ -1,5 +1,5 @@
 // import dotenv from "dotenv";
-// import {DataSource} from 'typeorm';
+// import TypeORM from 'typeorm';
 // import {User} from "../models/user";
 // import {IPHistory} from "../models/ip_history";
 // import {Initialize1676281754950} from "../migrations/1676281754950-Initialize";
@@ -9,7 +9,7 @@
 // // @ts-ignore
 // const env = process.env;
 //
-// export const AppDataSource = new DataSource(
+// export const AppDataSource = new TypeORM.DataSource(
 // 	{
 // 		type: "postgres",
 // 		host: env.VITE_DB_HOST,

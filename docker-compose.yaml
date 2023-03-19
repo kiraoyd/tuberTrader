@@ -12,48 +12,55 @@ services:
       - VITE_IP_ADDR=0.0.0.0
       - VITE_PORT=8080
       - VITE_LOGS_DIR=logs/
-      - VITE_DB_PORT=5433
+      - VITE_DB_PORT=5432
+      # - VITE_DB_PORT=5433
       - VITE_DB_USER=tuber
       - VITE_DB_PASS=tuber
-      - VITE_DB_NAME=ruber
+      - VITE_DB_NAME=tuber
     depends_on:
-      - veggieTables # name of SERVICE it depends on
+      - postgres # name of SERVICE it depends on
+    # - veggieTables
 
-  frontend:
-    container_name: frontend
-    build: ./frontend/
-    restart: always
-    ports:
-      - "88:80" # map here for convinience sake, to avoid collisions with local server
-    environment:
-      - VITE_BACKEND_IP=backend
-      - VITE_BACKEND_PORT=8080
+#  frontend:
+#    container_name: frontend
+#    build: ./frontend/
+#    restart: always
+#    ports:
+#      - "88:80" # map here for convinience sake, to avoid collisions with local server
+#    environment:
+#      - VITE_BACKEND_IP=backend
+#      - VITE_BACKEND_PORT=8080
 
-  veggieTables:
-    container_name: veggieTables
+  postgres:
+    container_name: postgres
     image: postgres:15-alpine
     restart: always
     ports:
-      - "5433:5432"
+     # -5433:5432
+      - "5432:5432"
     volumes:
-      - veggieTables:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
+#     - veggieTables:/var/lib/postgresql/data
+
     environment:
       - POSTGRES_USER=tuber
       - POSTGRES_PASSWORD=tuber
       - POSTGRES_DB=tuber
-
-  searchPyService:
-    container_name: searchPyService
-    build: ./searchPyService/
-    restart: always
-    ports:
-      - "8000:8000" #is this right?
-    environment:
-      - DATABASE_URL=postgres://tuber:tuber@postgres/tuber
-    depends_on:
-      - veggieTables #name of SERVICE it depends on
-
+#
+#  search_py_service:
+#    container_name: search_py_service
+#    build: search_py_service/
+#    restart: always
+#    ports:
+#      - "8000:8000" #is this right?
+#    environment:
+#      - DATABASE_URL=postgres://tuber:tuber@postgres/tuber
+#    depends_on:
+#      - veggieTables #name of SERVICE it depends on
+#
 volumes:
-  veggieTables:
+  #veggieTables
+  db:
     driver: local
+
 

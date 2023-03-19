@@ -1,7 +1,7 @@
 /** @module DatabasePlugin */
 import "reflect-metadata";
 import fp from "fastify-plugin";
-import {DataSource, Repository} from "typeorm";
+import TypeORM from "typeorm";
 import {User} from "../db/models/user";
 import {IPHistory} from "../db/models/ip_history";
 import {FastifyInstance, FastifyPluginOptions} from "fastify";
@@ -27,12 +27,12 @@ declare module 'fastify' {
 }
 
 interface DBConfigOpts {
-	user: Repository<User>,
-	ip: Repository<IPHistory>,
-	profile: Repository<Profile>,
-	transactions: Repository<Transactions>,
-	sellingPriceHistory: Repository<SellingPriceHistory>,
-	connection: DataSource,
+	user: TypeORM.Repository<User>,
+	ip: TypeORM.Repository<IPHistory>,
+	profile: TypeORM.Repository<Profile>,
+	transactions: TypeORM.Repository<Transactions>,
+	sellingPriceHistory: TypeORM.Repository<SellingPriceHistory>,
+	connection: TypeORM.DataSource,
 
 }
 
@@ -56,9 +56,8 @@ const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, 
 		ip: dataSourceConnection.getRepository(IPHistory),
 		profile: dataSourceConnection.getRepository(Profile),
 		transactions: dataSourceConnection.getRepository(Transactions),
-		sellingPriceHistory: dataSourceConnection.getRepository(SellingPriceHistory)
+		sellingPriceHistory: dataSourceConnection.getRepository(SellingPriceHistory),
 	});
-
 	done();
 }, {
 	name: "database-plugin"

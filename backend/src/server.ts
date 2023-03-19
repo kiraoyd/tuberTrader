@@ -2,13 +2,18 @@
 
 // This will let us use our basic middlewares now, then transition to hooks later
 import fastifyMiddie from "@fastify/middie";
-import staticFiles from "@fastify/static";
 import Fastify, {FastifyInstance} from "fastify";
 import path from "path";
 import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {tuber_routes} from "./routes";
 import DbPlugin from "./plugins/database";
+import cors from "@fastify/cors";
+import multipart from '@fastify/multipart';
+import dotenv from "dotenv";
+import staticFiles from "@fastify/static";
+dotenv.config();
+
 
 
 
@@ -32,7 +37,15 @@ export async function buildApp(useLogging: boolean) {
 
 
 		//add express-like 'app.use' middleware support
-		await app.register(fastifyMiddie);
+		//await app.register(fastifyMiddie);
+
+		await app.register(multipart);
+
+		await app.register(cors, {
+			origin: (origin, cb) => {
+				cb(null, true);
+			}
+		});
 		// add static file handling
 		await app.register(staticFiles, {
 			root: path.join(getDirName(import.meta), "../public"),
@@ -50,22 +63,22 @@ export async function buildApp(useLogging: boolean) {
 		//https://www.npmjs.com/package/fastify-auth0-verify
 		//this replaces the authPlugin we built in class: await app.register(authPlugin)
 		//we can now use the preValidation hook on the front end to protect routes
-		await app.register(require('fastify-auth0-verify'), {
-			//these right here are where we grab the secret auth0 makes for us
-			domain: 'dev-mqy8ug3j6mzegsua.us.auth0.com',
-			audience: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE'
-		})
+		// await app.register(require('fastify-auth0-verify'), {
+		// 	//these right here are where we grab the secret auth0 makes for us
+		// 	domain: 'dev-mqy8ug3j6mzegsua.us.auth0.com',
+		// 	audience: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE'
+		// })
 
-		await app.register(function (instance, _options, done) {
-			instance.get('/verify', {
-				handler: function (request, reply) {
-					reply.send(request.user)
-				},
-				preValidation: instance.authenticate
-			})
-
-			done()
-		})
+		// await app.register(function (instance, _options, done) {
+		// 	instance.get('/verify', {
+		// 		handler: function (request, reply) {
+		// 			reply.send(request.user)
+		// 		},
+		// 		preValidation: instance.authenticate
+		// 	})
+		//
+		// 	done()
+		// })
 
 
 		app.log.info("App built successfully.");
@@ -85,15 +98,22 @@ export async function buildApp(useLogging: boolean) {
  */
 export async function listen(app: FastifyInstance) {
 	try {
+
+		let host = import.meta.env.VITE_IP_ADDR;
+		let port = Number(import.meta.env.VITE_PORT);
+
+		console.log(`In listen with host:port: ${host}:${port}`);
 		await app.listen({ // Config object is optional and defaults to { host: 'localhost', port: 3000 }
-			host: import.meta.env.VITE_IP_ADDR,
-			port: Number(import.meta.env.VITE_PORT),
+			host,
+			port,
 		}, (err: any) => {  // Listen handler doesn't need to do much except report errors!
 			if (err) {
+				console.log("1");
 				app.log.error(err);
 			}
 		});
 	} catch (err) { // This will catch any errors that further bubble up from listen(), should be unnecessary
+		console.log("2");
 		app.log.error(err);
 	}
 }

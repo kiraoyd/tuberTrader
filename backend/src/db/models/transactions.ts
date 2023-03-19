@@ -1,14 +1,5 @@
 /** @module Models/Profile */
-import {
-    BaseEntity,
-    Column,
-    CreateDateColumn,
-    Entity, JoinTable,
-    ManyToMany,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    Relation
-} from "typeorm";
+import TypeORM from "typeorm";
 import {User} from "./user";
 import {Profile} from "./profile";
 
@@ -16,35 +7,35 @@ import {Profile} from "./profile";
  * Transactions Model - tracks transactions Users make on different Islands
  */
 
-@Entity()
-export class Transactions extends BaseEntity{
-    @PrimaryGeneratedColumn()
+@TypeORM.Entity()
+export class Transactions extends TypeORM.BaseEntity{
+    @TypeORM.PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @TypeORM.Column()
     numberSold: number;
 
-    @Column()
+    @TypeORM.Column()
     priceSold: number;
 
-    @Column()
+    @TypeORM.Column()
     profits: number;
 
     //Each user can complete many transactions
     //Each transaction references one seller (user)
-    @ManyToOne((type) => User, (user:User) => user.sale, {
+    @TypeORM.ManyToOne((type) => User, (user:User) => user.sale, {
         cascade: true,
         onDelete: "CASCADE"
     })
-    seller: Relation<User>
+    seller: TypeORM.Relation<User>
 
     //Each host island (Profile) can host many transactions
     //Each transaction references one host island(profile)
-    @ManyToOne((type) => Profile, (island:Profile) => island.sale, {
+    @TypeORM.ManyToOne((type) => Profile, (island:Profile) => island.sale, {
         cascade: true,
         onDelete: "CASCADE"
     })
-    host: Relation<Profile>
+    host: TypeORM.Relation<Profile>
 
 
 
