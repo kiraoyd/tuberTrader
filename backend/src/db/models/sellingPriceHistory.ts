@@ -1,16 +1,5 @@
 /** @module Models/sellingPricesThisWeek */
-import {
-    BaseEntity,
-    Column,
-    CreateDateColumn,
-    Entity, JoinTable,
-    ManyToMany,
-    OneToMany,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    Relation,
-    UpdateDateColumn
-} from "typeorm";
+import TypeORM from "typeorm";
 
 import {Profile} from "./profile"
 
@@ -20,31 +9,31 @@ import {Profile} from "./profile"
  * keeps track of all entered selling prices, by date and island
  * if no price was entered, default to 0
  */
-@Entity({name: "sellingPriceHistory"})
-export class SellingPriceHistory extends BaseEntity {
-    @PrimaryGeneratedColumn()
+@TypeORM.Entity({name: "sellingPriceHistory"})
+export class SellingPriceHistory extends TypeORM.BaseEntity {
+    @TypeORM.PrimaryGeneratedColumn()
     id: number;
 
     //Each price history entry represents one profile
-    @ManyToOne((type) => Profile, (profile:Profile) => profile.sellingPrice, {
+    @TypeORM.ManyToOne((type) => Profile, (profile:Profile) => profile.sellingPrice, {
         cascade: true,
         onDelete: "CASCADE"
     })
-    island: Relation<Profile>;
+    island: TypeORM.Relation<Profile>;
 
-    @Column()
+    @TypeORM.Column()
     date: string;
 
-    @Column({default: 0})
+    @TypeORM.Column({default: 0})
     priceAM: number;
 
-    @Column({default: 0})
+    @TypeORM.Column({default: 0})
     pricePM: number;
 
     //will be used to grab prices for specific date ranges
-    @CreateDateColumn()
+    @TypeORM.CreateDateColumn()
     created_at: string;
 
-    @UpdateDateColumn()
+    @TypeORM.UpdateDateColumn()
     updated_at: string;
 }

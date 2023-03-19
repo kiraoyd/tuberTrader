@@ -7,7 +7,7 @@ import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
 import * as types from "./types"
 import * as opts from "./opts"
-import {ILike, LessThan, Not, Equal, IsNull, ArrayContains, Like, Between} from "typeorm";
+import TypeORM from "typeorm";
 import {readFileSync} from "node:fs";
 import {SellingPriceHistory} from "./db/models/sellingPriceHistory";
 import {amPM} from "./types";
@@ -25,13 +25,13 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 
 	// Middleware
-	// TODO: Refactor this in favor of fastify-cors
-	app.use(cors());
+	// // TODO: Refactor this in favor of fastify-cors
+	// app.use(cors());
 
 	//gets the token from auth0
-	app.get("/verify", async (request:any, reply:any) =>{
-		reply.send(request.user)
-	})
+	// app.get("/verify", async (request:any, reply:any) =>{
+	// 	reply.send(request.user)
+	// })
 
 	/**
 	 * Route replying to /test path for test-testing
@@ -76,7 +76,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 		//manually JSON stringify due to fastify bug with validation
 		// https://github.com/fastify/fastify/issues/4017
-		await reply.send(JSON.stringify({user, ip_address: ip.ip}));
+		reply.send(JSON.stringify({user, ip_address: ip.ip}));
 	});
 
 	/**
@@ -107,7 +107,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 					email: true,
 				},
 				where: {
-					name: Equal(username)
+					name: TypeORM.Equal(username)
 				}
 			})
 			reply.send(user)
@@ -134,7 +134,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			},
 			where: {
 				profiles: {
-					id: Not(IsNull())
+					id: TypeORM.Not(TypeORM.IsNull())
 				}
 			}
 		});
@@ -183,7 +183,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			//set profile param to found user
 			profile.owner = user;
 			await profile.save(); //save to profile table
-			await reply.send(JSON.stringify({profile}))//send with the reply
+			reply.send(JSON.stringify({profile}))//send with the reply
 		} catch (err) {
 			reply.status(204).send("No content"); //TODO is this the right error
 		}
@@ -222,7 +222,8 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				owner: true
 			},
 			where: {
-				islandName: Equal(island)
+				islandName: TypeORM.Equal(island)
+
 			}
 		})
 		reply.send(profile)
@@ -302,7 +303,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 			transaction.host = island;
 
 			await transaction.save(); //save to transaction table
-			await reply.send(JSON.stringify({transaction}))//send with the reply
+			reply.send(JSON.stringify({transaction}))//send with the reply
 		} catch (err) {
 			reply.status(204).send("No content"); //TODO is this the right error
 		}
@@ -354,8 +355,8 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 					host: true
 				},
 				where: {
-					seller: Equal(seller.id),
-					host: Equal(host.id)
+					seller: TypeORM.Equal(seller.id),
+					host: TypeORM.Equal(host.id)
 				}
 			})
 			console.log(transaction)
@@ -412,7 +413,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				sellingPrice[0].pricePM = price;
 				await app.db.sellingPriceHistory.save(sellingPrice)
 			}
-			await reply.send(JSON.stringify({sellingPrice}))//send with the reply
+			reply.send(JSON.stringify({sellingPrice}))//send with the reply
 		}
 		else {
 			console.log("making new entry...")
@@ -444,7 +445,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 				await newPrice.save(); //save to sellingPriceHistory table
 				//TODO
 				console.log("saved")
-				await reply.send(JSON.stringify({newPrice}))//send with the reply
+				reply.send(JSON.stringify({newPrice}))//send with the reply
 			} catch (err) {
 				reply.status(204).send("No content");
 			}
@@ -577,9 +578,6 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		//TODO filter out just the current weeks worth of these results
 		//microservice will hit this endpoint, and get the JSON back to do stuff with
 		reply.send(islandPrices)
-
-
-		
 	})
 
 }

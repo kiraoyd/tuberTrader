@@ -2,10 +2,8 @@
 import {useEffect, useState} from "react";
 //import axios
 import axios from "axios";
-
 //two different ways to import, based on how we exported
 import {SearchBar} from './Search'
-//import {Profile} from './Profile'
 import initialState, {getRandomProfile} from "../initialState";
 
 
@@ -30,7 +28,6 @@ export function Subtitle() {
 
 
 //component to display the top ten islands
-//TODO how do I make this constantly update?
 export function TopTen(){
     let [topTen, setTopTen] = useState([])
     let [timer, setTimer] = useState([])
@@ -84,16 +81,3 @@ export function TopTen(){
     }
 }
 
-
-//TODO placeholder, will be replaced with call to backend to fetch top 10
-export function Profile(){
-    let [profile, setProfile] = useState(initialState.currentProfile);
-
-    //will be replaced with a map over the top 10 profiles array
-    return(
-        <div>
-            <img src={profile.picture}/>
-            <h2>{profile.islandName}</h2>
-        </div>
-    )
-}

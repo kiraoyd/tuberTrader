@@ -1,56 +1,46 @@
 /** @module Models/User */
-import {
-	BaseEntity,
-	Column,
-	CreateDateColumn,
-	Entity, JoinTable,
-	ManyToMany,
-	OneToMany,
-	PrimaryGeneratedColumn,
-	Relation,
-	UpdateDateColumn
-} from "typeorm";
 
 import {IPHistory} from "./ip_history";
 import {Profile} from "./profile";
 import {Transactions} from "./transactions"
+import TypeORM from "typeorm";
 
 
 
 /**
  *  Class representing user table
  */
-@Entity({name: "users"})
-export class User extends BaseEntity {
-	@PrimaryGeneratedColumn()
+@TypeORM.Entity({name: "users"})
+export class User extends TypeORM.BaseEntity {
+	@TypeORM.PrimaryGeneratedColumn()
 	id: number;
 
-	@Column({
+	@TypeORM.Column({
 		length: 100,
 		type: "varchar"
 	})
 	name: string;
 
-	@Column('text')
+	@TypeORM.Column('text')
 	email: string;
 
 
 	// Each user have have many IPHistory entries
-	@OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
-	ips: Relation<IPHistory[]>;
+	@TypeORM.OneToMany((type) => IPHistory, (ip: IPHistory) => ip.user)
+	ips: TypeORM.Relation<IPHistory[]>;
 
 	// Each user can own many island profiles
-	@OneToMany((type) => Profile, (p: Profile) => p.owner)
-	profiles: Relation<Profile[]>;
+	@TypeORM.OneToMany((type) => Profile, (p: Profile) => p.owner)
+	profiles: TypeORM.Relation<Profile[]>;
 
 	//Each user (seller) can have many sales (Transaction)
-	@OneToMany((type) => Transactions, (t: Transactions) => t.seller)
-	sale: Relation<Transactions[]>
+	@TypeORM.OneToMany((type) => Transactions, (t: Transactions) => t.seller)
+	sale: TypeORM.Relation<Transactions[]>
 
 
-	@CreateDateColumn()
+	@TypeORM.CreateDateColumn()
 	created_at: string;
 
-	@UpdateDateColumn()
+	@TypeORM.UpdateDateColumn()
 	updated_at: string;
 }
