@@ -65,7 +65,7 @@ OR source venv/Scripts/activate
 
 Command line prompt will change to (env) at the start, when virtual environment is active
 
-naviagate to: ~/workspace/FSProject/tuberTrader/searchPyService/tuberTrader
+naviagate to: ~/workspace/FSProject/tuberTrader/searchPyService/tuber_trader
 
 To run dev-server (searchService) : python3 manage.py runserver
 
