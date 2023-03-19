@@ -56,6 +56,17 @@ export async function buildApp(useLogging: boolean) {
 			audience: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE'
 		})
 
+		await app.register(function (instance, _options, done) {
+			instance.get('/verify', {
+				handler: function (request, reply) {
+					reply.send(request.user)
+				},
+				preValidation: instance.authenticate
+			})
+
+			done()
+		})
+
 
 		app.log.info("App built successfully.");
 	} catch (err) {

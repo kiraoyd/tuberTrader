@@ -53,7 +53,7 @@ function AuthLinksView(){
 function NoAuthLinksView() {
     return(
         <>
-        <Link to="/login">Login</Link>
+        <Link to="/verify">Login</Link>
         </>
     )
 }

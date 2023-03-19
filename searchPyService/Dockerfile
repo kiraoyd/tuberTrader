@@ -4,13 +4,15 @@
 
 #https://hub.docker.com/_/python/
 #standard python image
-FROM python:3
+FROM python:3.10.6
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
+#copy over dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./your-daemon-or-script.py" ]
+#start the Django server
+CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]

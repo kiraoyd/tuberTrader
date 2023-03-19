@@ -26,7 +26,9 @@ Change settings.py in searchPyService/tuberTrader/tuberTrader/settings.py file t
 
 To install django-cors-headers: pip install django-cors-headers
 
-NOTE: searchServiceDEP project is a DEPRICATED project. fallout from tutorials on django. Eventually remove. Only pay attention to tuberTrader
+To generate a requirements.txt with current dependencies in it:
+
+Naviagte to  /searchPyService and run: pip freeze > requirements.txt
 
 TUBERTRADER PROJECT DIRECTORY FILE KEY
 searchPyService/tuberTrader/tuberTrader --> container for project

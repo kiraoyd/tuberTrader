@@ -1,10 +1,5 @@
-#put all the dependencies in this file
-#pony is pythons typeorm: https://docs.ponyorm.org/firststeps.html
-#Django is pythons server: see readme.txt
-#psycopg2-binary 3.1 allows python and postgres to work together. https://www.psycopg.org/docs/install.html
-#django-handlers - streamlines writing handlers for routes. https://pypi.org/project/django-handlers/
-
-
+asgiref==3.6.0
 Django==4.1.7
-postgresql-client-common
-psycopg2-binary==3.1
+django-cors-headers==3.14.0
+psycopg2-binary==2.9.5
+sqlparse==0.4.3
