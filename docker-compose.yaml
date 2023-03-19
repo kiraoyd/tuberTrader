@@ -20,15 +20,15 @@ services:
       - postgres # name of SERVICE it depends on
 
 
-#  frontend:
-#    container_name: frontend
-#    build: ./frontend/
-#    restart: always
-#    ports:
-#      - "88:80" # map here for convinience sake, to avoid collisions with local server
-#    environment:
-#      - VITE_BACKEND_IP=backend
-#      - VITE_BACKEND_PORT=8080
+  frontend:
+    container_name: frontend
+    build: ./frontend/
+    restart: always
+    ports:
+      - "88:80" # map here for convinience sake, to avoid collisions with local server
+    environment:
+      - VITE_BACKEND_IP=backend
+      - VITE_BACKEND_PORT=8080
 
   postgres:
     container_name: postgres

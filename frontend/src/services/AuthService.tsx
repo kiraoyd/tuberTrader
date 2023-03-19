@@ -1,9 +1,14 @@
-import {httpClient, updateAxios} from "./HttpService";
+import {httpClient, auth0Client, updateAxios, updateAxiosAuth0} from "./HttpService";
 import {createContext, useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {AuthContextProps} from "../types/tuberTypes";
+import dotenv from "dotenv";
+//dotenv.config();
+// const env = process.env;
+
 
 //TODO change email to "username" everywhere
+//TODO attempting to use Auth0's Auth0Provider instead of this one, will keep the file around just in case
 
 //Initially retrieve a token from local storage (where it was placed in a prior login)
 const initialToken = getTokenFromStorage();
@@ -40,7 +45,7 @@ export const AuthProvider = ({children}) => {
     const handleLogout = async () => {
         //empty string in JS can be represented as: null/undefined/"", all work
         //Note: the absence of a token is considered a "new token" as well, so we still must update the state here
-        await saveToken(null);
+        await saveToken("");
         //after logout, send user back to homepage
         navigate("/")
     };
@@ -56,14 +61,16 @@ export const AuthProvider = ({children}) => {
         localStorage.setItem("token", JSON.stringify(token))
 
         //update Axios with new token to aid in continued auto auth requests on the backend
-        await updateAxios(token); //connects to the axios token attacher
+        //TODO await updateAxios(token); //connects to the axios token attacher
+
+        await updateAxios(token); //TODO connects to axios token attacher using auth0
     }
 
     //here is the value that we will return below
     const useAuthContextPackage = {
         token,
-        // handleLogin,
-        // handleLogout,
+        handleLogin,
+        handleLogout,
     };
 
     //Here is how we make everything available to the children via useAuth()
@@ -97,11 +104,28 @@ export async function getLoginTokenFromServer(email: string, password: string) {
     //we are using our httpClient to make the axios request to the backend 'login' route
     //As of now it is sending the email and password with the pose, and getting back the token associated
     //TODO we don't need a backend login route anymore here.... auth0 should do it for us
-    let res = await httpClient.post("/login", {
-        //data we want to send in the post
-        email,
-        password
+    // let res = await httpClient.post("/login", {
+    //     //data we want to send in the post
+    //     email,
+    //     password
+    // });
+
+    //TODO will this replace the above code and reroute to auth0? test it
+    let res = await auth0Client.post("/oauth/token", {
+        //email, password
+        grant_type: 'password',
+        username: email,
+        password: password,
+        audience: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE',
+        //scope: 'openid profile email',
+        //client_id: env.VITE_AUTH_CLIENT_ID,
+        //client_secret: env.VITE_AUTH_CLIENT_SECRET
+        //TODO this is very bad, just needed to test:
+        client_id: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE',
+        client_secret: '15api4mOyIpFZ5laAT27Hwc_JI17M3R2_DDe6I5WJNs3RrNHCvUm9qS0m8usfCLO'
+
     });
+    console.log(res.data.token)
     //return the token coming back from the login route's reply
     //data.token tokenizes just the token from the body of the response
     return res.data.token;
@@ -124,7 +148,7 @@ export function getTokenFromStorage() {
 //Single abstraction, that tucks away the CREATION of the React context itself
 // here is where we set what is inside AuthContext, it's type is defined by AuthContextProps
 //Whereever we use AuthContext we can now access the auth stuff globally to our children
-const AuthContext = createContext<AuthContextProps | null>(null);
+export const AuthContext = createContext<AuthContextProps | null>(null);
 
 
 //Here is our custom hook, called useAuth, it's a SECOND abstraction that tucks away the USE of the Context

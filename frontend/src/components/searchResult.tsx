@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import initialState, {getRandomProfile} from "../initialState";
+//import initialState, {getRandomProfile} from "../initialState";
 import {State, ProfileType} from "../types/tuberTypes";
 import {Profile} from "./Profile";
 import {Title} from "./Home";
@@ -13,8 +13,8 @@ export function SearchResult(props){
     //create state for foundProfile on page
      //let [foundProfile, setFoundProfile] = useState(initialState.currentProfile);
      let[islandRequested, setIslandRequested] = useState(props.island)
-     let [foundProfile, setFoundProfile] = useState();
-     let[islandFound, setIslandFound] = useState();
+     let [foundProfile, setFoundProfile] = useState({});
+     let[islandFound, setIslandFound] = useState(false);
      let[error, setError] = useState("");
 
      useEffect(() => {
@@ -44,6 +44,8 @@ export function SearchResult(props){
                   }
                   console.log(island)
                   setFoundProfile(island);
+                  console.log("This is the retrieved: ")
+                  console.log(foundProfile)
                   setIslandFound(true) //assume we will find the island requested
               }
               catch(error){
@@ -62,10 +64,9 @@ export function SearchResult(props){
             <div>
               <h2>Search Results</h2>
                 {/*<img src={foundProfile.picture}/>*/}
-                <h2>Island: {foundProfile.islandName}</h2>
-                <p>Turnips held: {foundProfile.turnipsHeld}</p>
-                <p>Price paid per turnip: {foundProfile.pricePaid}</p>
-
+                <h2>Island: {foundProfile["islandName"]}</h2>
+                <p>Turnips held: {foundProfile["turnipsHeld"]}</p>
+                <p>Price paid per turnip: {foundProfile["pricePaid"]}</p>
             </div>
         )
     }

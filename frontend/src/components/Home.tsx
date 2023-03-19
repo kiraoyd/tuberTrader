@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 //two different ways to import, based on how we exported
 import {SearchBar} from './Search'
-import initialState, {getRandomProfile} from "../initialState";
+//import initialState, {getRandomProfile} from "../initialState";
 
 
 export default function Home() {
@@ -30,7 +30,7 @@ export function Subtitle() {
 //component to display the top ten islands
 export function TopTen(){
     let [topTen, setTopTen] = useState([])
-    let [timer, setTimer] = useState([])
+    let [timer, setTimer] = useState(0)
 
     useEffect(() => {
             //make async function to make request to backend

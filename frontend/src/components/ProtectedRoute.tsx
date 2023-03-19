@@ -6,7 +6,7 @@ import {
     useNavigate
 } from 'react-router-dom';
 import { useAuth } from "../services/AuthService";
-
+/*  TODO come back to this once we have auth0 working
 //This will create a component that can wrap routes we want to restrict to token-only access
 //Every route we WRAP in this, will be considered the "children" and will be login protected
 //We get the token state here, so any children we wrap with this component will have token access
@@ -20,3 +20,4 @@ export const ProtectedRoute = ({children}) => {
     //otherwise they are logged in
     return children //render the protected routes (the children)
 }
+*/
