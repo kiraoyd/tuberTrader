@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 //two different ways to import, based on how we exported
 import {SearchBar} from './Search'
+import {EnterPriceForm} from "./enterPrice";
 //import initialState, {getRandomProfile} from "../initialState";
 
 
@@ -13,6 +14,7 @@ export default function Home() {
             <Subtitle/>
             <TopTen />
             <SearchBar/>
+            <EnterPriceForm/>
         </div>
     );
 }

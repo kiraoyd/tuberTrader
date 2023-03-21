@@ -14,6 +14,17 @@ export function LoginAuth0Button() {
     return <button onClick={() => loginWithRedirect()}>Log In</button>;
 }
 
+//TODO added to try and use auth0-react to reroute to auth0's universal login page
+export function LogoutAuth0Button(){
+    const { logout } = useAuth0();
+
+    return (
+        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+            Log Out
+        </button>
+    );
+}
+
 //Based off our Doggr Login component
 /*
 export function Login() {
@@ -82,16 +93,7 @@ export function Login() {
 //All we need to do on logout is remove the token, and navigate the user back to the homepage
 //then set a route and link to logout in the App
 
-//TODO added to try and use auth0-react to reroute to auth0's universal login page
-export function LogoutAuth0Button(){
-    const { logout } = useAuth0();
 
-    return (
-        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
-            Log Out
-        </button>
-    );
-}
 
 //Based off our original Doggr login component
 /*

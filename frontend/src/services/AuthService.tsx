@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 // const env = process.env;
 
 
-//TODO change email to "username" everywhere
 //TODO attempting to use Auth0's Auth0Provider instead of this one, will keep the file around just in case
 
 //Initially retrieve a token from local storage (where it was placed in a prior login)

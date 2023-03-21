@@ -2,7 +2,7 @@ import {Link, Route, Routes} from "react-router-dom";
 import {useAuth} from "../services/AuthService";
 //import {ProtectedRoute} from "./ProtectedRoute";
 //import {Login, Logout,LoginAuth0Button} from "./Login";  TODO uncomment if we go back to Doggr login
-import {LoginAuth0Button} from "./Login";
+import {LoginAuth0Button, LogoutAuth0Button} from "./Login";
 
 import Home from "./Home";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -29,27 +29,16 @@ function NavView(){
 
     //TODO trying to use the useAuth0 hook to get the token
     //https://auth0.com/docs/quickstart/spa/react/02-calling-an-api
-    const {getAccessTokenSilently} = useAuth0()
+    //const {getAccessTokenSilently} = useAuth0()
+    const {isAuthenticated} = useAuth0()
     let[token, setToken] = useState("")
 
-    useEffect(()=>{
-        const getToken = async() =>{
-            const tokenBack = await getAccessTokenSilently({
-                authorizationParams: {
-                    audience: "https://dev-mqy8ug3j6mzegsua.us.auth0.com/api/v2/",
-                    scope: "read:current_user"
-                }
-            })
-            setToken(tokenBack)
-        };
-        getToken();
-    }, [getAccessTokenSilently]);
     return(
         <nav>
             <div className="menu">
                 <PublicLinksView/>
                 {
-                    token ?
+                    isAuthenticated ?
                         <AuthLinksView />
                         : <NoAuthLinksView/>
                 }
@@ -67,6 +56,7 @@ function PublicLinksView() {
 function AuthLinksView(){
     return(<>
         {/*<Link to="/logout">Logout</Link>*/}
+        <LogoutAuth0Button>Logout</LogoutAuth0Button>
      </>)
 }
 
@@ -78,7 +68,8 @@ function NoAuthLinksView() {
     return(
         <>
         {/*<Link to="/login">Login</Link>*/}
-        {/*    <LoginAuth0Button>Login</LoginAuth0Button>*/}
+            <LoginAuth0Button>Login</LoginAuth0Button>
+
         </>
     )
 }
