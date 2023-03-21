@@ -1,8 +1,12 @@
 import {Link, Route, Routes} from "react-router-dom";
 import {useAuth} from "../services/AuthService";
-import {ProtectedRoute} from "./ProtectedRoute";
-import {Login, Logout} from "./Login";
+//import {ProtectedRoute} from "./ProtectedRoute";
+//import {Login, Logout,LoginAuth0Button} from "./Login";  TODO uncomment if we go back to Doggr login
+import {LoginAuth0Button, LogoutAuth0Button} from "./Login";
+
 import Home from "./Home";
+import { useAuth0 } from "@auth0/auth0-react";
+import {useEffect, useState} from 'react';
 
 
 //The parent component to be plugged into App
@@ -20,14 +24,21 @@ function NavView(){
     //PublicLinksView is unguarded
     //If token, AuthLinksView is shown (logout option)
     //else, NoAuthLinksView is shown (login option)
-    const {token} = useAuth();
+
+    // const {token} = useAuth();
+
+    //TODO trying to use the useAuth0 hook to get the token
+    //https://auth0.com/docs/quickstart/spa/react/02-calling-an-api
+    //const {getAccessTokenSilently} = useAuth0()
+    const {isAuthenticated} = useAuth0()
+    let[token, setToken] = useState("")
 
     return(
         <nav>
             <div className="menu">
                 <PublicLinksView/>
                 {
-                    token ?
+                    isAuthenticated ?
                         <AuthLinksView />
                         : <NoAuthLinksView/>
                 }
@@ -44,16 +55,21 @@ function PublicLinksView() {
 //Links shown if token present (logged in)
 function AuthLinksView(){
     return(<>
-        <Link to="/logout">Logout</Link>
+        {/*<Link to="/logout">Logout</Link>*/}
+        <LogoutAuth0Button>Logout</LogoutAuth0Button>
      </>)
 }
 
 
 //Links shown if no token present (not logged in)
+//TODO trying to use the Auth0 login button
+//TODO docker compose up fails if we add the login button on line 81 here
 function NoAuthLinksView() {
     return(
         <>
-        <Link to="/verify">Login</Link>
+        {/*<Link to="/login">Login</Link>*/}
+            <LoginAuth0Button>Login</LoginAuth0Button>
+
         </>
     )
 }
@@ -66,9 +82,9 @@ function NavRoutes(){
     return(
         <Routes>
             {/*<Route path="/match" element={<ProtectedRoute><Match/></ProtectedRoute>}*/}
-            <Route path="/login" element={<Login/>}/>
+            {/*<Route path="/login" element={<Login/>}/>*/}
             <Route path="/" element={<Home/>}/>
-            <Route path = "/logout" element={<Logout/>}/>
+            {/*<Route path = "/logout" element={<Logout/>}/>*/}
         </Routes>
     )
 }

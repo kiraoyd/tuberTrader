@@ -114,3 +114,26 @@ updating the search Results to show "sorry not found" to the page if the user ch
 island that doesn't exist in our DB. Issue now is the page only rerenders on the second click
 of the submit button. Also we don't want the user to see the search results until they 
 click "search" button for the first time. Done, pretty easy fix.
+
+3/19/23
+
+Got frontend, backend, db, and microservice docker container to run, and the site runs! Things that did NOt work:
+adding the auth0 Login button to the React frontend. It not only causes docker to fail but a lot of stuff breaks.
+So auth is just a mess right now. I haven't even gotten to troubleshoot verifying the token, I'm just
+trying to get the page to reroute to auth0's universal login site. Protected route, initial state, a bunch of
+our doggr based features in login, and all related login stuff in navMain are commented out right now.
+I will be taking it step by step to try and get them back to a state where docker likes it and auth works.
+
+Finally got the frontend piece of the login done using Auth0's routing to a universal login without breaking the site.
+Test via: kirak@pdx.edu, password: banana!82
+BUT I can't get the browser to navigate to the site when everything is running from docker: only when I manually boot
+up each section from the terminal (postgres running on docker, frontend via pnpm run dev, backend via pnpm dev,
+and microservice from python3 manage.py runserver). But if I run postgres, backend, and service from docker, and 
+manually boot up the frontend....it works. So something is wrong with my frontend container, I just don't know what. I 
+also played around with writing the functionaity to be able to accept info from the homepage and update the
+selling prices table with said info. But the axios request is failing, so I will have to debug that later.
+
+3/20/23
+Not a lot of time today as I need to study for a final that's tomorrow morning. I tried exposing port 88, but docker
+didn't allow it. So I'm still stuck in manual frontend land. May not even get to the minio piece before the deadline.
+I need to get that JWT token stuff from Auth0 so I can reinstate the protected routes....

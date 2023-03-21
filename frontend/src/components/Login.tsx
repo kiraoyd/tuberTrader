@@ -1,14 +1,35 @@
 import {useCallback, useState, useEffect} from "react";
 import React from "react";
+import ReactDOM from "react-dom"
 import {useAuth, AuthContext} from "../services/AuthService";
 import{useNavigate} from "react-router-dom";
+import {Auth0Provider} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
-//TODO update to make sure this works this with Oauth service
 
+//TODO added to try and use auth0-react to reroute to auth0's universal login page
+export function LoginAuth0Button() {
+    const { loginWithRedirect } = useAuth0();
 
+    return <button onClick={() => loginWithRedirect()}>Log In</button>;
+}
 
+//TODO added to try and use auth0-react to reroute to auth0's universal login page
+export function LogoutAuth0Button(){
+    const { logout } = useAuth0();
+
+    return (
+        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+            Log Out
+        </button>
+    );
+}
+
+//Based off our Doggr Login component
+/*
 export function Login() {
 
+    if (!AuthContext) return null;
     //use our custom hook to get access to the Login functionality in Auth
     const {handleLogin} = useAuth();
 
@@ -66,9 +87,16 @@ export function Login() {
     );
 }
 
+ */
+
 //this doesn't need to render anything, it just needs to log
 //All we need to do on logout is remove the token, and navigate the user back to the homepage
 //then set a route and link to logout in the App
+
+
+
+//Based off our original Doggr login component
+/*
 export function Logout() {
     const{handleLogout} = useAuth();
     const navigate = useNavigate()
@@ -81,4 +109,4 @@ export function Logout() {
     //send back some empty tags as a component, this is JSX's version of null
     return(<></>)
 }
-
+*/
