@@ -40,7 +40,7 @@ export function TopTen(){
                 const topTen = await axios.get("http://localhost:8080/topTurnips");
                 console.log(topTen)
                 setTopTen(topTen.data);  //useEffect calls this after the axios
-            }; getTopTen();
+            }; if( timer > 5) {getTopTen();}
 
             let time = setTimeout(()=> setTimer(timer + 1)
             , 5000);

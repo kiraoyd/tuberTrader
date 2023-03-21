@@ -42,6 +42,9 @@ COPY --chown=nodejs:nodejs . .
 # build/pack binaries from sources
 RUN pnpm build
 
+#hope this is the right spot...
+#RUN pnpm seed
+
 # exposed port
 EXPOSE 8080
 
