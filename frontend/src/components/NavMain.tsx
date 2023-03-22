@@ -3,6 +3,7 @@ import {Link, Route, Routes} from "react-router-dom";
 import {ProtectedRoute} from "./ProtectedRoute";
 //import {Login, Logout,LoginAuth0Button} from "./Login";  TODO uncomment if we go back to Doggr login
 import {LoginAuth0Button, LogoutAuth0Button} from "./Login";
+import {TokenButton} from "./tokenTest";
 
 import Home from "./Home";
 import {EnterPriceForm} from "./enterPrice"
@@ -59,6 +60,7 @@ function AuthLinksView(){
         {/*<Link to="/logout">Logout</Link>*/}
         <LogoutAuth0Button>Logout</LogoutAuth0Button>
         <Link to="/newPrice"> Enter Your Turnip Price</Link>
+        <TokenButton />
      </>)
 }
 

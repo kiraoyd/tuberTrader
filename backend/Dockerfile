@@ -32,8 +32,8 @@ ENV VITE_JWT_SECRET=superSecret
 
 # copy project definition/dependencies files, for better reuse of layers
 #COPY --chown=nodejs:nodejs package*.json ./
-
-# install dependencies here, for better reuse of layers
+#
+## install dependencies here, for better reuse of layers
 #RUN pnpm install
 
 # copy all sources in the container (exclusions in .dockerignore file)
@@ -42,12 +42,10 @@ COPY --chown=nodejs:nodejs . .
 # build/pack binaries from sources
 RUN pnpm install
 
-RUN pnpm migration:run
-RUN pnpm seed
 RUN pnpm build
-
-#hope this is the right spot...
+#RUN pnpm migration:run
 #RUN pnpm seed
+
 
 # exposed port
 EXPOSE 8080

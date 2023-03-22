@@ -61,8 +61,8 @@ services:
 volumes:
   db:
     driver: local
-  search_microservice_data:
-    driver: local
+#  search_microservice_data:
+#    driver: local
 
 
 
