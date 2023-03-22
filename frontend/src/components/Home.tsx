@@ -14,7 +14,6 @@ export default function Home() {
             <Subtitle/>
             <TopTen />
             <SearchBar/>
-            <EnterPriceForm/>
         </div>
     );
 }

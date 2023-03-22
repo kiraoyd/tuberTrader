@@ -1,10 +1,11 @@
 import {Link, Route, Routes} from "react-router-dom";
-import {useAuth} from "../services/AuthService";
-//import {ProtectedRoute} from "./ProtectedRoute";
+//import {useAuth} from "../services/AuthService";   TODO uncomment if we go back to doggrs useAuth
+import {ProtectedRoute} from "./ProtectedRoute";
 //import {Login, Logout,LoginAuth0Button} from "./Login";  TODO uncomment if we go back to Doggr login
 import {LoginAuth0Button, LogoutAuth0Button} from "./Login";
 
 import Home from "./Home";
+import {EnterPriceForm} from "./enterPrice"
 import { useAuth0 } from "@auth0/auth0-react";
 import {useEffect, useState} from 'react';
 
@@ -57,6 +58,7 @@ function AuthLinksView(){
     return(<>
         {/*<Link to="/logout">Logout</Link>*/}
         <LogoutAuth0Button>Logout</LogoutAuth0Button>
+        <Link to="/newPrice"> Enter Your Turnip Price</Link>
      </>)
 }
 
@@ -81,10 +83,8 @@ function NoAuthLinksView() {
 function NavRoutes(){
     return(
         <Routes>
-            {/*<Route path="/match" element={<ProtectedRoute><Match/></ProtectedRoute>}*/}
-            {/*<Route path="/login" element={<Login/>}/>*/}
+            <Route path="/newPrice" element={<ProtectedRoute><EnterPriceForm/></ProtectedRoute>}/>
             <Route path="/" element={<Home/>}/>
-            {/*<Route path = "/logout" element={<Logout/>}/>*/}
         </Routes>
     )
 }

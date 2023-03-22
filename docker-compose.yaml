@@ -43,20 +43,20 @@ services:
       - POSTGRES_PASSWORD=tuber
       - POSTGRES_DB=tuber
 
-  search_py_service:
-    container_name: search_py_service
-    build: ./search_py_service/tuber_trader/
-    restart: always
-    ports:
-      - "8000:8000" #is this right?
-    volumes:
-      - search_microservice_data:/var/lib/postgresql/data
-    environment:
-      - DATABASE_URL=postgres://tuber:tuber@postgres/tuber
-    depends_on:
-      - postgres #name of SERVICE it depends on
-    extra_hosts:
-      - "database: 127.0.0.1"
+#  search_py_service:
+#    container_name: search_py_service
+#    build: ./search_py_service/tuber_trader/
+#    restart: always
+#    ports:
+#      - "8000:8000" #is this right?
+#    volumes:
+#      - search_microservice_data:/var/lib/postgresql/data
+#    environment:
+#      - DATABASE_URL=postgres://tuber:tuber@postgres/tuber
+#    depends_on:
+#      - postgres #name of SERVICE it depends on
+#    extra_hosts:
+#      - "database: 127.0.0.1"
 
 volumes:
   db:
