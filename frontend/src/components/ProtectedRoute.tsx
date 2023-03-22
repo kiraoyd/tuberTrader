@@ -24,32 +24,3 @@ export const ProtectedRoute = ({children}) => {
     return children //render the protected routes (the children)
 
 }
-
-/*
-//TODO trying to use the useAuth0 hook to get the token
-//https://auth0.com/docs/quickstart/spa/react/02-calling-an-api
-//const {getAccessTokenSilently} = useAuth0()
-const { user, isAuthenticated, isLoading, getAccessTokenSilently, getIdTokenClaims } = useAuth0()
-let[token, setToken] = useState("")
-console.log(token)
-
-useEffect(()=>{
-    const getToken = async() =>{
-        const claims = await getIdTokenClaims();
-        let tokenBack = await claims.__raw;
-        // const tokenBack = await getAccessTokenSilently(
-        // {
-        //     authorizationParams: {
-        //         audience: "https://dev-mqy8ug3j6mzegsua.us.auth0.com/api/v2/",
-        //         scope: "read:current_user"
-        //     }
-        // })
-        console.log(tokenBack)
-        setToken(tokenBack)
-
-    };
-    getToken();
-    console.log(token)
-}, []);
-
- */

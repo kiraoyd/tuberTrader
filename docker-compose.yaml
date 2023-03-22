@@ -17,6 +17,8 @@ services:
       - VITE_DB_USER=tuber
       - VITE_DB_PASS=tuber
       - VITE_DB_NAME=tuber
+      - VITE_ADMIN_PASSWORD=adminpw
+      - VITE_JWT_SECRET=superSecret
     depends_on:
       - postgres # name of SERVICE it depends on
 
