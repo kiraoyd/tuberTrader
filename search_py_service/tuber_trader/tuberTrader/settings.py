@@ -89,7 +89,7 @@ DATABASES = {
         'PASSWORD': 'tuber',
         #This makes docker happy, but the serve won't run manually:
         'HOST': 'postgres',
-        #'HOST': '127.0.0.1', #this makes the server run manually...
+        #'HOST': '127.0.0.1', #this makes the server run manually in venv...
         'PORT': '5432',
     }
 }

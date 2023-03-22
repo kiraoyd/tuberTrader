@@ -24,11 +24,11 @@ export default function App() {
                 redirect_uri: window.location.origin
             }}
         >
-        {/*<AuthProvider>*/}
+        {/*// <AuthProvider>*/}
         <div className="App">
             <NavMain/>
         </div>
-        {/*</AuthProvider>*/}
+        {/*{</AuthProvider>}*/}
         </Auth0Provider>
     );
 }

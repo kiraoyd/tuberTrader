@@ -5,6 +5,7 @@ import axios from "axios";
 //two different ways to import, based on how we exported
 import {SearchBar} from './Search'
 import {EnterPriceForm} from "./enterPrice";
+import {getTokenFromAuth0} from "../services/AuthService";
 //import initialState, {getRandomProfile} from "../initialState";
 
 
@@ -14,7 +15,6 @@ export default function Home() {
             <Subtitle/>
             <TopTen />
             <SearchBar/>
-            <EnterPriceForm/>
         </div>
     );
 }
@@ -31,6 +31,7 @@ export function Subtitle() {
 
 //component to display the top ten islands
 export function TopTen(){
+
     let [topTen, setTopTen] = useState([])
     let [timer, setTimer] = useState(0)
 
@@ -40,7 +41,7 @@ export function TopTen(){
                 const topTen = await axios.get("http://localhost:8080/topTurnips");
                 console.log(topTen)
                 setTopTen(topTen.data);  //useEffect calls this after the axios
-            }; if( timer > 5) {getTopTen();}
+            }; if( timer > 3) {getTopTen();}
 
             let time = setTimeout(()=> setTimer(timer + 1)
             , 5000);
