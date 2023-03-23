@@ -177,3 +177,19 @@ still running off an old working version of docker. So for the presentation vide
 I just updated the readme for the project to have instructions on how to clone and run the project locally, outside of docker. I am going to push to master and submit what I have
 for now, just in case. And then I'll keep plugging away at the docker issues tonight. If I can get any new successes, I will update
 the repo, record a new video, and resubmit everything to canvas.  I guess it's time to throw in the towel for now. It's been a good ride and I've learned a lot. May the turnips grow, and the bells rain.
+
+## Epilogue
+
+I just realised I can build the containers one at a time! So I'm going to go back and try to get the frontend working.
+First thing: I needed to uncomment out the "strick null checks: true" in package.json". Now it's time to go through
+and take care of all the errors being thrown during the build. Fixed my incorrect syntax for the auth button components, 
+and just fixed some typing errors in "enterPrice", though that introduced some logic errors I'll need to fix later.
+
+I am so sad. I thought the frontend loading issue was in the nginx.conf. I changed the port it's listening on to be 88.
+This made no change. Will change it back to 80 now.
+
+Ok I don't know why, bt running docker-compose build backend --no-cache will get past the pnpm install, but docker-compose build --no-cache doesn't.
+
+Been working for a solid few hours trying to get the backend container running. I made some progress (got different errors yay!),
+but I keep getting hung up when I add in migrations. I think I need to submit what I have now as it's getting close to
+the wire. So this will be the last entry unless I stumble upon something amazing. Thanks for everything, I did learn a ton! :)
