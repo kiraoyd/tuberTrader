@@ -72,5 +72,4 @@ Start Frontend
 > 
 > Launch site: pnpm run dev 
 > 
-Note: the frontend container CAN run from docker, it just fails to load the site and instead reroutes to the nginx welcome page
-
+Note: the frontend container CAN run from docker, it just fails to load the site and instead reroutes to the nginx welcome 
