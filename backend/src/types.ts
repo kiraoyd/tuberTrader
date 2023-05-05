@@ -102,7 +102,7 @@ export enum amPM {
 export interface IPostPriceBody{
     island: number,
     price: number,
-    //timeOfDay: amPM
+    //timeOfDay: amPMpnp
     timeOfDay: string,
     currentDate: string
 }
@@ -110,4 +110,5 @@ export interface IPostPriceBody{
 
 export type IPostPriceResponse = {
     price: SellingPriceHistory
+    error: string,
 }

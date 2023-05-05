@@ -1,3 +1,7 @@
+# Tuber Trader
+## An adventure into the depths of web dev and wishful thinking
+
+### The begining...
 Building out the database tables felt pretty straightforward. No real trouble here.
 I started by building the tables for a site User (imagining each user might have a registered account)
 and for island profiles (each user could maintain multiple profiles).
@@ -25,16 +29,16 @@ my last priority at this point, in part because I don't really like CSS and also
 because I care most about making sure I learn the functionality we are going
 over in class. But I hope to still get to it before the deadline. :)
 
-3/10/23
+### 3/10/23 - Still fresh, still hopeful
 After our class on authorization, I spent some time updating my frontend to 
 have all the Auth pieces in place. I still haven't added Auth to the backend, so the login
 functionality doesn't actually DO anything from the front end as of now. I am definitely
-encountering some sticky point researching to figure out how to use Oauth as my
+encountering some sticky points researching to figure out how to use Oauth as my
 3rd party backend authentication. I think I will put that off for a bit, and get some work done
 on that sale tracking table. 
 
 Weird, I don't know why I went snake_case on my seeder file names....
-Oh crap, I'm mixing style everywhere here....yuk. I'll go back and refactor once I get thing working.
+Oh crap, I'm mixing style everywhere here....yuk. I'll go back and refactor once I get things working.
 
 Working on the route to post a new selling price. Need an enum to control for the user
 telling us if they want to enter am or pm price. My first thought was, we might as well do the
@@ -42,7 +46,7 @@ date matching for the user (by getting the current date and using it to referenc
 But I failed monumentally to be able to run the correct query on the updated_at column. The
 issue is that the date format in updated_at includes a time stamp, and the Date() built in in
 typescript is in a different format. I extracted just the yyyy-dd-mm piece, and tried to 
-use a Lik% clause in the where of my FindOneOrFail....but it didn't work. So I'm shelving that for
+use a Like% clause in the where of my FindOneOrFail....but it didn't work. So I'm shelving that for
 now and rethinking this: I'll just have my user give me the date that they are entering the price 
 for. This also allows them to retroactively enter data, which might be useful anyways.
 
@@ -51,11 +55,11 @@ It's been a journey through typeorm. I really wish I had invested the time in qu
 I know what the SQL query needs to look like, but translating it to the typeorm find() method is
 proving to be way harder than I expected. I finally figured out how to pull the top 10 records with the 
 highest selling prices out of the sellingPriceHistory table, but hit a snag where if I tried to include a
-relation to Profile, i'd get an error: ERROR: column distinctAlias.SellingPriceHistory_id does not exist
+relation to Profile, i'd get this super fun error: ERROR: column distinctAlias.SellingPriceHistory_id does not exist
 . I tried tracking it down on github issues, stackoverflow...all to no avail. So I turned to trying
 to decipher the actual message itself. It seemed like something was preventing the query to do with some
 violation in a distinct requirement for one of the columns. I had a hunch that since there could be multiple 
-repeat profile ID's in the priceHistory table, maybe this was messing with typeorm asit constructed the
+repeat profile ID's in the priceHistory table, maybe this was messing with typeorm as it constructed the
 results. Like perhaps it was trying to use the PROFILE's id as the distinct ID for the results. Fearing yet another
 rejection, I tried for a wildcard: throw the sellingPriceHistory record id in the select clause, since it was guaranteed to
 be unique for each record. Bingo. It worked. I still don't fully know why.
@@ -63,6 +67,8 @@ be unique for each record. Bingo. It worked. I still don't fully know why.
 Side note: man if I wasn't up against the deadline, my code could be abstracted out soooo much nicer. I think
 that will be the very first thing I do once I have all functionality up and running. Just get in there and start 
 writing helper functions and cleaning this bad boy up
+
+### Sometime later, as time began to slip into the land of bugs
 
 Ok i have the route working to pull the top 10 islands with the highest current selling prices. Still to do will be the
 route that can pull just the current weeks history for a specific island. To do this I need to figure out how to 
@@ -80,7 +86,8 @@ it was a total oversight. My fetch is all based on dates: I query to pull the to
 date...and we crossed over midnight an hour ago. And I hadn't seeded or posted any records to my table, with todays
 date. And  sohere we are. I added some new records with todays date, and voila, the site is working!
 
-Back at it now. I decided to swap my microservice idea and build a microservice that simply handles the routes
+### Unknown date (is anyone actaully keeping track of time anymore?): where I am still clinging to the belief that the elusive "later" will turn up so I can implement all that extra stuff...
+Back at it now. I decided to swap my original microservice idea and build a microservice that simply handles the routes
 needed for searching the site for islands based on parameters. I'll start with just a route to search an
 island by name, and if I have time will add more to support extra specifications (name and turnips held for example).
 Most important: make sure I can execute the microservice.
@@ -93,6 +100,7 @@ setting up the virtual environment correctly, getting django's dependecies estab
 to our tuber DB (getting django off of SQLite and onto postgres). I still don't think I'm 
 handling dependencies for docker correctly yet, but I will get to that part eventually.
 
+### ...and discovering the joys of Django
 Alright Django maybe wasn't the best choice, as it seems to be better suited for from-scratch
 projects. I figured out how to change settings.py to link to my existing postgres DB tuber. 
 And got the django server up and running, listening for HTTP Requests. The big hangup: it looks like
@@ -114,3 +122,74 @@ updating the search Results to show "sorry not found" to the page if the user ch
 island that doesn't exist in our DB. Issue now is the page only rerenders on the second click
 of the submit button. Also we don't want the user to see the search results until they 
 click "search" button for the first time. Done, pretty easy fix.
+
+### 3/19/23 Docker containers are born and swiftly show their demons, plus some auth0 troubles
+
+Got frontend, backend, db, and microservice docker container to run, and the site runs! Things that did NOt work:
+adding the auth0 Login button to the React frontend. It not only causes docker to fail but a lot of stuff breaks.
+So auth is just a mess right now. I haven't even gotten to troubleshoot verifying the token, I'm just
+trying to get the page to reroute to auth0's universal login site. Protected route, initial state, a bunch of
+our doggr based features in login, and all related login stuff in navMain are commented out right now.
+I will be taking it step by step to try and get them back to a state where docker likes it and auth works.
+
+Finally got the frontend piece of the login done using Auth0's routing to a universal login without breaking the site.
+Test via: kirak@pdx.edu, password: banana!82
+BUT I can't get the browser to navigate to the site when everything is running from docker: only when I manually boot
+up each section from the terminal (postgres running on docker, frontend via pnpm run dev, backend via pnpm dev,
+and microservice from python3 manage.py runserver). But if I run postgres, backend, and service from docker, and 
+manually boot up the frontend....it works. So something is wrong with my frontend container, I just don't know what. I 
+also played around with writing the functionaity to be able to accept info from the homepage and update the
+selling prices table with said info. But the axios request is failing, so I will have to debug that later.
+
+### 3/20/23 Where the hope that time will be spent on anything outside of Docker finally settles behind the horizon
+Not a lot of time today as I need to study for a final that's tomorrow morning. I tried exposing port 88, but docker
+didn't allow it. So I'm still stuck in manual frontend land. May not even get to the minio piece before the deadline.
+I need to get that JWT token stuff from Auth0 so I can reinstate the protected routes....
+
+### Here lies the lost times. A spiral into the google hole. Hours staring into the glow of the monitor, keyboard shortcuts to toggle between shameful amounts of tabs worn thin.   A glimmer of success with Authorization, then plunged back into the recesses of Docker log errors. 
+### 3/22/23 The end
+
+Well, the last 48 hours have been an all out attempt to figure out why I cannot docker-compose build --no-cache
+without failing on the PNPM install phase. I've combed through the backend files, compared them against Doggrs, discussed
+my Djando microservice filestructure with another student that also wrote a Django service and checked for incongruencies
+in setup (there were not except I had an extra env, which I deleted). I messed around with ports, tried clearing docker
+with docker compose down and docker system prune --volumes before each new attempt to build. I tried different DB
+states: migrated, not migrated, seeded, not seeded, total typOrm drop, and no differences to the issue. The only lead
+that was promising is that my pnpm version is locally 7.25.0 and dockers is 7.30.0, so I ran a pnpm update, but locally
+the version remained at 7.25.0. At least I haven't made any big changes to the backend, so the site is still running 
+so I can demo it in the video locally with the backend running from docker still. 
+
+So here is my workflow for at least getting everything up and running locally: because my docker build is stuck, I'm
+still running off an old working version of docker. So for the presentation video here is how I will run things:
+
+- from the terminal, navigate to: ~/workspace/FSProject/tuberTrader/backend and run: pnpm migrate:run and pnpm seed (I can't even reach these commands in the Dockerfile as they are after pnpm install)
+- from the tuberTrader root directory: docker-compose up
+- Shut down the frontend docker container (still not working as I haven't been able to build and troubleshoot)
+- from a terminal navigate to: :~/workspace/FSProject/tuberTrader/frontend and run pnpm run dev to boot up front end
+- Wait for 30 seconds (due to the timer hacky solution Casey has me add to try to quiet the backend errors)
+- the site should be running, with successful features: 
+  - top Turnip display
+  - search bar
+  - login capability (use user: kirak@pdd.edu pass: banana!82 to test auth0 login)
+  - Login protected route to enter a new price (not fully functional yet, stil debugging the post failing)
+  - Logged in viewable only: logout button, and token button (tests retrieval of Auth0 token, as it's not needed in the site now, but it will print to console if button is clicked)
+
+I just updated the readme for the project to have instructions on how to clone and run the project locally, outside of docker. I am going to push to master and submit what I have
+for now, just in case. And then I'll keep plugging away at the docker issues tonight. If I can get any new successes, I will update
+the repo, record a new video, and resubmit everything to canvas.  I guess it's time to throw in the towel for now. It's been a good ride and I've learned a lot. May the turnips grow, and the bells rain.
+
+## Epilogue
+
+I just realised I can build the containers one at a time! So I'm going to go back and try to get the frontend working.
+First thing: I needed to uncomment out the "strick null checks: true" in package.json". Now it's time to go through
+and take care of all the errors being thrown during the build. Fixed my incorrect syntax for the auth button components, 
+and just fixed some typing errors in "enterPrice", though that introduced some logic errors I'll need to fix later.
+
+I am so sad. I thought the frontend loading issue was in the nginx.conf. I changed the port it's listening on to be 88.
+This made no change. Will change it back to 80 now.
+
+Ok I don't know why, bt running docker-compose build backend --no-cache will get past the pnpm install, but docker-compose build --no-cache doesn't.
+
+Been working for a solid few hours trying to get the backend container running. I made some progress (got different errors yay!),
+but I keep getting hung up when I add in migrations. I think I need to submit what I have now as it's getting close to
+the wire. So this will be the last entry unless I stumble upon something amazing. Thanks for everything, I did learn a ton! :)

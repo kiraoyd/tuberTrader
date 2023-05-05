@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zu+9^2g&3))ui=ob(n#l8k1i!v)qw4b=pqfb6gsooavkjhtc#y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #this feels super unsafe....
 
 
 # Application definition
@@ -87,7 +87,9 @@ DATABASES = {
         'NAME': 'tuber',
         'USER': 'tuber',
         'PASSWORD': 'tuber',
-        'HOST': 'postgres',
+        #This makes docker happy, but the serve won't run manually:
+       # 'HOST': 'postgres',
+        'HOST': '127.0.0.1', #this makes the server run manually in venv...
         'PORT': '5432',
     }
 }
@@ -132,3 +134,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# #added this, its an experiment:
+# CORS_ORIGIN_WHITELIST = ["http://localhost:5173/"]

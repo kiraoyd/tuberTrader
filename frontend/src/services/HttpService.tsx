@@ -23,7 +23,6 @@ export const httpClient = axios.create({
 	}
 });
 
-
 //Lets us update axios with our token, to support axios's automatic backend auth requests
 export const updateAxios = async (token: string) => {
 	console.log("In update axios");
@@ -43,3 +42,31 @@ export const updateAxios = async (token: string) => {
 			Promise.reject(error);
 		});
 };
+
+//TODO trying to add an instance of axios that links to auth0
+
+export const auth0Client = axios.create({
+	baseURL: 'dev-mqy8ug3j6mzegsua.us.auth0.com',
+})
+
+//Lets us update axios with our token, to support axios's automatic backend auth requests
+export const updateAxiosAuth0 = async (token: string) => {
+	console.log("In update axios");
+	auth0Client.interceptors.request.use(
+		async config => {
+
+			// @ts-ignore
+			config.headers = {
+				'Authorization': `Bearer ${token}`,
+				'Accept': 'application/json',
+			};
+
+			return config;
+		},
+		error => {
+			console.log("REJECTED PROMISE");
+			Promise.reject(error);
+		});
+};
+
+
