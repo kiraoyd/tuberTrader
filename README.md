@@ -1,5 +1,5 @@
 
-
+# 5/5/2023 - ripping out typeORM and replacing with MikroORM
 # BIG DISCLAIMER: This project is still not up and running fully from Docker. 
 You are 
 welcome to give it a try in Docker, but so far the build has been failing for the backend
