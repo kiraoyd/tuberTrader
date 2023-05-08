@@ -9,6 +9,15 @@ specifiers:
   '@fastify/multipart': ^7.6.0
   '@fastify/oauth2': ^7.1.0
   '@fastify/static': ^6.10.1
+  '@mikro-orm/cli': 5.7.2
+  '@mikro-orm/core': 5.7.2
+  '@mikro-orm/migrations': 5.7.2
+  '@mikro-orm/postgresql': 5.7.2
+  '@mikro-orm/reflection': 5.7.2
+  '@mikro-orm/seeder': 5.7.2
+  '@types/chai': ^4.3.4
+  '@types/node': ^18.15.11
+  '@types/tap': ^15.0.8
   '@swc/cli': ^0.1.62
   '@swc/core': ^1.3.56
   '@types/cors': ^2.8.13
@@ -18,6 +27,9 @@ specifiers:
   '@typescript-eslint/parser': ^5.59.5
   '@vitest/coverage-c8': ^0.28.5
   '@vitest/ui': ^0.28.5
+  axios: ^1.4.0
+  chai: ^4.3.7
+  cross-env: ^7.0.3
   bcrypt: ^5.1.0
   better-docs: ^2.7.2
   c8: ^7.13.0
@@ -34,6 +46,8 @@ specifiers:
   fastify-env: ^2.2.0
   fastify-oauth2: ^4.6.0
   fastify-plugin: ^4.5.0
+  mikro-orm-soft-delete: ^0.1.0
+  nodemon: ^2.0.22
   jsdoc: ^4.0.2
   jsonwebtoken: ^9.0.0
   minio: ^7.1.0
@@ -48,11 +62,14 @@ specifiers:
   rimraf: ^4.4.1
   supertest: ^6.3.3
   taffydb: ^2.7.3
+  ts-morph: ^17.0.1
   ts-node: ^10.9.1
+  typedoc: ^0.24.6
+  typedoc-plugin-merge-modules: ^5.0.0
   tsconfig-paths: ^4.2.0
   typeorm: ^0.3.15
   typeorm-codebase-sync: ^1.1.2
-  typescript: ^4.9.5
+  typescript: ^5.0.4
   vite: ^4.3.5
   vite-node: ^0.28.5
   vite-plugin-dts: ^1.7.3
@@ -66,6 +83,12 @@ dependencies:
   '@fastify/multipart': 7.6.0
   '@fastify/oauth2': 7.1.0
   '@fastify/static': 6.10.1
+  '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+  '@mikro-orm/migrations': 5.7.2_@mikro-orm+core@5.7.2
+  '@mikro-orm/postgresql': 5.7.2_pjbts2b4yggfd737mtarjkaz7i
+  '@mikro-orm/reflection': 5.7.2_@mikro-orm+core@5.7.2
+  '@mikro-orm/seeder': 5.7.2_@mikro-orm+core@5.7.2
+  axios: 1.4.0
   bcrypt: 5.1.0
   cors: 2.8.5
   dotenv: 16.0.3
@@ -77,6 +100,7 @@ dependencies:
   fastify-env: 2.2.0
   fastify-oauth2: 4.6.0
   fastify-plugin: 4.5.0
+  mikro-orm-soft-delete: 0.1.0
   jsonwebtoken: 9.0.0
   minio: 7.1.0
   pg: 8.10.0
@@ -86,9 +110,13 @@ dependencies:
 
 devDependencies:
   '@digitak/tsc-esm': 3.1.4
+  '@mikro-orm/cli': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
   '@faker-js/faker': 7.6.0
   '@swc/cli': 0.1.62_@swc+core@1.3.56
   '@swc/core': 1.3.56
+  '@types/chai': 4.3.5
+  '@types/node': 18.16.5
+  '@types/tap': 15.0.8
   '@types/cors': 2.8.13
   '@types/node': 18.16.6
   '@types/supertest': 2.0.12
@@ -97,9 +125,12 @@ devDependencies:
   '@vitest/coverage-c8': 0.28.5_@vitest+ui@0.28.5
   '@vitest/ui': 0.28.5
   better-docs: 2.7.2_oxfzelaz5ynxsop2v2nu2h2m64
+  chai: 4.3.7
+  cross-env: 7.0.3
   c8: 7.13.0
   esbuild: 0.17.18
   eslint: 8.40.0
+  nodemon: 2.0.22
   fastify-cli: 5.7.1
   jsdoc: 4.0.2
   pino-pretty: 9.4.0
@@ -108,12 +139,16 @@ devDependencies:
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   rimraf: 4.4.1
+  tap: 16.3.4_pyqfhkbboucpxgvrs7ocxwodkm
+  ts-morph: 17.0.1
   supertest: 6.3.3
   taffydb: 2.7.3
   ts-node: 10.9.1_ryl6w4ennuhfh3mvka4gmw3zji
   tsconfig-paths: 4.2.0
   typeorm-codebase-sync: 1.1.2_zzkyozno5klxok4wzrxp2xeksm
-  typescript: 4.9.5
+  typedoc: 0.24.7_typescript@5.0.4
+  typedoc-plugin-merge-modules: 5.0.0_typedoc@0.24.7
+  typescript: 5.0.4
   vite: 4.3.5_@types+node@18.16.6
   vite-node: 0.28.5_@types+node@18.16.6
   vite-plugin-dts: 1.7.3_yiny7bqfqjlmuoeac3bokcjiuy
@@ -949,7 +984,269 @@ packages:
       got: 11.8.6
       os-filter-obj: 2.0.0
     dev: true
+  /@mikro-orm/cli/5.7.2_jzh2xpoalyiiy3ljnnyudbscfu:
+    resolution: {integrity: sha512-Haup6Scv0LG5zhmKGVF+SKJqq7Ur4tg/zrhIWGZkyUnRWjcME+JL8xu4vVTOhYc1KrPaHtKbhcOPodhT0g/RYA==}
+    engines: {node: '>= 14.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@mikro-orm/better-sqlite': ^5.0.0
+      '@mikro-orm/entity-generator': ^5.0.0
+      '@mikro-orm/mariadb': ^5.0.0
+      '@mikro-orm/migrations': ^5.0.0
+      '@mikro-orm/migrations-mongodb': ^5.0.0
+      '@mikro-orm/mongodb': ^5.0.0
+      '@mikro-orm/mysql': ^5.0.0
+      '@mikro-orm/postgresql': ^5.0.0
+      '@mikro-orm/seeder': ^5.0.0
+      '@mikro-orm/sqlite': ^5.0.0
+    peerDependenciesMeta:
+      '@mikro-orm/better-sqlite':
+        optional: true
+      '@mikro-orm/entity-generator':
+        optional: true
+      '@mikro-orm/mariadb':
+        optional: true
+      '@mikro-orm/migrations':
+        optional: true
+      '@mikro-orm/migrations-mongodb':
+        optional: true
+      '@mikro-orm/mongodb':
+        optional: true
+      '@mikro-orm/mysql':
+        optional: true
+      '@mikro-orm/postgresql':
+        optional: true
+      '@mikro-orm/seeder':
+        optional: true
+      '@mikro-orm/sqlite':
+        optional: true
+    dependencies:
+      '@jercle/yargonaut': 1.1.5
+      '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+      '@mikro-orm/knex': 5.7.4_24fpe6injcxryr2dkhfgl5ex4y
+      '@mikro-orm/migrations': 5.7.2_@mikro-orm+core@5.7.2
+      '@mikro-orm/postgresql': 5.7.2_pjbts2b4yggfd737mtarjkaz7i
+      '@mikro-orm/seeder': 5.7.2_@mikro-orm+core@5.7.2
+      fs-extra: 11.1.1
+      tsconfig-paths: 4.2.0
+      yargs: 17.7.1
+    transitivePeerDependencies:
+      - better-sqlite3
+      - mssql
+      - mysql
+      - mysql2
+      - pg
+      - pg-native
+      - sqlite3
+      - supports-color
+      - tedious
+    dev: true
 
+    /@mikro-orm/core/5.7.2_jzh2xpoalyiiy3ljnnyudbscfu:
+      resolution: {integrity: sha512-mlreUGILSOP2Y47sGNZSFRkuAWV8KM/s1VPcgyVmcwaZKNrY0x3H38gLOTdzfkmUMotJMTTq/J86h3bFd0BYaw==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/better-sqlite': ^5.0.0
+        '@mikro-orm/entity-generator': ^5.0.0
+        '@mikro-orm/mariadb': ^5.0.0
+        '@mikro-orm/migrations': ^5.0.0
+        '@mikro-orm/migrations-mongodb': ^5.0.0
+        '@mikro-orm/mongodb': ^5.0.0
+        '@mikro-orm/mysql': ^5.0.0
+        '@mikro-orm/postgresql': ^5.0.0
+        '@mikro-orm/seeder': ^5.0.0
+        '@mikro-orm/sqlite': ^5.0.0
+      peerDependenciesMeta:
+        '@mikro-orm/better-sqlite':
+          optional: true
+        '@mikro-orm/entity-generator':
+          optional: true
+        '@mikro-orm/mariadb':
+          optional: true
+        '@mikro-orm/migrations':
+          optional: true
+        '@mikro-orm/migrations-mongodb':
+          optional: true
+        '@mikro-orm/mongodb':
+          optional: true
+        '@mikro-orm/mysql':
+          optional: true
+        '@mikro-orm/postgresql':
+          optional: true
+        '@mikro-orm/seeder':
+          optional: true
+        '@mikro-orm/sqlite':
+          optional: true
+      dependencies:
+        '@mikro-orm/migrations': 5.7.2_@mikro-orm+core@5.7.2
+        '@mikro-orm/postgresql': 5.7.2_pjbts2b4yggfd737mtarjkaz7i
+        '@mikro-orm/seeder': 5.7.2_@mikro-orm+core@5.7.2
+        acorn-loose: 8.3.0
+        acorn-walk: 8.2.0
+        dotenv: 16.0.3
+        fs-extra: 11.1.1
+        globby: 11.1.0
+        mikro-orm: 5.7.4
+        reflect-metadata: 0.1.13
+
+    /@mikro-orm/knex/5.7.4_24fpe6injcxryr2dkhfgl5ex4y:
+      resolution: {integrity: sha512-DP7h2Ib5QBDWgCQj3AGv/4KIL78vAuNwVQAC0CV6yk+q/6yIiBHNnjgw1b4aFcRcBemKaFx+jjEhA03flxaebQ==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/core': ^5.0.0
+        '@mikro-orm/entity-generator': ^5.0.0
+        '@mikro-orm/migrations': ^5.0.0
+        better-sqlite3: ^8.0.0
+        mssql: ^7.0.0
+        mysql: ^2.18.1
+        mysql2: ^2.1.0
+        pg: ^8.0.3
+        sqlite3: ^5.0.0
+      peerDependenciesMeta:
+        '@mikro-orm/entity-generator':
+          optional: true
+        '@mikro-orm/migrations':
+          optional: true
+        better-sqlite3:
+          optional: true
+        mssql:
+          optional: true
+        mysql:
+          optional: true
+        mysql2:
+          optional: true
+        pg:
+          optional: true
+        sqlite3:
+          optional: true
+      dependencies:
+        '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+        '@mikro-orm/migrations': 5.7.2_@mikro-orm+core@5.7.2
+        fs-extra: 11.1.1
+        knex: 2.4.2
+        sqlstring: 2.3.3
+      transitivePeerDependencies:
+        - pg-native
+        - supports-color
+        - tedious
+
+    /@mikro-orm/knex/5.7.4_mgtmjnoteo7rs5alqchehbnpni:
+      resolution: {integrity: sha512-DP7h2Ib5QBDWgCQj3AGv/4KIL78vAuNwVQAC0CV6yk+q/6yIiBHNnjgw1b4aFcRcBemKaFx+jjEhA03flxaebQ==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/core': ^5.0.0
+        '@mikro-orm/entity-generator': ^5.0.0
+        '@mikro-orm/migrations': ^5.0.0
+        better-sqlite3: ^8.0.0
+        mssql: ^7.0.0
+        mysql: ^2.18.1
+        mysql2: ^2.1.0
+        pg: ^8.0.3
+        sqlite3: ^5.0.0
+      peerDependenciesMeta:
+        '@mikro-orm/entity-generator':
+          optional: true
+        '@mikro-orm/migrations':
+          optional: true
+        better-sqlite3:
+          optional: true
+        mssql:
+          optional: true
+        mysql:
+          optional: true
+        mysql2:
+          optional: true
+        pg:
+          optional: true
+        sqlite3:
+          optional: true
+      dependencies:
+        '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+        '@mikro-orm/migrations': 5.7.2_@mikro-orm+core@5.7.2
+        fs-extra: 11.1.1
+        knex: 2.4.2_pg@8.10.0
+        pg: 8.10.0
+        sqlstring: 2.3.3
+      transitivePeerDependencies:
+        - pg-native
+        - supports-color
+        - tedious
+
+    /@mikro-orm/migrations/5.7.2_@mikro-orm+core@5.7.2:
+      resolution: {integrity: sha512-7LXsFMIzcjn0fnlewvps3MLmyKz6+W9kpVw+U00Pyw1o2bZ2o/G5PBd5PsK+cr0puldAc27DFrDfjIgindfhGA==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/core': ^5.0.0
+      dependencies:
+        '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+        '@mikro-orm/knex': 5.7.4_24fpe6injcxryr2dkhfgl5ex4y
+        fs-extra: 11.1.1
+        knex: 2.4.2
+        umzug: 3.2.1
+      transitivePeerDependencies:
+        - '@mikro-orm/entity-generator'
+        - better-sqlite3
+        - mssql
+        - mysql
+        - mysql2
+        - pg
+        - pg-native
+        - sqlite3
+        - supports-color
+        - tedious
+
+    /@mikro-orm/postgresql/5.7.2_pjbts2b4yggfd737mtarjkaz7i:
+      resolution: {integrity: sha512-ehdGmL/yTjxGna1J9ZI6JL3Cg7n8PGSCERi0+fZpc3rRz9CMQFi24/5cG0qNx2VE/Ur/xPAEnMBWjDP+ip3IhA==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/core': ^5.0.0
+        '@mikro-orm/entity-generator': ^5.0.0
+        '@mikro-orm/migrations': ^5.0.0
+        '@mikro-orm/seeder': ^5.0.0
+      peerDependenciesMeta:
+        '@mikro-orm/entity-generator':
+          optional: true
+        '@mikro-orm/migrations':
+          optional: true
+        '@mikro-orm/seeder':
+          optional: true
+      dependencies:
+        '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+        '@mikro-orm/knex': 5.7.4_mgtmjnoteo7rs5alqchehbnpni
+        '@mikro-orm/migrations': 5.7.2_@mikro-orm+core@5.7.2
+        '@mikro-orm/seeder': 5.7.2_@mikro-orm+core@5.7.2
+        pg: 8.10.0
+      transitivePeerDependencies:
+        - better-sqlite3
+        - mssql
+        - mysql
+        - mysql2
+        - pg-native
+        - sqlite3
+        - supports-color
+        - tedious
+
+    /@mikro-orm/reflection/5.7.2_@mikro-orm+core@5.7.2:
+      resolution: {integrity: sha512-bLgTDrOwWi0/eggdqkI29Fi96nJMTdfu4jV3/SnMYVpgAt9E8fh3uksfWz9GFjNww2y0GDYtxFzXhBAoCy37gQ==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/core': ^5.0.0
+      dependencies:
+        '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+        globby: 11.1.0
+        ts-morph: 18.0.0
+      dev: false
+
+    /@mikro-orm/seeder/5.7.2_@mikro-orm+core@5.7.2:
+      resolution: {integrity: sha512-1fvbiUIgb6ldrlfGPtqLqA0pobMiWKuUa5SNzBJl4yw0crwl2/EEhdMUhyKhIH2mwYoSqQKl8s3i8lDFnGqLtA==}
+      engines: {node: '>= 14.0.0'}
+      peerDependencies:
+        '@mikro-orm/core': ^5.0.0
+      dependencies:
+        '@faker-js/faker': 7.6.0
+        '@mikro-orm/core': 5.7.2_jzh2xpoalyiiy3ljnnyudbscfu
+        fs-extra: 11.1.1
+        globby: 11.1.0
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
