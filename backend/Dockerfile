@@ -50,4 +50,4 @@ RUN pnpm build
 # exposed port
 EXPOSE 8080
 
-CMD [ "node", "./build/index.js" ]
+CMD ["pnpm", "startProd"]

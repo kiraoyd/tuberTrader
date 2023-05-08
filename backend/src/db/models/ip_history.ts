@@ -1,26 +1,30 @@
 /** @module Models/IPHistory */
-import TypeORM from "typeorm";
+import { Entity, Property, PrimaryKey, Unique, ManyToOne, Cascade } from "@mikro-orm/core";
+import {TuberBaseEntity} from "./tuberBaseEntity.ts";
+import { SoftDeletable } from "mikro-orm-soft-delete";
 import {User} from "./user";
 
 /**
  * IPHistory model - holds all IPs a user has logged in with
  */
-@TypeORM.Entity()
-export class IPHistory extends TypeORM.BaseEntity {
-	@TypeORM.PrimaryGeneratedColumn()
+@Entity()
+export class IPHistory extends TuberBaseEntity {
+	@Property()
+	@Unique()
 	id: string;
 
-	@TypeORM.Column("text")
+	@Property("text")
 	ip: string;
 
-	@TypeORM.ManyToOne((type) => User, (user: User) => user.ips, {
+	@ManyToOne(
+		(type) => User,
+		(user: User) => user.ips,
 		//adding an IPHistory will also add associated User if it is new, somewhat useless in this example
-		cascade: true,
 		// if we delete a User, also delete their IP History
-		onDelete: "CASCADE"
-	})
-	user: TypeORM.Relation<User>;
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+	)
+	user: User;
 
-	@TypeORM.CreateDateColumn()
-	created_at: string;
+	@Property()
+	created_at = new Date();
 }
