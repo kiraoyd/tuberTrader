@@ -12,7 +12,7 @@ import { UserRoutesInit } from "./user_routes.js";
  * @param {{}} _options - Fastify instance options (Optional)
  * @returns {Promise<void>} - Returns all of the initialized routes
  */
-async function DoggrRoutes(app: FastifyInstance, _options = {}) {
+async function TuberRoutes(app: FastifyInstance, _options = {}) {
 	if (!app) {
 		throw new Error("Fastify instance has no value during routes construction");
 	}
@@ -22,4 +22,4 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 	MessageRoutesInit(app);
 }
 
-export default DoggrRoutes;
+export default TuberRoutes;

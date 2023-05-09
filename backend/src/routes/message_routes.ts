@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { Message } from "../db/entities/Message.js";
+import { Message } from "../db/entities/Profile.js";
 import { User } from "../db/entities/User.js";
 import { ICreateMessage } from "../types.js";
 

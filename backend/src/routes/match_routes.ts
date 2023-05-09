@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { Match } from "../db/entities/Match.js";
+import { Match } from "../db/entities/IpHistory.js";
 import { User } from "../db/entities/User.js";
 
 

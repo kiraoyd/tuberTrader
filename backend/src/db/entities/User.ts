@@ -1,64 +1,63 @@
+/** @module Models/User */
 import { Entity, Property, Unique, OneToMany, Collection, Cascade } from "@mikro-orm/core";
 import { SoftDeletable } from "mikro-orm-soft-delete";
-import { DoggrBaseEntity } from "./DoggrBaseEntity.js";
-import { Match } from "./Match.js";
+import { TuberBaseEntity } from "./TuberBaseEntity.js";
+import {IPHistory} from "./IpHistory.js";
+import { Profile } from "./Profile.js";
+import { Transactions } from "./Transactions.js";
 
-import { Enum } from "@mikro-orm/core";
-import { Message } from "./Message.js";
 
-export enum UserRole {
-	ADMIN = 'Admin',
-	USER = 'User'
-}
-
+/**
+ *  Class representing user table
+ */
 // https://github.com/TheNightmareX/mikro-orm-soft-delete
 // Yes, it's really that easy.
 @SoftDeletable(() => User, "deleted_at", () => new Date())
 @Entity({ tableName: "users"})
-export class User extends DoggrBaseEntity {
-	@Property()
-	@Unique()
-	email!: string;
-	
+export class User extends TuberBaseEntity {
+
+	//id IS already the primary key, thanks to TuberBaseEntity
+
 	@Property()
 	name!: string
 
 	@Property()
-	password!: string;
-
-	@Property()
-	petType!: string;
-
-	@Enum(() => UserRole)
-	role!: UserRole; // string enum
+	email!: string;
 
 	// Note that these DO NOT EXIST in the database itself!
 	@OneToMany(
-		() => Match,
-		match => match.owner,
+		() => IPHistory,
+		ip => ip.user,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
-	matches!: Collection<Match>;
+	ips!: Collection<IPHistory>;
 
 	@OneToMany(
-		() => Match,
-		match => match.matchee,
+		() => Profile,
+		p => p.owner,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
-	matched_by!: Collection<Match>;
+	profiles!: Collection<Profile>;
 
 	// Orphan removal used in our Delete All Sent Messages route to single-step remove via Collection
 	@OneToMany(
-		() => Message,
-		message => message.sender,
+		() => Transactions,
+		t => t.seller,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE], orphanRemoval: true}
 	)
-	messages_sent!: Collection<Message>;
+	sale!: Collection<Transactions>;
 
-	@OneToMany(
-		() => Message,
-		message => message.receiver,
-		{cascade: [Cascade.PERSIST, Cascade.REMOVE], orphanRemoval: true}
-	)
-	messages_received!: Collection<Message>;
+	@Property()
+	created_at = new Date();
+
+	@Property()
+	updated_at = new Date();
 }
+
+//Reference from DOGGR:
+// @OneToMany(
+// 	() => Message,
+// 	message => message.receiver,
+// 	{cascade: [Cascade.PERSIST, Cascade.REMOVE], orphanRemoval: true}
+// )
+// messages_received!: Collection<Message>;
