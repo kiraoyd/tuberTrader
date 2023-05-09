@@ -1,53 +1,21 @@
-FROM node:lts-slim as builder
+FROM node:18
 
-# update packages, to reduce risk of vulnerabilities
-RUN apt-get update && apt-get upgrade -y && apt-get autoclean -y && apt-get autoremove -y
 RUN npm install -g pnpm
 
-# set a non privileged user to use when running this image
-RUN groupadd -r nodejs && useradd -g nodejs -s /bin/bash -d /home/nodejs -m nodejs
-# Become that user
-USER nodejs
-# set secure folder permissions
-RUN mkdir -p /home/nodejs/app/node_modules && chown -R nodejs:nodejs /home/nodejs/app
+WORKDIR /app
+COPY package.json .
+COPY pnpm-lock.yaml .
 
-WORKDIR /home/nodejs/app
-
-# set default node env
-ARG NODE_ENV=development
-# ARG NODE_ENV=production # to be able to run tests (for example in CI), do not set production as environment
-ENV NODE_ENV=${NODE_ENV}
-
-ENV NPM_CONFIG_LOGLEVEL=info
-ENV VITE_IP_ADDR=0.0.0.0
-ENV VITE_PORT=8080
-ENV VITE_LOGS_DIR=logs/
-ENV VITE_DB_HOST=postgres
-ENV VITE_DB_PORT=5432
-ENV VITE_DB_USER=tuber
-ENV VITE_DB_PASS=tuber
-ENV VITE_DB_NAME=tuber
-ENV VITE_ADMIN_PASSWORD=adminpw
-ENV VITE_JWT_SECRET=superSecret
-
-# copy project definition/dependencies files, for better reuse of layers
-#COPY --chown=nodejs:nodejs package*.json ./
-#
-## install dependencies here, for better reuse of layers
-#RUN pnpm install
-
-# copy all sources in the container (exclusions in .dockerignore file)
-COPY --chown=nodejs:nodejs . .
-
-# build/pack binaries from sources
 RUN pnpm install
 
-RUN pnpm build
-#RUN pnpm migration:run
-#RUN pnpm seed
-
-
-# exposed port
+COPY . .
 EXPOSE 8080
+ENV ADDRESS=0.0.0.0 PORT=8080 DB_HOST=postgres DB_PORT=5432 DB_NAME=tuber DB_USER=tuber DB_PASS=tuber PASSWORD=password ADMIN_PASSWORD=adminpw JWT_SECRET=superSecret NODE_ENV=development
+
+RUN pnpm build
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#NOTE WE CANNOT DO {RUN pnpm db:reset} HERE BECAUSE DOCKER WILL NOT CONNECT THE NETWORK AT BUILD TIME!
+#RUN pnpm db:reset
 
 CMD ["pnpm", "startProd"]

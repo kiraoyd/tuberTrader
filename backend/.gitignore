@@ -1,7 +1,5 @@
-.env
 node_modules/
 build/
-coverage/
-.fleet/
-.vscode/
-logs/
+**/*.tsbuildinfo
+/.env
+doc/

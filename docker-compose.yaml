@@ -4,7 +4,7 @@ services:
 
   backend:
     container_name: backend
-    build: ./backend/
+    build: backendOLD/
     restart: always
     ports:
       - "8080:8080"
@@ -20,7 +20,9 @@ services:
       - VITE_ADMIN_PASSWORD=adminpw
       - VITE_JWT_SECRET=superSecret
     depends_on:
-      - postgres # name of SERVICE it depends on
+      postgres: # name of SERVICE it depends on
+          condition: service_healthy
+
 
   frontend:
     container_name: frontend
