@@ -23,8 +23,8 @@ export class Transactions extends TuberBaseEntity{
     profits!: number;
 
     @ManyToOne('User')
-    seller!: User;
+    seller!: Ref<User>;
 
     @ManyToOne('Profile')
-    host!: Profile;
+    host!: Ref<Profile>;
 }

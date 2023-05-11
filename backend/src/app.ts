@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import Fastify from "fastify";
 import cors from '@fastify/cors'
 import { FastifyBadWordsPlugin } from "./plugins/badwords.js";
@@ -42,7 +44,9 @@ const app = Fastify({
 
 //register middlewares
 await app.register(cors, {
-	origin: false
+	origin: (origin, cb) => {
+		cb(null, true);
+	}
 });
 
 // add static file handling, TODO needed?
@@ -63,11 +67,14 @@ await app.register(FastifyBadWordsPlugin);
 //https://www.npmjs.com/package/fastify-auth0-verify
 //this replaces the authPlugin we built in class: await app.register(authPlugin)
 //we can now use the preValidation hook on the front end to protect routes
-await app.register(require('fastify-auth0-verify'), {
+/*
+await app.register(import('fastify-auth0-verify'), {
 	// 	//these right here are where we grab the secret auth0 makes for us
 	domain: 'dev-mqy8ug3j6mzegsua.us.auth0.com',
 	audience: 'xw775ux7oDyaS3jImVTAOiE4mD4alsCE'
 })
+*/
+
 
 await app.register(TuberRoutes, {});
 

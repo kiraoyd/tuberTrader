@@ -4,6 +4,7 @@ import { Entity, Property, PrimaryKey, Unique, ManyToOne, Cascade } from "@mikro
 import {TuberBaseEntity} from "./TuberBaseEntity.js";
 import { SoftDeletable } from "mikro-orm-soft-delete";
 import {User} from "./User.js";
+import type {Ref, Rel} from "@mikro-orm/core";
 
 /**
  * IPHistory model - holds all IPs a user has logged in with
@@ -17,7 +18,7 @@ export class IPHistory extends TuberBaseEntity {
 
 	//every user can have many IP history entries
 	@ManyToOne()
-	user!: User;
+	user!: Ref<User>;
 
 	@Property()
 	created_at = new Date();
