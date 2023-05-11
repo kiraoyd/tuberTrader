@@ -19,6 +19,5 @@ export class ProfileSeeder extends Seeder {
             pricePaid: 93,
             owner: context.kirak, //grab one of the users we made in that other seeder
         });
-
-
+    }
 }
