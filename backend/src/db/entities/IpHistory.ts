@@ -12,11 +12,11 @@ import {User} from "./User.js";
 export class IPHistory extends TuberBaseEntity {
 
 
-	@Property("text")
+	@Property()
 	ip: string;
 
 	//every user can have many IP history entries
-	@ManyToOne('User')
+	@ManyToOne()
 	user!: User;
 
 	@Property()

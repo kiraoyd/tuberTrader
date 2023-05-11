@@ -7,7 +7,7 @@ import { SoftDeletable } from "mikro-orm-soft-delete";
 import { TuberBaseEntity } from "./TuberBaseEntity.js";
 import { User } from "./User.js";
 import { Transactions } from "./Transactions.js";
-import { SellingPriceHistory } from "./SellingPriceHistory";
+import { SellingPriceHistory } from "./SellingPriceHistory.js";
 
 /**
  * Profile model - This is for interacting with the profile table

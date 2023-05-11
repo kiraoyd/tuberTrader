@@ -2,8 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { SOFT_DELETABLE_FILTER } from "mikro-orm-soft-delete";
 import { User, UserRole } from "../db/entities/User.js";
 import { IPostUsersBody, IPostUsersResponse, IUpdateUsersBody, IGetUserParams } from "../types.js";
-
-import {IPHistory} from "../db/entities/IpHistory";
+import {IPHistory} from "../db/entities/IpHistory.js";
 
 export function UserRoutesInit(app: FastifyInstance) {
 	/**
