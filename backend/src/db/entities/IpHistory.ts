@@ -1,7 +1,7 @@
 
 /** @module Models/IPHistory */
 import { Entity, Property, PrimaryKey, Unique, ManyToOne, Cascade } from "@mikro-orm/core";
-import {TuberBaseEntity} from "./tuberBaseEntity.ts";
+import {TuberBaseEntity} from "./TuberBaseEntity.js";
 import { SoftDeletable } from "mikro-orm-soft-delete";
 import {User} from "./User.js";
 
@@ -10,9 +10,7 @@ import {User} from "./User.js";
  */
 @Entity()
 export class IPHistory extends TuberBaseEntity {
-	@Property()
-	@Unique()
-	id: string;
+
 
 	@Property("text")
 	ip: string;

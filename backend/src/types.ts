@@ -1,4 +1,4 @@
-import {User} from "./db/entities/User.ts";
+import {User} from "./db/entities/User.js";
 
 
 export type IUpdateUsersBody = {

@@ -14,7 +14,10 @@ import { DatabaseSeeder } from "../src/db/seeders/DatabaseSeeder.js";
 
 let orm: MikroORM;
 
+//TODO need to update these to reflect my DB instead of doggrs
 tap.before(async () => {
+
+
 	app.log.warn("Initializing database...");
 	orm = await MikroORM.init(config);
 	const seeder: ISeedManager = orm.getSeeder();

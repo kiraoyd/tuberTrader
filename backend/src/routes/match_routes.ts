@@ -1,16 +1,18 @@
-import { FastifyInstance } from "fastify";
-import { Match } from "../db/entities/IpHistory.js";
-import { User } from "../db/entities/User.js";
+// import { FastifyInstance } from "fastify";
+// import { Match } from "../db/entities/IpHistory.js";
+// import { User } from "../db/entities/User.js";
 
 
+//TODO delete this file when done moving routes over
+/*
 export function MatchRoutesInit(app: FastifyInstance) {
 // CREATE MATCH ROUTE
-	/* Refactor - note our change to getReference!
-
-	 getReference/getReference retrieves an entity by its primary key, but it does not actually fetch
-	 the entity from the database until you attempt to access its properties. This is used when
-	 you just need a reference to an entity in order to establish a relationship with another entity.
-	 */
+// 	 Refactor - note our change to getReference!
+//
+// 	 getReference/getReference retrieves an entity by its primary key, but it does not actually fetch
+// 	 the entity from the database until you attempt to access its properties. This is used when
+// 	 you just need a reference to an entity in order to establish a relationship with another entity.
+//
 	app.post<{ Body: { id: number; matchee_id: number } }>("/match", async (req, reply) => {
 		const { id, matchee_id } = req.body;
 
@@ -34,3 +36,4 @@ export function MatchRoutesInit(app: FastifyInstance) {
 		}
 	});
 }
+*/

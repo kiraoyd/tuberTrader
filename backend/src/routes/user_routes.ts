@@ -38,9 +38,9 @@ export function UserRoutesInit(app: FastifyInstance) {
 	 * @param {string} email - user's email address
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
-	app.post<{ Body: IPostUsersBody, Reply: IPostUsersResponse }>("/users", async (req, reply) => {
+	app.post<{ Body: IPostUsersBody, Reply:any }>("/users", async (req, reply) => {
 		const { name, email, password } = req.body;
-		const ip = req.ip;
+
 
 		try {
 			//set new User params to data
@@ -55,8 +55,8 @@ export function UserRoutesInit(app: FastifyInstance) {
 			//TODO not sure I did this right
 			//create and attach a new IPHistory row along with this user
 			const newIP = await req.em.create(IPHistory, {
-				ip,
-				newUser,
+				ip: req.ip,
+				user: newUser,
 			});
 			// em.persist() determines weather to use insert or update to save entity state to DB
 			//The entity that owns other entities is the only one needed to persist, the owned entities will auto persist
@@ -94,7 +94,7 @@ export function UserRoutesInit(app: FastifyInstance) {
 		const username = req.params['username'];
 		try{
 			let user = await req.em.findOneOrFail(User, {name: username});
-			repl.send(user);
+			reply.send(user);
 		} catch (err) {
 			reply.status(204).send("No content");
 		}

@@ -1,29 +1,31 @@
-import { FastifyInstance } from "fastify";
-import { Message } from "../db/entities/Profile.js";
-import { User } from "../db/entities/User.js";
-import { ICreateMessage } from "../types.js";
+// import { FastifyInstance } from "fastify";
+// import { Message } from "../db/entities/Profile.js";
+// import { User } from "../db/entities/User.js";
+// import { ICreateMessage } from "../types.js";
 
-
+//TODO delete this file when done moving routes over
+/*
 export function MessageRoutesInit(app: FastifyInstance) {
 /////////////////////////////////////////////////////////////////////////////
 	// HOMEWORK 1
 	/////////////////////////////////////////////////////////////////////////////
 
-	/* This is where we have to be careful with the difference in a full entity
-	 vs a reference.  References are a Mikro-orm optimization that lets us avoid database
-	 queries when all we need from something is its id.  That is the case here:
-	 we only *need* references to these Users, not their entire data.  We don't actually care
-	 about any of their data except their ID, so we would like to use references here.
-	 Unfortunately, we're currently tracking users by their email address, not their database id!
+	// This is where we have to be careful with the difference in a full entity
+	//  vs a reference.  References are a Mikro-orm optimization that lets us avoid database
+	//  queries when all we need from something is its id.  That is the case here:
+	//  we only *need* references to these Users, not their entire data.  We don't actually care
+	//  about any of their data except their ID, so we would like to use references here.
+	//  Unfortunately, we're currently tracking users by their email address, not their database id!
+	//
+	//  This is a situation where you have a choice to make.  Either we refactor a bit
+	//  now to start using `id` everywhere rather than email address (since THAT is the field
+	//  that links tables together in our database, not email...or we give up forever
+	//  on enabling LOTS of optimizations.  My personal choice is to refactor, so
+	//  the final code solution I merge into our official Doggr repo will be one
+	//  that fixes this problem.  We'll do it the simpler way for this solution
+	//  and take what we need from the database at any cost.
 
-	 This is a situation where you have a choice to make.  Either we refactor a bit
-	 now to start using `id` everywhere rather than email address (since THAT is the field
-	 that links tables together in our database, not email...or we give up forever
-	 on enabling LOTS of optimizations.  My personal choice is to refactor, so
-	 the final code solution I merge into our official Doggr repo will be one
-	 that fixes this problem.  We'll do it the simpler way for this solution
-	 and take what we need from the database at any cost.
-	 */
+
 	app.post<{ Body: ICreateMessage }>("/messages", async (req, reply) => {
 		const { sender_id, receiver_id, message } = req.body;
 
@@ -148,3 +150,4 @@ export function MessageRoutesInit(app: FastifyInstance) {
 		}
 	);
 }
+*/
