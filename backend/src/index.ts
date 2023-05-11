@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import app from "./app.js";
 dotenv.config();
 
+//simplified listen function from w23 term server build
 app.listen({ port: Number(process.env.PORT), host: process.env.HOST},
 	(err, address) => {
 		if (err) {

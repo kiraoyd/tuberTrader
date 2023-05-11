@@ -5,6 +5,10 @@ import { FastifySearchHttpMethodPlugin } from "./plugins/http_search.js";
 import { FastifyMikroOrmPlugin } from "./plugins/mikro.js";
 import TuberRoutes from "./routes/routes.js";
 import config from "./db/mikro-orm.config.js";
+//TODO the following are only needed if we register the static files plugin and add the getdirname helper
+//import staticFiles from "@fastify/static";
+//import {getDirName} from "./lib/helpers";
+//import path from "path";
 
 const envToLogger = {
 	development: {
@@ -36,11 +40,23 @@ const app = Fastify({
 	logger: envToLogger[process.env.NODE_ENV]
 });
 
+//register middlewares
 await app.register(cors, {
 	origin: false
 });
 
+// add static file handling, TODO needed?
+/*
+await app.register(staticFiles, {
+	root: path.join(getDirName(import.meta), "../public"),
+	prefix: "/public/",
+});
+
+ */
+
+app.log.info("Connecting to Database...");
 await app.register(FastifyMikroOrmPlugin, config);
+
 await app.register(FastifySearchHttpMethodPlugin, {});
 await app.register(FastifyBadWordsPlugin);
 
