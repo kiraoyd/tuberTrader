@@ -4,7 +4,7 @@ import {User} from "./db/entities/User.ts";
 export type IUpdateUsersBody = {
 	name: string,
 	id: number,
-	petType: string
+	email: string;
 }
 
 export type ICreateMessage = {
@@ -16,6 +16,7 @@ export type ICreateMessage = {
 export interface IPostUsersBody {
 	name: string,
 	email: string,
+	password: string,
 }
 
 /**
@@ -30,5 +31,13 @@ export type IPostUsersResponse = {
 	 * IP Address user used to create account
 	 */
 	ip_address: string
+}
+
+/**
+ * Params type for get/user/:username
+ */
+export type IGetUserParams ={
+	username: string;
+
 }
 

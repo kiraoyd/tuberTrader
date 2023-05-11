@@ -30,6 +30,9 @@ export class User extends TuberBaseEntity {
 	@Property()
 	email!: string;
 
+	@Property()
+	password!: string;
+
 	@Enum(() => UserRole)
 	role!: UserRole;
 
