@@ -5,11 +5,17 @@ import { TuberBaseEntity } from "./TuberBaseEntity.js";
 import {IPHistory} from "./IpHistory.js";
 import { Profile } from "./Profile.js";
 import { Transactions } from "./Transactions.js";
+import { Enum } from "@mikro-orm/core";
 
 
 /**
  *  Class representing user table
  */
+
+export enum UserRole {
+	ADMIN = 'Admin',
+	USER = 'User'
+}
 // https://github.com/TheNightmareX/mikro-orm-soft-delete
 // Yes, it's really that easy.
 @SoftDeletable(() => User, "deleted_at", () => new Date())
@@ -23,6 +29,9 @@ export class User extends TuberBaseEntity {
 
 	@Property()
 	email!: string;
+
+	@Enum(() => UserRole)
+	role!: UserRole;
 
 	// Note that these DO NOT EXIST in the database itself!
 	@OneToMany(

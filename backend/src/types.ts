@@ -1,9 +1,5 @@
-export type ICreateUsersBody = {
-	name: string,
-	email: string,
-	password: string,
-	petType: string
-}
+import {User} from "./db/entities/User.ts";
+
 
 export type IUpdateUsersBody = {
 	name: string,
@@ -16,3 +12,23 @@ export type ICreateMessage = {
 	receiver_id: number,
 	message: string,
 }
+
+export interface IPostUsersBody {
+	name: string,
+	email: string,
+}
+
+/**
+ * Response type for post/users
+ */
+export type IPostUsersResponse = {
+	/**
+	 * User created by request
+	 */
+	user: User,
+	/**
+	 * IP Address user used to create account
+	 */
+	ip_address: string
+}
+
