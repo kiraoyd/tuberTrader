@@ -58,9 +58,8 @@ await app.register(staticFiles, {
 
  */
 
-app.log.info("Connecting to Database...");
+//app.log.info("Connecting to Database...");
 await app.register(FastifyMikroOrmPlugin, config);
-
 await app.register(FastifySearchHttpMethodPlugin, {});
 await app.register(FastifyBadWordsPlugin);
 
@@ -75,7 +74,7 @@ await app.register(import('fastify-auth0-verify'), {
 })
 */
 
-
+app.log.info("Getting routes...");
 await app.register(TuberRoutes, {});
 
 export default app;
