@@ -1,7 +1,6 @@
 import type { Dictionary, EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
-import { User, UserRole } from "../entities/User.js";
-import {SellingPriceHistory} from "../entities/SellingPriceHistory";
+import {SellingPriceHistory} from "../entities/SellingPriceHistory.js";
 
 
 export class SellingPriceSeeder extends Seeder {

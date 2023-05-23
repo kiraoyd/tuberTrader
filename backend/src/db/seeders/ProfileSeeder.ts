@@ -1,7 +1,7 @@
 import type { Dictionary, EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
 import { User, UserRole } from "../entities/User.js";
-import {Profile} from "../entities/Profile";
+import {Profile} from "../entities/Profile.js";
 
 
 export class ProfileSeeder extends Seeder {

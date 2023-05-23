@@ -12,6 +12,8 @@ COPY . .
 EXPOSE 8080
 ENV ADDRESS=0.0.0.0 PORT=8080 DB_HOST=postgres DB_PORT=5432 DB_NAME=tuber DB_USER=tuber DB_PASS=tuber PASSWORD=password ADMIN_PASSWORD=adminpw JWT_SECRET=superSecret NODE_ENV=development
 
+RUN pnpm migration:freshSeed
+
 RUN pnpm build
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
