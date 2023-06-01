@@ -2,8 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { FastifyInstance } from "fastify";
-//import { MatchRoutesInit } from "./match_routes.js";
-//import { MessageRoutesInit } from "./message_routes.js";
 import { UserRoutesInit } from "./user_routes.js";
 
 /** This function creates all backend routes for the site
