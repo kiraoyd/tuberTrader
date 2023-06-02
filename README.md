@@ -1,5 +1,15 @@
 
 # 5/5/2023 - ripping out typeORM and replacing with MikroORM
+
+To dump the current schema SQL to the console: pnpm mikro-orm-esm schema:create --dump
+
+OLDbackend is now depricated. New backend is running.
+
+To drop DB schema after changes to the models: pnpm mikro-orm-esm schema:drop --run
+then update it: pnpm mikro-orm-esm schema:update --run --fk-checks
+migrate to current point: pnpm mikro-orm-esm migration:fresh
+Then seed: pnpm mikro-orm-esm migration:fresh --seed
+
 # BIG DISCLAIMER: This project is still not up and running fully from Docker. 
 You are 
 welcome to give it a try in Docker, but so far the build has been failing for the backend

@@ -1,6 +1,23 @@
 version: '3'
 services:
 
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=tuber
+      - POSTGRES_PASSWORD=tuber
+      - POSTGRES_DB=tuber
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U tuber" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     container_name: backend
@@ -31,24 +48,6 @@ services:
     environment:
       - VITE_BACKEND_IP=backend
       - VITE_BACKEND_PORT=8080
-
-  postgres:
-    container_name: postgres
-    image: postgres:15-alpine
-    restart: always
-    ports:
-      - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=tuber
-      - POSTGRES_PASSWORD=tuber
-      - POSTGRES_DB=tuber
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U tuber" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   search_py_service:
     container_name: search_py_service
