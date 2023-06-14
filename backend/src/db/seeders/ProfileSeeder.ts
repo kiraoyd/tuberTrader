@@ -44,8 +44,29 @@ export class ProfileSeeder extends Seeder {
             islandName: "fakeorjeene",
             picture: "http://placeholder.com/mypic.jpeg",
             turnipsHeld: 1100,
-            pricePaid: 93,
+            pricePaid: 96,
             owner: context.kirak, //grab one of the users we made in that other seeder
+        });
+        context.melon = em.create(Profile, {
+            islandName: "melon",
+            picture: "http://placeholder.com/mypic.jpeg",
+            turnipsHeld: 3045,
+            pricePaid: 109,
+            owner: context.olimo, //grab one of the users we made in that other seeder
+        });
+        context.bigSpender = em.create(Profile, {
+            islandName: "bigSpender",
+            picture: "http://placeholder.com/mypic.jpeg",
+            turnipsHeld: 6000,
+            pricePaid: 110,
+            owner: context.bender, //grab one of the users we made in that other seeder
+        });
+        context.makeItRain = em.create(Profile, {
+            islandName: "makeItRain",
+            picture: "http://placeholder.com/mypic.jpeg",
+            turnipsHeld: 6000,
+            pricePaid: 93,
+            owner: context.otherGuy, //grab one of the users we made in that other seeder
         });
     }
 }
