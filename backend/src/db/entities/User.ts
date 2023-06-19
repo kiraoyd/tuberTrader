@@ -7,6 +7,8 @@ import { Profile } from "./Profile.js";
 import { Transactions } from "./Transactions.js";
 import { Enum } from "@mikro-orm/core";
 
+import {Message} from "./Message.js";
+
 
 /**
  *  Class representing user table
@@ -17,16 +19,16 @@ export enum UserRole {
 	USER = 'User'
 }
 // https://github.com/TheNightmareX/mikro-orm-soft-delete
-// Yes, it's really that easy.
+
 @SoftDeletable(() => User, "deleted_at", () => new Date())
 @Entity({ tableName: "users"})
 export class User extends TuberBaseEntity {
 
 	//id IS already the primary key, thanks to TuberBaseEntity
-
 	@Property()
 	name!: string
 
+	@Unique()
 	@Property()
 	email!: string;
 
@@ -37,6 +39,7 @@ export class User extends TuberBaseEntity {
 	role!: UserRole;
 
 	// Note that these DO NOT EXIST in the database itself!
+	//TODO - clarify
 	@OneToMany(
 		() => IPHistory,
 		ip => ip.user,
@@ -59,11 +62,19 @@ export class User extends TuberBaseEntity {
 	)
 	sale!: Collection<Transactions>;
 
-	@Property()
-	created_at = new Date();
+	@OneToMany(
+		() => Message,
+		message => message.sender,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE], orphanRemoval: true}
+	)
+	messages_sent!: Collection<Message>;
 
-	@Property()
-	updated_at = new Date();
+	@OneToMany(
+		() => Message,
+		message => message.receiver,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE], orphanRemoval: true}
+	)
+	messages_received!: Collection<Message>;
 }
 
 //Reference from DOGGR:

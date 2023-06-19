@@ -16,3 +16,16 @@ export class TuberBaseEntity extends BaseEntity<TuberBaseEntity, "id"> {
 	@Property({ nullable: true })
 	deleted_at?: Date;
 }
+
+
+@SoftDeletable (() => TuberCompositeEntity, "deleted_at", () => new Date())
+export class TuberCompositeEntity {
+	@Property()
+	created_at = new Date();
+
+	@Property({onUpdate: () => new Date()})
+	updated_at = new Date();
+
+	@Property({ nullable: true})
+	deleted_at?: Date;
+}
