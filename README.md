@@ -1,11 +1,17 @@
-# To run:
+# As of 6/22/2023...
+
+## To run:
 
 1. Clone this repository.
 2. From the root directory ```tuberTrader```
 2. run: ```docker compose build --no-cache```
 3. run: ```docker compose up```
 4. Navigate to http://localhost/ to view the site
-# 5/5/2023 - ripping out typeORM and replacing with MikroORM
+
+I am still moving over routes from the old typeORM based backend, to the new mikroORM based backend. So much of the sites functionality is still not running. More updates to follow...
+
+# BELOW ARE NOTES ONLY, PLEASE IGNORE...
+## 5/5/2023 - ripping out typeORM and replacing with MikroORM
 
 To dump the current schema SQL to the console: pnpm mikro-orm-esm schema:create --dump
 
@@ -16,7 +22,7 @@ then update it: pnpm mikro-orm-esm schema:update --run --fk-checks
 migrate to current point: pnpm mikro-orm-esm migration:fresh
 Then seed: pnpm mikro-orm-esm migration:fresh --seed
 
-# BIG DISCLAIMER: This project is still not up and running fully from Docker. 
+## BIG DISCLAIMER: This project is still not up and running fully from Docker. 
 You are 
 welcome to give it a try in Docker, but so far the build has been failing for the backend
 on RUN pnpm install. Postgres and the search_py_service containers seem to be running successfully, but frontend 
