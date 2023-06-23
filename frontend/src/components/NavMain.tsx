@@ -1,7 +1,5 @@
 import {Link, Route, Routes} from "react-router-dom";
-//import {useAuth} from "../services/AuthService";   TODO uncomment if we go back to doggrs useAuth
 import {ProtectedRoute} from "./ProtectedRoute";
-//import {Login, Logout,LoginAuth0Button} from "./Login";  TODO uncomment if we go back to Doggr login
 import {LoginAuth0Button, LogoutAuth0Button} from "./Login";
 import {TokenButton} from "./tokenTest";
 
@@ -57,11 +55,11 @@ function PublicLinksView() {
 //Links shown if token present (logged in)
 function AuthLinksView(){
     return(<>
-        {/*<Link to="/logout">Logout</Link>*/}
-        <LogoutAuth0Button>Logout</LogoutAuth0Button>
+        {/*<LogoutAuth0Button>Logout</LogoutAuth0Button>*/}
+        <LogoutAuth0Button />
         <Link to="/newPrice"> Enter Your Turnip Price</Link>
         <TokenButton />
-     </>)
+     </>);
 }
 
 
@@ -71,11 +69,10 @@ function AuthLinksView(){
 function NoAuthLinksView() {
     return(
         <>
-        {/*<Link to="/login">Login</Link>*/}
-            <LoginAuth0Button>Login</LoginAuth0Button>
-
+            {/*<LoginAuth0Button>Login</LoginAuth0Button>*/}
+            <LoginAuth0Button />
         </>
-    )
+    );
 }
 
 

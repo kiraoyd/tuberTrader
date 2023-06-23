@@ -9,8 +9,8 @@ import axios from "axios";
 
 export function EnterPriceForm(){
     let [enteredPrice, setEnteredPrice] = useState({"island":0, "price":0, "timeOfDay": "am", "currentDate": "yyyy-mm-dd"})
-    let [island, setIsland] = useState(0)
-    let [price, setPrice] = useState(0)
+    let [island, setIsland] = useState<string>("0")
+    let [price, setPrice] = useState<string>("0")
     let [date, setDate] = useState ("")
     let [time, setTime] = useState ("")
 
@@ -52,7 +52,7 @@ export function EnterPriceForm(){
                </label>
                 <label>
                     Enter Turnip Selling Price:
-                    <input type="number" value = {price} onChange={(event) => {setPrice(event.target.value)}}/>
+                    <input type="text" value = {price} onChange={(event) => {setPrice(event.target.value)}}/>
                 </label>
                 <label>
                     Is this the am price or the pm price?

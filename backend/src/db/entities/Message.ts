@@ -6,7 +6,7 @@ import {User} from "./User.js";
 @Entity()
 export class Message extends TuberBaseEntity {
 
-    @ManyToOne
+    @ManyToOne()
     sender!: Ref<User>;
 
     @ManyToOne('User')

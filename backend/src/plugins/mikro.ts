@@ -1,3 +1,4 @@
+//Author: Casey Bailey, doggr_sp23: https://github.com/CaseyBaileyPDX/doggr_sp23/blob/master/backend/src/plugins/mikro.ts
 import { MikroORM, Options } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 

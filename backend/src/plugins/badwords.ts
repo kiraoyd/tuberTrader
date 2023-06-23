@@ -1,3 +1,4 @@
+//Author: Casey Bailey, doggr_sp23: https://github.com/CaseyBaileyPDX/doggr_sp23/blob/master/backend/src/plugins/badwords.ts
 import axios from "axios";
 import {FastifyInstance} from "fastify";
 import fp from "fastify-plugin";

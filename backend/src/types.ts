@@ -1,3 +1,5 @@
+//TODO move types from OLDbackend over!
+
 import {User} from "./db/entities/User.js";
 
 

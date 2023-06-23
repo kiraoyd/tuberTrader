@@ -3,7 +3,6 @@ import './App.css'
 //import all our components
 import {NavMain} from "./components/NavMain"
 //import the token functionality we wrote in AuthProvider
-import {AuthProvider} from "./services/AuthService";
 import ReactDOM from "react-dom";
 import {Auth0Provider} from "@auth0/auth0-react";
 
@@ -24,11 +23,9 @@ export default function App() {
                 redirect_uri: window.location.origin
             }}
         >
-        {/*// <AuthProvider>*/}
         <div className="App">
             <NavMain/>
         </div>
-        {/*{</AuthProvider>}*/}
         </Auth0Provider>
     );
 }

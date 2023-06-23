@@ -5,11 +5,11 @@ import axios from "axios";
 //two different ways to import, based on how we exported
 import {SearchBar} from './Search'
 import {EnterPriceForm} from "./enterPrice";
-import {getTokenFromAuth0} from "../services/AuthService";
+//import {getTokenFromAuth0} from "../services/AuthService";
 //import initialState, {getRandomProfile} from "../initialState";
 
 
-export default function Home() {
+export default function Home(){
     return (<div>
             <Title/>
             <Subtitle/>

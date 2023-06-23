@@ -1,10 +1,12 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
+
 import { ProfileSeeder } from "./ProfileSeeder.js";
 import {UserSeeder} from "./UserSeeder.js";
 import {SellingPriceSeeder} from "./SellingPriceSeeder.js";
 import {TransactionsSeeder} from "./TransactionsSeeder.js";
 import {IpSeeder} from "./IpSeeder.js"
+import {MessageSeeder} from "./MessageSeeder.js";
 
 export class DatabaseSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
@@ -13,7 +15,8 @@ export class DatabaseSeeder extends Seeder {
 			ProfileSeeder,
 			IpSeeder,
 			SellingPriceSeeder,
-			TransactionsSeeder
+			TransactionsSeeder,
+			MessageSeeder,
 		]);
 	}
 }

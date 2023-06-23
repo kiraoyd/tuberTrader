@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 import Fastify from "fastify";
-import cors from '@fastify/cors'
+import cors from '@fastify/cors';
+import multipart from '@fastify/multipart';
 import { FastifyBadWordsPlugin } from "./plugins/badwords.js";
 import { FastifySearchHttpMethodPlugin } from "./plugins/http_search.js";
 import { FastifyMikroOrmPlugin } from "./plugins/mikro.js";
@@ -46,7 +47,8 @@ const app = Fastify({
 await app.register(cors, {
 	origin: (origin, cb) => {
 		cb(null, true);
-	}
+	},
+	methods: ['GET','POST','PUT','DELETE','PATCH','SEARCH'],
 });
 
 // add static file handling, TODO needed?
@@ -59,6 +61,7 @@ await app.register(staticFiles, {
  */
 
 //app.log.info("Connecting to Database...");
+await app.register(multipart);
 await app.register(FastifyMikroOrmPlugin, config);
 await app.register(FastifySearchHttpMethodPlugin, {});
 await app.register(FastifyBadWordsPlugin);
