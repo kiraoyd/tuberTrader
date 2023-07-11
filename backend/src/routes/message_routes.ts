@@ -7,7 +7,7 @@ import { wrap } from "@mikro-orm/core";
 import { FastifyInstance } from "fastify";
 import { Message } from "../db/entities/Message.js";
 import { User } from "../db/entities/User.js";
-import { ICreateMessage } from "../types.js";
+import { ICreateMessage } from "../types/user_types.js";
 
 
 export function MessageRoutesInit(app: FastifyInstance) {

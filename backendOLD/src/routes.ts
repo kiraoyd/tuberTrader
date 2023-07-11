@@ -5,12 +5,12 @@ import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
-import * as types from "./types"
+import * as types from "./types/user_types"
 import * as opts from "./opts"
 import TypeORM from "typeorm";
 import {readFileSync} from "node:fs";
 import {SellingPriceHistory} from "./db/models/sellingPriceHistory";
-import {amPM} from "./types";
+import {amPM} from "./types/user_types";
 import {sellingPriceHistory1678485063600} from "./db/migrations/1678485063600-sellingPriceHistory";
 import dotenv from "dotenv";
 
@@ -265,7 +265,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 	});
 
 	// -----------CRUD implementation for transactions----------------
-	/**
+	/** TODO
 	 * Route creates a new transaction between a seller and a host island profile
 	 */
 	app.post<{
@@ -309,7 +309,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		}
 	});
 
-	/**
+	/** TODO
 	 * Route that retrieves all transactions.
 	 * @name get/transactions
 	 * @function
@@ -370,7 +370,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 
 // -----------CRUD implementation for Selling Prices -------------
 
-	/**
+	/** TODO
 	 * Route to post a new selling price to the SellingPriceHistory table
 	 * @name post/sellingPrice
 	 */
@@ -452,7 +452,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		}
 	});
 
-	/**
+	/** TODO
 	 * Route to retrieve profiles with the top selling prices
 	 */
 	//TODO retrieves 0 value from a date
@@ -521,7 +521,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		}
 	})
 
-	/**
+	/**TODO
 	 * route to support microservice graph of a specific islands current weeks price history
 	 */
 	app.get("/weeksPrices/:island", async (req: any, reply: any) => {

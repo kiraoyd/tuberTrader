@@ -15,7 +15,7 @@ import { SellingPriceHistory } from "./SellingPriceHistory.js";
  * This allows each user to have many island profiles as they want without needing to create more accounts
  */
 
-//@SoftDeletable(() => Profile, "deleted_at", () => new Date())
+@SoftDeletable(() => Profile, "deleted_at", () => new Date())
 @Entity()
 export class Profile extends TuberBaseEntity {
 	//id IS already the primary key, thanks to TuberBaseEntity

@@ -5,8 +5,8 @@ import {User} from "./db/models/user";
 import {IPHistory} from "./db/models/ip_history";
 import {Profile} from "./db/models/profile";
 import {Transactions} from "./db/models/transactions";
-import * as types from "./types"
-import {amPM} from "./types";
+import * as types from "./types/user_types"
+import {amPM} from "./types/user_types";
 
 // Appease fastify gods for POSTing a new User, make sure typing matches the interface below
 export const post_users_opts: RouteShorthandOptions = {

@@ -3,6 +3,7 @@ dotenv.config();
 
 import { FastifyInstance } from "fastify";
 import { UserRoutesInit } from "./user_routes.js";
+import {ProfileRoutesInit} from "./profile_routes.js";
 
 /** This function creates all backend routes for the site
  *
@@ -16,6 +17,7 @@ async function TuberRoutes(app: FastifyInstance, _options = {}) {
 	}
 
 	UserRoutesInit(app);
+	ProfileRoutesInit(app);
 	//MatchRoutesInit(app);
 	//MessageRoutesInit(app);
 }

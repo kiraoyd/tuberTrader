@@ -1,7 +1,7 @@
 //TODO move types from OLDbackend over!
 
-import {User} from "./db/entities/User.js";
-import {IPHistory} from "./db/entities/IpHistory.js"
+import {User} from "../db/entities/User.js";
+import {IPHistory} from "../db/entities/IpHistory.js"
 
 
 export type IUpdateUsersBody = {
