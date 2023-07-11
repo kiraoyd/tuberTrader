@@ -9,7 +9,9 @@ import {
     IPostProfilesResponse,
     PostProfileResponseType
 } from "../types/profile_types.js";
+import {Ref} from "@mikro-orm/core";
 
+//TODO we need to get the profile back as well
 export function SPHRoutesInit(app: FastifyInstance) {
     /** TODO make types for req and reply!
      * Route to retrieve profiles with the top selling prices
@@ -39,6 +41,7 @@ export function SPHRoutesInit(app: FastifyInstance) {
         //get price and island profile
         if(ampm === 'pm') {
             let records = await req.em.find(SellingPriceHistory, {}, {orderBy: {pricePM: "DESC"}});
+            await req.em.populate(records, ["island"]); //loads the referenced islands
             //grab the first ten, store
             let todaysTopTen: SellingPriceHistory[] = [];
             let count = 0;
@@ -52,6 +55,7 @@ export function SPHRoutesInit(app: FastifyInstance) {
         }
         else {
             let records = await req.em.find(SellingPriceHistory, {}, {orderBy: {priceAM: "DESC"}});
+            await req.em.populate(records, ["island"]); //loads the references islands
             //grab the first ten, store
             let todaysTopTen: SellingPriceHistory[] = [];
             let count = 0;
