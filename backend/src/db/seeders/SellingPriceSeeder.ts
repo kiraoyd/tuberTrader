@@ -28,5 +28,67 @@ export class SellingPriceSeeder extends Seeder {
             priceAM: 1100,
             pricePM: 93,
         });
+
+        context.sp2 = em.create(SellingPriceHistory, {
+            island: context.popcorn,
+            date: today,
+            priceAM: 56,
+            pricePM: 200,
+        });
+
+        context.sp3 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 140,
+            pricePM: 568,
+        });
+        context.sp4 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 100,
+            pricePM: 300,
+        });
+        context.sp5 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 44,
+            pricePM: 58,
+        });
+        context.sp6 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 140,
+            pricePM: 568,
+        });
+        context.sp7 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 550,
+            pricePM: 570,
+        });
+        context.sp8 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 400,
+            pricePM: 26,
+        });
+        context.sp9 = em.create(SellingPriceHistory, {
+            island: context.melon,
+            date: today,
+            priceAM: 10,
+            pricePM: 18,
+        });
+        context.sp10 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 88,
+            pricePM: 233,
+        });
+        context.sp11 = em.create(SellingPriceHistory, {
+            island: context.squirtle,
+            date: today,
+            priceAM: 99,
+            pricePM: 102,
+        });
     }
 }

@@ -452,7 +452,7 @@ export async function tuber_routes(app: FastifyInstance): Promise<void> {
 		}
 	});
 
-	/** TODO
+	/**
 	 * Route to retrieve profiles with the top selling prices
 	 */
 	//TODO retrieves 0 value from a date
