@@ -1,6 +1,7 @@
 //TODO move types from OLDbackend over!
 
 import {User} from "./db/entities/User.js";
+import {IPHistory} from "./db/entities/IpHistory.js"
 
 
 export type IUpdateUsersBody = {
@@ -32,7 +33,8 @@ export type IPostUsersResponse = {
 	/**
 	 * IP Address user used to create account
 	 */
-	ip_address: string
+	ip_address: IPHistory,
+
 }
 
 /**

@@ -3,6 +3,7 @@ import { SOFT_DELETABLE_FILTER } from "mikro-orm-soft-delete";
 import { User, UserRole } from "../db/entities/User.js";
 import { IPostUsersBody, IPostUsersResponse, IUpdateUsersBody, IGetUserParams } from "../types.js";
 import {IPHistory} from "../db/entities/IpHistory.js";
+import {Profile} from "../db/entities/Profile.js";
 
 export function UserRoutesInit(app: FastifyInstance) {
 	/**
@@ -29,6 +30,47 @@ export function UserRoutesInit(app: FastifyInstance) {
 		}
 	});
 
+	/** Route retrieves a specific user based on username
+	 * @name get/user/:username
+	 * @function
+	 */
+	app.get<{
+		Params: IGetUserParams
+	}>("/user/:username", async (req, reply: FastifyReply) => {
+		//roll through users, if username = name, include user in result
+		const username = req.params['username'];
+		try{
+			let user = await req.em.findOneOrFail(User, {name: username});
+			reply.send(user);
+		} catch (err) {
+			reply.status(204).send("No content");
+		}
+	});
+
+	/** Route retrieves all users and the island profiles they own, will not return users with no profiles
+	 * @name get/users_with_profiles
+	 * @function
+	 */
+	//TODO not sending the response correctly
+	app.get("/users_with_profiles", async (req, reply) => {
+		//roll through users, if user has at least one profile, include user and profiles in result
+		try {
+			//get all the profiles
+			let profiles = await req.em.find(Profile, {});
+			let users_with_profiles: User[] = []; //vec to hold all users found
+			//from those profiles, get the users who are found there
+			//Can't use forEach, as it doesn't work well with async functions
+			for(const island of profiles){
+				let this_user = await req.em.findOneOrFail(User, {id:island.owner.id});
+				console.log(this_user);
+				users_with_profiles.push(this_user);
+			}
+			reply.send(JSON.stringify(users_with_profiles));
+		} catch (err) {
+			reply.status(204).send("No Content");
+		}
+	});
+
 	/**
 	 * Route allowing creation of a new user.
 	 * @name post/users
@@ -37,10 +79,8 @@ export function UserRoutesInit(app: FastifyInstance) {
 	 * @param {string} email - user's email address
 	 * @returns {IPostUsersResponse} user and IP Address used to create account
 	 */
-	app.post<{ Body: IPostUsersBody, Reply:any }>("/users", async (req, reply) => {
+	app.post<{ Body: IPostUsersBody}>("/users", async (req, reply) => {
 		const { name, email, password } = req.body;
-
-
 		try {
 			//set new User params to data
 			const newUser = await req.em.create(User, {
@@ -82,22 +122,7 @@ export function UserRoutesInit(app: FastifyInstance) {
 		}
 	});
 
-	/** Route retrieves a specific user based on username
-	 * @name get/user/:username
-	 * @function
-	 */
-	app.get<{
-		Params: IGetUserParams
-	}>("/user/:username", async (req, reply: FastifyReply) => {
-		//roll through users, if username = name, include user in result
-		const username = req.params['username'];
-		try{
-			let user = await req.em.findOneOrFail(User, {name: username});
-			reply.send(user);
-		} catch (err) {
-			reply.status(204).send("No content");
-		}
-	});
+
 
 	/** Route rupdates a users name and email based on their ID number
 	 * @name put/users
@@ -150,10 +175,4 @@ export function UserRoutesInit(app: FastifyInstance) {
 	});
 
 
-	//TODO
-	/**
-	 * Route retrieves all users and the island profiles they own, will not return users with no profiles
-	 * @name get/users_with_profiles
-	 *@function
-	 */
 }
