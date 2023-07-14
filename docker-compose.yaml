@@ -69,6 +69,20 @@ services:
     extra_hosts:
       - "database: 127.0.0.1"
 
+
+  root_review:
+    container_name: root_review
+    build: ./root_review/
+    restart: always
+    ports:
+      - "3333:3333"
+    environment:
+      - DATABASE_URL=postgres://tuber:tuber@postgres/tuber
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
 volumes:
   db:
     driver: local
