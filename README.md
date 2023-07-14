@@ -18,6 +18,10 @@ It also includes Django (search-py-service) and Rust (Rusty's Root Review) micro
 
 ### As of 6/26/2023...
 
+Install Docker on your machine: https://www.docker.com/products/docker-desktop/
+
+If you are on a Windows machine running WSL2, open Docker Desktop before attempting to run this program.
+
 ## To run:
 
 1. Clone this repository.
