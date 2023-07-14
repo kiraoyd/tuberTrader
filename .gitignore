@@ -4,3 +4,8 @@
 /backendOLD/buildTypeorm/
 /backendOLD/build/
 
+/tuber_dump.sql/
+/all_logs.txt/
+/package-lock.json/
+
+
