@@ -5,7 +5,9 @@ Kira Klingenberg
 
 2023
 
-Last updated: 7/14/2023
+Last updated: 7/17/2023
+
+Note: Site is not live, and runs based off mock seed data in develop mode.
 
 Tuber Trader is a site for players of the Nintendo Switch game: Animal Crossing New Horizons.
 In this game, every player owns an island they build up.
